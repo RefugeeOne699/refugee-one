@@ -7,7 +7,8 @@ function useModel() {
   const [model, setModel] = useState(store.getState());
 
   useEffect(() => {
-    store.subscribe(() => setModel(store.getState()));
+    const unsubscribe = store.subscribe(() => setModel(store.getState()));
+    return () => unsubscribe();
   });
 
   return model;
