@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
+import Demo from "./pages/Demo";
 import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />, // TODO: home page
+      },
+      {
+        path: "demo",
+        element: <Demo />,
       },
       {
         path: "login",

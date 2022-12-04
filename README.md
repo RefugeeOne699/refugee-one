@@ -9,9 +9,20 @@ DH2642 Group 33
 - Tailwindcss
 - Firebase
 
+## Relevant Docs
+
+- We use firebase a bit different from the tutorial, please refer to [here](https://firebase.google.com/docs/database/web/read-and-write).
+- For UI development, please see [daisyUI](https://daisyui.com/components/) and [tailwind](https://tailwindcss.com/docs/installation)
+  - For components please refer to daisyUI
+  - For simple preset css classes please refer to tailwind (e.g. display, border, color, font)
+- [React router](https://reactrouter.com/en/main/start/tutorial)
+- [Redux](https://redux.js.org/introduction/getting-started)
+
 ## Getting Started
 
 It is recommended to load the project using VSCode as there's settings for recommended plugins and editor. Saving the code shall trigger automatic linting and formatting.
+
+Before start, create `apiConfig.js` and `firebaseConfig.js` under `src` directory with configurations.
 
 To start development:
 
