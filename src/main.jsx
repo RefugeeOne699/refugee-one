@@ -6,8 +6,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
 import Demo from "./pages/Demo";
+import Detail from "./pages/Detail";
 import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
+import Search from "./pages/Search";
 
 const router = createBrowserRouter([
   {
@@ -41,11 +43,11 @@ const router = createBrowserRouter([
       },
       {
         path: "search",
-        element: <div>Search</div>, // TODO: search results page; read query from url param; multiple filters
+        element: <Search />, // TODO: search results page; read query from url param; multiple filters
       },
       {
         path: "detail/:cocktailId",
-        element: <div>Cocktail Detail</div>,
+        element: <Detail />,
       },
     ],
   },
