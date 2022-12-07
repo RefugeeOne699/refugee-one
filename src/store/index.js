@@ -1,23 +1,13 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 
-const counterSlice = createSlice({
-  name: "counter",
-  initialState: {
-    value: 0,
-  },
-  reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-  },
-});
+import counterReducer from "./counter.js";
+import randomDrinkReducer from "./randomDrink.js";
 
 const store = configureStore({
-  reducer: counterSlice.reducer,
+  reducer: {
+    counter: counterReducer,
+    randomDrink: randomDrinkReducer,
+  },
 });
 
-export const { increment, decrement } = counterSlice.actions;
 export default store;
