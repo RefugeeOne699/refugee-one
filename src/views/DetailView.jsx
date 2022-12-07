@@ -1,5 +1,5 @@
 export default function DetailView(props) {
-  let { detailResult, ingredients } = props;
+  const { detailResult, ingredients } = props;
 
   //   let ingredients=["1","2","3"];
 
@@ -30,7 +30,7 @@ export default function DetailView(props) {
           <span className="font-semibold">Ingredient:</span> {ingredients.join(",")}
         </div>
         <div>
-          <button className="btn btn-primary">Listen</button>
+          <button className="btn btn-primary">add to list</button>
         </div>
       </div>
     </div>

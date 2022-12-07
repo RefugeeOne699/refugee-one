@@ -1,5 +1,5 @@
 export default function SearchView(props) {
-  let { searchResult } = props;
+  const { searchResult } = props;
 
   function renderResult(cocktail) {
     return (

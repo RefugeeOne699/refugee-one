@@ -18,8 +18,8 @@ export default function Detail() {
       .then((res) => {
         setDetailResult(res.data.drinks[0]);
         // console.log(res.data.drinks[0]);
-        let ingreArray = addIngredients(res.data.drinks[0]);
-        setIngredients([...ingreArray]);
+        // let ingreArray = addIngredients(res.data.drinks[0]);
+        setIngredients(addIngredients(res.data.drinks[0]));
       });
   }, [cocktailId]);
 
