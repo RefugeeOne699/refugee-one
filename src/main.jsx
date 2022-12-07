@@ -8,6 +8,7 @@ import AppRoot from "./App";
 import Demo from "./pages/Demo";
 import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
+import Random from "./pages/Random";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
       },
       {
         path: "random",
-        element: <div>Random</div>, // TODO: get a random cocktail when loading, click to get another
+        element: <Random />, // TODO: get a random cocktail when loading, click to get another
       },
       {
         path: "search",
