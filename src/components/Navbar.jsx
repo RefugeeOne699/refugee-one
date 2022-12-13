@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Navbar() {
+  const navigate = useNavigate();
+
   return (
     <div className="navbar bg-base-100 border-b">
       <div className="navbar-start">
@@ -53,7 +57,9 @@ export default function Navbar() {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">Bartender CheatSheet</a>
+        <a className="btn btn-ghost normal-case text-xl" onClick={() => navigate("/")}>
+          Bartender CheatSheet
+        </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0">

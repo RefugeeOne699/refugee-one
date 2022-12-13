@@ -1,10 +1,12 @@
-import { ref, set } from "firebase/database";
+//import { ref, set } from "firebase/database";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import cocktail from "@/clients/cocktail";
-import firebase from "@/clients/firebase";
+//import firebase from "@/clients/firebase";
 
 export default function HomeView() {
+  const navigate = useNavigate();
   const [query, setQuery] = useState();
 
   // TODO: pass event to presenter and call redux action
@@ -21,9 +23,9 @@ export default function HomeView() {
       .then((res) => console.log(res.data));
   };
 
-  const testFirebase = () => {
+  /*const testFirebase = () => {
     set(ref(firebase, "test"), "hello");
-  };
+  };*/
 
   return (
     <div className="flex-1 hero">
@@ -59,7 +61,10 @@ export default function HomeView() {
             </button>
           </div>
           <div className="pt-2 sm:pt-6">
-            <button className="btn btn-primary mx-4 my-2 sm:my-0" onClick={testFirebase}>
+            <button
+              className="btn btn-primary mx-4 my-2 sm:my-0"
+              onClick={() => navigate("/random")}
+            >
               Random Cocktail
             </button>
             <button className="btn btn-primary mx-4 my-2 sm:my-0">
