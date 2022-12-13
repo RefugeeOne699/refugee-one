@@ -9,7 +9,9 @@ import Demo from "./pages/Demo";
 import Detail from "./pages/Detail";
 import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Random from "./pages/Random";
+import Register from "./pages/Register";
 import Search from "./pages/Search";
 
 const router = createBrowserRouter([
@@ -28,11 +30,11 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <div>Login</div>, // TODO
+        element: <Login />,
       },
       {
         path: "register",
-        element: <div>Register</div>, // TODO
+        element: <Register />,
       },
       {
         path: "profile",
