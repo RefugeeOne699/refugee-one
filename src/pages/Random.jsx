@@ -11,7 +11,6 @@ export default function Random() {
 
   React.useEffect(() => {
     store.dispatch(fetchRandomDrink());
-    console.log("I fire once Random.jsx");
   }, []);
 
   return (

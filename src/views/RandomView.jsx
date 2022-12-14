@@ -41,7 +41,7 @@ export default function RandomView(props) {
       if (ingredient === null) return;
 
       return (
-        <tr key={ingredient} className="hover">
+        <tr key={index + ingredient + measure}>
           <th>{index + 1}</th>
           <td>{ingredient}</td>
           <td>{measure}</td>
@@ -66,13 +66,13 @@ export default function RandomView(props) {
   }
 
   return (
-    <div>
-      <div className="bg-base-200">
+    <div className="flex-1 bg-base-200 grid place-content-center">
+      <div className="flex justify-center py-5">
         <button className="btn btn-primary" onClick={() => props.getNewRandomDrink()}>
           Press me for new random drink!
         </button>
       </div>
-      <div className="hero min-h-screen bg-base-200">
+      <div className="hero">
         <div className="hero-content flex-col lg:flex-row">
           {renderDrink(props.randomDrink)}
         </div>
