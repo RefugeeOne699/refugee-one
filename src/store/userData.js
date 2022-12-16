@@ -4,11 +4,13 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import { onValue, ref, set } from "firebase/database";
 
-import { auth } from "@/clients/firebase";
+import database, { auth } from "@/clients/firebase";
 
 export const initialState = {
   user: null,
+  drinkList: [],
   register: {
     loading: false,
     error: false,
@@ -27,6 +29,9 @@ const userDataSlice = createSlice({
   reducers: {
     setUser: (state, { payload }) => {
       state.user = payload;
+    },
+    setDrinkList: (state, { payload }) => {
+      state.drinkList = payload;
     },
     setRegisterLoading: (state, { payload }) => {
       state.register.loading = payload;
@@ -125,12 +130,53 @@ export function logoutUser() {
   };
 }
 
+export function addDrinkToList(payload) {
+  const id = payload;
+
+  return async (dispatch, getState) => {
+    const state = getState();
+    const uid = state?.userData?.user?.uid;
+    if (!uid) return;
+    set(ref(database, `userData/${uid}/drinkList/${id}`), Date.now()).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function removeDrinkFromList(payload) {
+  const id = payload;
+
+  return async (dispatch, getState) => {
+    const state = getState();
+    const uid = state?.userData?.user?.uid;
+    if (!uid) return;
+    set(ref(database, `userData/${uid}/drinkList/${id}`), null).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function initUserData() {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const uid = state?.userData?.user?.uid;
+
+    if (!uid) return;
+
+    onValue(ref(database, `userData/${uid}/drinkList`), (snapshot) => {
+      const data = snapshot.val();
+      if (data) dispatch(setDrinkList(Object.keys(data)));
+    });
+  };
+}
+
 export const {
   setUser,
   setRegisterLoading,
   setRegisterError,
   setLoginLoading,
   setLoginError,
+  setDrinkList,
 } = userDataSlice.actions;
 
 export default userDataSlice.reducer;

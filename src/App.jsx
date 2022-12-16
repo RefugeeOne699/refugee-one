@@ -1,12 +1,13 @@
 import "./App.css";
 
 import { onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 import { auth } from "@/clients/firebase";
 import { useModel } from "@/hooks";
 import store from "@/store";
-import { logoutUser, setUser } from "@/store/userData";
+import { initUserData, logoutUser, setUser } from "@/store/userData";
 
 import Navbar from "./components/Navbar";
 
@@ -15,7 +16,6 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
-    console.log(user);
     store.dispatch(
       setUser({
         uid: user.uid,
@@ -23,6 +23,7 @@ onAuthStateChanged(auth, (user) => {
         // More to add here
       })
     );
+    store.dispatch(initUserData());
   } else {
     // User is signed out
     store.dispatch(setUser(null));

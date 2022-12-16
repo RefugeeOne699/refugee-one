@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import instance from "../clients/cocktail";
+import cocktailDB from "../clients/cocktail";
 
 export const initialState = {
   loading: false,
@@ -29,10 +29,10 @@ const randomDrinkSlice = createSlice({
 export function fetchRandomDrink() {
   return async (dispatch) => {
     dispatch(setLoading());
-    instance
+    cocktailDB
       .get("/random.php")
       .then((response) => {
-        dispatch(setData(response.data));
+        dispatch(setData(response?.data?.drinks?.[0]));
       })
       .catch((error) => {
         dispatch(setError(error));
