@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -94,7 +94,9 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Sign In</a>
+        <Link className="btn" to="/login">
+          Sign In
+        </Link>
       </div>
     </div>
   );

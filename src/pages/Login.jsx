@@ -1,21 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 
+import { useModel } from "@/hooks";
+import store from "@/store";
+
+import { loginUser } from "../store/userData";
 import LoginView from "../views/LoginView";
-import RegisterView from "../views/RegisterView";
 
 export default function Login() {
-  const [currentForm, setCurrentForm] = useState("login");
-  const toggleForm = (formName) => {
-    setCurrentForm(formName);
+  const model = useModel();
+
+  const onLoginUser = (loginForm) => {
+    store.dispatch(loginUser(loginForm));
   };
 
-  return (
-    <div className="Login">
-      {currentForm === "login" ? (
-        <LoginView onFormSwitch={toggleForm} />
-      ) : (
-        <RegisterView onFormSwitch={toggleForm} />
-      )}
-    </div>
-  );
+  return <LoginView onLoginUser={onLoginUser} userData={model.userData} />;
 }
