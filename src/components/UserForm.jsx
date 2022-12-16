@@ -6,6 +6,13 @@ export default function UserForm(props) {
   const [password, setPassword] = useState("");
   const { onSubmit, loading, titleText, btnText, displayHelp } = props;
 
+  const handleSubmit = () => {
+    onSubmit({
+      email,
+      password,
+    });
+  };
+
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-4xl font-semibold mt-16">{titleText}</h1>
@@ -38,7 +45,7 @@ export default function UserForm(props) {
           type="submit"
           className={loading ? "btn loading" : "btn"}
           disabled={loading}
-          onClick={onSubmit}
+          onClick={handleSubmit}
         >
           {btnText}
         </button>

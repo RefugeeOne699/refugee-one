@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 import { auth } from "@/clients/firebase";
@@ -108,6 +109,18 @@ export function loginUser(payload) {
       })
       .finally(() => {
         dispatch(setLoginLoading(false)); // Finally set loading to false
+      });
+  };
+}
+
+export function logoutUser() {
+  return async (dispatch) => {
+    signOut(auth)
+      .then(() => {
+        dispatch(setUser(null));
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 }

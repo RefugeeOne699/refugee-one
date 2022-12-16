@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar(props) {
+  const { userData, signOut } = props;
   const navigate = useNavigate();
 
   return (
@@ -94,9 +95,20 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link className="btn" to="/login">
-          Sign In
-        </Link>
+        {userData?.user?.uid ? (
+          <>
+            <Link className="btn-link" to="/profile">
+              {userData.user.email}
+            </Link>
+            <button className="btn ml-4" onClick={signOut}>
+              Sign Out
+            </button>
+          </>
+        ) : (
+          <Link className="btn" to="/login">
+            Sign In
+          </Link>
+        )}
       </div>
     </div>
   );
