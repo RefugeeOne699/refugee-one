@@ -63,7 +63,7 @@ export default function Navbar(props) {
         </a>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal p-0">
+        <ul className="menu menu-horizontal px-1">
           <li>
             <a>Item 1</a>
           </li>
@@ -96,14 +96,36 @@ export default function Navbar(props) {
       </div>
       <div className="navbar-end">
         {userData?.user?.uid ? (
-          <>
-            <Link className="btn-link" to="/profile">
+          <div className="dropdown dropdown-end dropdown-hover">
+            <label tabIndex={0}>
               {userData.user.email}
-            </Link>
-            <button className="btn ml-4" onClick={signOut}>
-              Sign Out
-            </button>
-          </>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1}
+                stroke="currentColor"
+                className="w-4 h-4 ml-1 inline"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </label>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+              <li>
+                <a onClick={signOut}>Sign Out</a>
+              </li>
+            </ul>
+          </div>
         ) : (
           <Link className="btn" to="/login">
             Sign In
