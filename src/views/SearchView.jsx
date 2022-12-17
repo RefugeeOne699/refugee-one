@@ -1,11 +1,23 @@
+import { useNavigate } from "react-router-dom";
+
 export default function SearchView(props) {
-  const { searchResult } = props;
+  const { searchResult, onsaveDrinkId } = props;
 
   function renderResult(cocktail) {
+    const navigate = useNavigate();
+
+    const clickCocktail = (cocktail) => {
+      navigate(`/detail/:${cocktail.idDrink}`);
+      onsaveDrinkId(cocktail.idDrink);
+    };
+
     return (
       <div
         key={cocktail.idDrink}
         className="w-52 h-64 m-5 bg-base-100 shadow-xl rounded-xl"
+        onClick={() => {
+          clickCocktail(cocktail);
+        }}
       >
         <figure className="px-5 pt-5">
           <img
@@ -23,7 +35,11 @@ export default function SearchView(props) {
 
   return (
     <div className="h-96 px-20 py-10 mx-20 my-10 border-2 overflow-auto flex flex-row flex-wrap">
-      {searchResult.map(renderResult)}
+      {searchResult === null ? (
+        <div>Sorry! Can't find this cocktail.</div>
+      ) : (
+        searchResult.map(renderResult)
+      )}
     </div>
   );
 }

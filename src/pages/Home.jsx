@@ -1,24 +1,24 @@
 // import { useModel } from "@/hooks";
-import { useEffect, useState } from "react";
-
+// import { useEffect, useState } from "react";
 import store from "@/store";
-import { fetchSearchData } from "@/store/searchData";
+import { fetchSearchData, getSearchQuery } from "@/store/searchData";
 import HomeView from "@/views/HomeView";
 
 export default function Home() {
   // const model = useModel();
-  const [query, setQuery] = useState();
+  // const [query, setQuery] = useState("margarita");
 
-  function userWantsToSearch(query) {
-    console.log(query);
-    setQuery(query);
+  function getQuery(query) {
+    // console.log(query);
+    store.dispatch(getSearchQuery(query));
+    // setQuery(query);
   }
 
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log(query);
     store.dispatch(fetchSearchData(query));
-    // console.log(model.searchData?.data);
-  }, [query]);
+    console.log(model.searchData?.data);
+  }, [query]); */
 
-  return <HomeView onUserWantsToSearch={userWantsToSearch} />;
+  return <HomeView onGetQuery={getQuery} />;
 }

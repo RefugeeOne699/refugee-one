@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 
 import cocktail from "@/clients/cocktail";
+import { useModel } from "@/hooks";
 import DetailView from "@/views/DetailView";
 
 export default function Detail() {
-  const [cocktailId, setCocktailId] = useState("11007");
+  const model = useModel();
+  // console.log(model.detailData.id);
+
+  // const [cocktailId, setCocktailId] = useState("11007");
   const [detailResult, setDetailResult] = useState({});
   const [ingredients, setIngredients] = useState([]);
 
@@ -12,7 +16,7 @@ export default function Detail() {
     cocktail
       .get("lookup.php", {
         params: {
-          i: cocktailId,
+          i: model.detailData.id,
         },
       })
       .then((res) => {
@@ -21,7 +25,7 @@ export default function Detail() {
         // let ingreArray = addIngredients(res.data.drinks[0]);
         setIngredients(addIngredients(res.data.drinks[0]));
       });
-  }, [cocktailId]);
+  }, []);
 
   function addIngredients(detailObject) {
     let ingredientsArray = [];

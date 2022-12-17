@@ -6,33 +6,27 @@ import { useNavigate } from "react-router-dom";
 //import firebase from "@/clients/firebase";
 
 export default function HomeView(props) {
-  const { onUserWantsToSearch } = props;
+  const { onGetQuery } = props;
 
   const navigate = useNavigate();
   const [query, setQuery] = useState();
 
-  // TODO: pass event to presenter and call redux action
-  const searchCocktail = () => {
-    // TODO: request/cancel/debounce
-    // console.log(query);
+  function debounce(fn, t) {
+    let timer = null;
+    return function () {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        fn.apply(this, arguments);
+      }, t);
+    };
+  }
 
+  const searchCocktail = (query) => {
     if (query) {
-      onUserWantsToSearch(query);
+      onGetQuery(query);
       navigate("/search");
     }
-
-    /* cocktail
-      .get("search.php", {
-        params: {
-          s: query,
-        },
-      })
-      .then((res) => console.log(res.data)); */
   };
-
-  /*const testFirebase = () => {
-    set(ref(firebase, "test"), "hello");
-  };*/
 
   return (
     <div className="flex-1 hero">
@@ -50,7 +44,12 @@ export default function HomeView(props) {
               className="input input-bordered w-full"
               onChange={(e) => setQuery(e.target.value)}
             />
-            <button className="btn btn-square" onClick={searchCocktail}>
+            <button
+              className="btn btn-square"
+              onClick={debounce(() => {
+                searchCocktail(query);
+              }, 500)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"

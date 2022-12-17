@@ -5,6 +5,7 @@ import cocktailDB from "../clients/cocktail";
 export const initialState = {
   loading: false,
   error: false,
+  query: "",
   data: [],
 };
 
@@ -23,8 +24,19 @@ const searchDataSlice = createSlice({
     setError: (state) => {
       state.error = true;
     },
+    setQuery: (state, { payload }) => {
+      state.query = payload;
+    },
   },
 });
+
+export function getSearchQuery(payload) {
+  const query = payload;
+
+  return async (dispatch) => {
+    dispatch(setQuery(query));
+  };
+}
 
 export function fetchSearchData(payload) {
   const query = payload;
@@ -46,6 +58,6 @@ export function fetchSearchData(payload) {
   };
 }
 
-export const { setLoading, setData, setError } = searchDataSlice.actions;
+export const { setLoading, setData, setError, setQuery } = searchDataSlice.actions;
 
 export default searchDataSlice.reducer;
