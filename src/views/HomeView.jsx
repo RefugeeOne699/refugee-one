@@ -2,25 +2,32 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import cocktail from "@/clients/cocktail";
+// import cocktail from "@/clients/cocktail";
 //import firebase from "@/clients/firebase";
 
-export default function HomeView() {
+export default function HomeView(props) {
+  const { onUserWantsToSearch } = props;
+
   const navigate = useNavigate();
   const [query, setQuery] = useState();
 
   // TODO: pass event to presenter and call redux action
   const searchCocktail = () => {
     // TODO: request/cancel/debounce
-    console.log(query);
+    // console.log(query);
 
-    cocktail
+    if (query) {
+      onUserWantsToSearch(query);
+      navigate("/search");
+    }
+
+    /* cocktail
       .get("search.php", {
         params: {
           s: query,
         },
       })
-      .then((res) => console.log(res.data));
+      .then((res) => console.log(res.data)); */
   };
 
   /*const testFirebase = () => {

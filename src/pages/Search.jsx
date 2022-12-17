@@ -1,23 +1,13 @@
-import { useEffect, useState } from "react";
-
-import cocktail from "@/clients/cocktail";
+// import { useState } from "react";
+// import cocktail from "@/clients/cocktail";
+import { useModel } from "@/hooks";
 import SearchView from "@/views/SearchView";
 
 export default function Search() {
-  const [query, setQuery] = useState("margarita");
-  const [searchResult, setSearchResult] = useState([]);
+  const model = useModel();
+  // console.log(model.searchData?.data);
 
-  useEffect(() => {
-    cocktail
-      .get("search.php", {
-        params: {
-          s: query,
-        },
-      })
-      .then((res) => {
-        setSearchResult(res.data.drinks);
-      });
-  }, [query]);
+  // const [searchResult, setSearchResult] = useState([]);
 
-  return <SearchView searchResult={searchResult} />;
+  return <SearchView searchResult={model.searchData?.data} />;
 }
