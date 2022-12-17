@@ -1,7 +1,22 @@
-export default function DetailView(props) {
-  const { detailResult, ingredients } = props;
+import { useEffect, useState } from "react";
 
-  //   let ingredients=["1","2","3"];
+export default function DetailView(props) {
+  const { drinkDetail } = props;
+  const { data: detailResult, loading, error } = drinkDetail;
+  const [ingredients, setIngredients] = useState([]);
+
+  useEffect(() => {
+    if (!detailResult) return;
+    const ingredientsArray = Object.entries(detailResult)
+      .filter((entry) => entry[0].search("strIngredient") === 0)
+      .map((e) => e[1])
+      .filter((v) => !!v);
+    setIngredients(ingredientsArray);
+  }, [detailResult]);
+
+  if (error) return <div>Oops! Failed to fetch drink detail</div>;
+  if (loading) return <div>Loading..</div>; // TODO: better loading
+  if (!detailResult) return <div>Cannot find drink</div>;
 
   return (
     <div className="m-10 card lg:card-side bg-base-100 shadow-xl">
@@ -27,7 +42,7 @@ export default function DetailView(props) {
           {detailResult.strInstructions}
         </div>
         <div>
-          <span className="font-semibold">Ingredient:</span> {ingredients.join(",")}
+          <span className="font-semibold">Ingredient:</span> {ingredients.join(", ")}
         </div>
         <div>
           <button className="btn btn-primary">add to list</button>

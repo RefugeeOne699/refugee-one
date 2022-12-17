@@ -1,32 +1,10 @@
-//import { ref, set } from "firebase/database";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// import cocktail from "@/clients/cocktail";
-//import firebase from "@/clients/firebase";
-
 export default function HomeView(props) {
-  const { onGetQuery } = props;
-
+  const { onUserWantsToSearch } = props;
   const navigate = useNavigate();
   const [query, setQuery] = useState();
-
-  function debounce(fn, t) {
-    let timer = null;
-    return function () {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        fn.apply(this, arguments);
-      }, t);
-    };
-  }
-
-  const searchCocktail = (query) => {
-    if (query) {
-      onGetQuery(query);
-      navigate("/search");
-    }
-  };
 
   return (
     <div className="flex-1 hero">
@@ -44,12 +22,7 @@ export default function HomeView(props) {
               className="input input-bordered w-full"
               onChange={(e) => setQuery(e.target.value)}
             />
-            <button
-              className="btn btn-square"
-              onClick={debounce(() => {
-                searchCocktail(query);
-              }, 500)}
-            >
+            <button className="btn btn-square" onClick={() => onUserWantsToSearch(query)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"

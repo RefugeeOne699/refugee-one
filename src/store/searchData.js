@@ -13,36 +13,28 @@ const searchDataSlice = createSlice({
   name: "searchData",
   initialState,
   reducers: {
-    setLoading: (state) => {
+    startFetch: (state) => {
       state.loading = true;
+      state.error = false;
+      state.data = [];
     },
     setData: (state, { payload }) => {
       state.loading = false;
       state.error = false;
       state.data = payload;
     },
-    setError: (state) => {
-      state.error = true;
-    },
-    setQuery: (state, { payload }) => {
-      state.query = payload;
+    setError: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
     },
   },
 });
-
-export function getSearchQuery(payload) {
-  const query = payload;
-
-  return async (dispatch) => {
-    dispatch(setQuery(query));
-  };
-}
 
 export function fetchSearchData(payload) {
   const query = payload;
 
   return async (dispatch) => {
-    dispatch(setLoading());
+    dispatch(startFetch());
     cocktailDB
       .get("search.php", {
         params: {
@@ -58,6 +50,6 @@ export function fetchSearchData(payload) {
   };
 }
 
-export const { setLoading, setData, setError, setQuery } = searchDataSlice.actions;
+export const { startFetch, setData, setError } = searchDataSlice.actions;
 
 export default searchDataSlice.reducer;

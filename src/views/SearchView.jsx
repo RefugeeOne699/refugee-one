@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
 export default function SearchView(props) {
-  const { searchResult, onsaveDrinkId } = props;
+  const { searchData } = props;
+  const { data: searchResult, loading, error } = searchData;
+  const navigate = useNavigate();
 
   function renderResult(cocktail) {
-    const navigate = useNavigate();
-
     const clickCocktail = (cocktail) => {
-      navigate(`/detail/:${cocktail.idDrink}`);
-      onsaveDrinkId(cocktail.idDrink);
+      navigate(`/detail/${cocktail.idDrink}`);
     };
 
     return (

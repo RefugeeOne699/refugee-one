@@ -1,75 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// import cocktailDB from "../clients/cocktail";
+import cocktailDB from "../clients/cocktail";
 
 export const initialState = {
-  //   loading: false,
-  //   error: false,
-  id: "",
+  loading: false,
+  error: null,
+  data: null,
 };
 
 const detailDataSlice = createSlice({
   name: "detailData",
   initialState,
   reducers: {
-    /* setLoading: (state) => {
+    startFetch: (state) => {
       state.loading = true;
+      state.error = false;
+      state.data = null;
     },
     setData: (state, { payload }) => {
       state.loading = false;
       state.error = false;
       state.data = payload;
     },
-    setError: (state) => {
-      state.error = true;
-    }, */
-    setId: (state, { payload }) => {
-      state.id = payload;
+    setError: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
     },
   },
 });
 
-/* export function fetchSearchData(payload) {
-  const query = payload;
-
-  return async (dispatch) => {
-    dispatch(setLoading());
-    cocktailDB
-      .get("search.php", {
-        params: {
-          s: query,
-        },
-      })
-      .then((response) => {
-        dispatch(setData(response?.data?.drinks));
-      })
-      .catch((error) => {
-        dispatch(setError(error));
-      });
-  };
-} */
-
-export function getDrinkId(payload) {
+export function fetchDrinkDetail(payload) {
   const id = payload;
 
   return async (dispatch) => {
-    dispatch(setId(id));
-    /* cocktailDB
-        .get("search.php", {
-          params: {
-            s: query,
-          },
-        })
-        .then((response) => {
-          dispatch(setData(response?.data?.drinks));
-        })
-        .catch((error) => {
-          dispatch(setError(error));
-        }); */
+    dispatch(startFetch());
+    cocktailDB
+      .get("lookup.php", {
+        params: {
+          i: id,
+        },
+      })
+      .then((res) => {
+        dispatch(setData(res?.data?.drinks?.[0]));
+      })
+      .catch((err) => dispatch(setError(err)));
   };
 }
 
-// export const { setLoading, setId, setError } = detailDataSlice.actions;
-export const { setId } = detailDataSlice.actions;
+export const { startFetch, setError, setData } = detailDataSlice.actions;
 
 export default detailDataSlice.reducer;

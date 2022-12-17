@@ -1,41 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import cocktail from "@/clients/cocktail";
 import { useModel } from "@/hooks";
 import store from "@/store";
-import { getDrinkId } from "@/store/detailData";
+import { fetchSearchData } from "@/store/searchData";
 import SearchView from "@/views/SearchView";
-// import { fetchSearchData } from "@/store/searchData";
 
 export default function Search() {
   const model = useModel();
-  const [searchResult, setSearchResult] = useState([]);
-  console.log(model.searchData.query);
-
-  /* useEffect(() => {
-    store.dispatch(fetchSearchData(model.searchData.query));
-  }, []); */
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    cocktail
-      .get("search.php", {
-        params: {
-          s: model.searchData.query,
-        },
-      })
-      .then((res) => {
-        setSearchResult(res.data.drinks);
-      });
-  }, []);
+    const query = new URLSearchParams(location.search).get("query");
+    if (query) store.dispatch(fetchSearchData(query));
+  }, [location]);
 
-  const saveDrinkId = (id) => {
-    store.dispatch(getDrinkId(id));
+  const invokeSearch = (query) => {
+    navigate(`/search?query=${query}`, { replace: true });
   };
 
-  // console.log(model.searchData?.data);
-
-  // const [searchResult, setSearchResult] = useState([]);
-
-  // return <SearchView searchResult={model.searchData.data} onsaveDrinkId={saveDrinkId} />;
-  return <SearchView searchResult={searchResult} onsaveDrinkId={saveDrinkId} />;
+  return <SearchView searchData={model.searchData} onUserWantsToSearch={invokeSearch} />;
 }
