@@ -67,10 +67,10 @@ export function registerUser(payload) {
         errorCode: null,
       })
     ); // Clear error
-    createUserWithEmailAndPassword(auth, email, password)
+    return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        dispatch(setUser(user));
+        // const user = userCredential.user;
+        // dispatch(setUser(user));
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -98,10 +98,10 @@ export function loginUser(payload) {
         errorCode: null,
       })
     ); // Clear error
-    signInWithEmailAndPassword(auth, email, password)
+    return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        dispatch(setUser(user));
+        // const user = userCredential.user;
+        // dispatch(setUser(user));
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -111,6 +111,7 @@ export function loginUser(payload) {
             errorCode: errorCode,
           })
         );
+        throw new Error(error);
       })
       .finally(() => {
         dispatch(setLoginLoading(false)); // Finally set loading to false
@@ -122,7 +123,7 @@ export function logoutUser() {
   return async (dispatch) => {
     signOut(auth)
       .then(() => {
-        dispatch(setUser(null));
+        // dispatch(setUser(null));
       })
       .catch((error) => {
         console.log(error);

@@ -10,7 +10,7 @@ export default function Register() {
   const model = useModel();
 
   const onRegisterUser = (registerForm) => {
-    store.dispatch(registerUser(registerForm));
+    return store.dispatch(registerUser(registerForm));
   };
 
   return <RegisterView onRegisterUser={onRegisterUser} userData={model.userData} />;
