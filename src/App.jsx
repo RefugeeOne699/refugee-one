@@ -2,7 +2,7 @@ import "./App.css";
 
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import { auth } from "@/clients/firebase";
 import Navbar from "@/components/Navbar";
@@ -12,7 +12,6 @@ import { initUserData, logoutUser, setUser } from "@/store/userData";
 
 function App() {
   const model = useModel();
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Global observer for firebase user
@@ -30,7 +29,6 @@ function App() {
         store.dispatch(initUserData());
       } else {
         // User is signed out
-        navigate("/");
         store.dispatch(setUser(null));
       }
     });
