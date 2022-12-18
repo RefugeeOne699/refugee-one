@@ -53,24 +53,28 @@ export default function CocktailDetail(props) {
     <>
       <img src={drinkDetails.strDrinkThumb} className="max-w-sm rounded-lg shadow-2xl" />
       <div>
-        <h1 className="text-5xl font-bold">{drinkDetails.strDrink}</h1>
-        {isDrinkInList ? (
-          <button
-            className="btn btn-error"
-            onClick={() => onRemoveDrinkFromList(drinkDetails.idDrink)}
-          >
-            Remove from list
-          </button>
-        ) : (
-          <button
-            className="btn btn-primary"
-            onClick={() => onAddDrinkToList(drinkDetails.idDrink)}
-          >
-            Add to my favorite
-          </button>
-        )}
-        <h2 className="text-2xl font-bold pt-5">Instructions:</h2>
-        <p className="pb-2">{drinkDetails.strInstructions}</p>
+        <h1 className="text-5xl font-bold py-2">{drinkDetails.strDrink}</h1>
+        <div className="py-2">
+          {isDrinkInList ? (
+            <button
+              className="btn btn-error"
+              onClick={() => onRemoveDrinkFromList(drinkDetails.idDrink)}
+            >
+              Remove from list
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              onClick={() => onAddDrinkToList(drinkDetails.idDrink)}
+            >
+              Add to my favorite
+            </button>
+          )}
+        </div>
+        <div className="py-2">
+          <h2 className="text-2xl font-bold">Instructions:</h2>
+          <p>{drinkDetails.strInstructions}</p>
+        </div>
         {renderIngredientList(ingredients, measures)}
       </div>
     </>
