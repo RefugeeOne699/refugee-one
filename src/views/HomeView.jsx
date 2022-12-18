@@ -6,6 +6,10 @@ export default function HomeView(props) {
   const navigate = useNavigate();
   const [query, setQuery] = useState();
 
+  function handleKeyDown(e) {
+    if (e.key === "Enter") onUserWantsToSearch(query);
+  }
+
   return (
     <div className="flex-1 hero">
       <div className="hero-content text-center">
@@ -21,6 +25,7 @@ export default function HomeView(props) {
               placeholder="Search…"
               className="input input-bordered w-full"
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <button className="btn btn-square" onClick={() => onUserWantsToSearch(query)}>
               <svg
