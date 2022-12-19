@@ -53,8 +53,11 @@ export default function HomeView(props) {
             >
               Random Cocktail
             </button>
-            <button className="btn btn-primary mx-4 my-2 sm:my-0">
-              Bartender Practice
+            <button
+              className="btn btn-primary mx-4 my-2 sm:my-0"
+              onClick={() => navigate("/popular")}
+            >
+              Explore Popular
             </button>
           </div>
         </div>

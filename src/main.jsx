@@ -10,6 +10,7 @@ import Detail from "./pages/Detail";
 import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Popular from "./pages/Popular";
 import Random from "./pages/Random";
 import Register from "./pages/Register";
 import Search from "./pages/Search";
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "detail/:cocktailId",
         element: <Detail />,
+      },
+      {
+        path: "popular",
+        element: <Popular />,
       },
     ],
   },
