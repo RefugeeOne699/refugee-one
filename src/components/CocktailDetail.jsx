@@ -2,9 +2,16 @@ import ReturnBtn from "./ReturnBtn";
 
 export default function CocktailDetail(props) {
   const { drink, onAddDrinkToList, onRemoveDrinkFromList, isDrinkInList } = props;
-  if (drink.loading) {
-    return <h1>Loading...</h1>;
-  }
+  if (drink.loading)
+    return (
+      <div>
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+          alt="loading icon"
+          className=""
+        />
+      </div>
+    );
   if (drink.error) {
     return <h1>Error</h1>;
   }
