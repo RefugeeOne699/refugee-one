@@ -1,3 +1,4 @@
+import ReturnBtn from "@/components/ReturnBtn";
 import { useEffect, useState } from "react";
 
 export default function DetailView(props) {
@@ -72,6 +73,7 @@ export default function DetailView(props) {
               Add to my favorite
             </button>
           )}
+          <span className="ml-4">{<ReturnBtn />}</span>
         </div>
       </div>
     </div>
