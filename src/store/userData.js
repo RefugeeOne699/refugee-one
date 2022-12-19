@@ -4,7 +4,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { onValue, ref, set } from "firebase/database";
+import { get, onValue, ref, set } from "firebase/database";
 
 import database, { auth } from "@/clients/firebase";
 
@@ -157,9 +157,19 @@ export function removeDrinkFromList(payload) {
     const state = getState();
     const uid = state?.userData?.user?.uid;
     if (!uid) return;
-    set(ref(database, `userData/${uid}/drinkList/${id}`), null).catch((error) => {
-      console.log(error);
-    });
+    set(ref(database, `userData/${uid}/drinkList/${id}`), null)
+      .then(() => {
+        // @Chujie: firebase onValue will not receive event of final element deleted
+        get(ref(database, `userData/${uid}/drinkList`)).then((snapshot) => {
+          if (!snapshot.exists()) {
+            dispatch(setDrinkIdList([]));
+            dispatch(setDrinkList([]));
+          }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 }
 
@@ -190,6 +200,7 @@ export function initUserData() {
               throw new Error(err);
             })
         );
+
         Promise.allSettled(promises).then((res) => {
           dispatch(
             setDrinkList(res.filter((p) => p.status === "fulfilled").map((p) => p.value))

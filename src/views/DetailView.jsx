@@ -1,12 +1,13 @@
-import ReturnBtn from "@/components/ReturnBtn";
 import { useEffect, useState } from "react";
+
+import ReturnBtn from "@/components/ReturnBtn";
 
 export default function DetailView(props) {
   const { drinkDetail, userData, onAddDrinkToList, onRemoveDrinkFromList } = props;
   const { data: detailResult, loading, error } = drinkDetail;
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
-  const drinkList = userData.drinkList ?? [];
+  const drinkList = userData.drinkIdList ?? [];
   const isDrinkInList = drinkList.includes(detailResult?.idDrink);
 
   useEffect(() => {

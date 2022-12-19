@@ -2,9 +2,9 @@ import CocktailDetail from "@/components/CocktailDetail";
 
 export default function RandomView(props) {
   const { userData, randomDrink } = props;
-  const drinkList = userData.drinkList ?? [];
+  const drinkIdList = userData.drinkIdList ?? [];
 
-  const isDrinkInList = drinkList.includes(randomDrink?.data?.idDrink);
+  const isDrinkInList = drinkIdList.includes(randomDrink?.data?.idDrink);
 
   return (
     <div className="flex-1 bg-base-100 grid place-content-center">
