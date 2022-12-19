@@ -74,7 +74,7 @@ export function registerUser(payload) {
       })
     ); // Clear error
     return createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(() => {
         // const user = userCredential.user;
         // dispatch(setUser(user));
       })
@@ -105,7 +105,7 @@ export function loginUser(payload) {
       })
     ); // Clear error
     return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(() => {
         // const user = userCredential.user;
         // dispatch(setUser(user));
       })
@@ -126,7 +126,7 @@ export function loginUser(payload) {
 }
 
 export function logoutUser() {
-  return async (dispatch) => {
+  return async () => {
     signOut(auth)
       .then(() => {
         // dispatch(setUser(null));

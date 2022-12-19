@@ -65,7 +65,7 @@ export default function UserForm(props) {
         </Link>
       ) : (
         <Link className="btn-link mt-2" to="/register">
-        Don't have an account? Register here.
+          {"Don't have an account? Register here."}
         </Link>
       )}
     </div>
