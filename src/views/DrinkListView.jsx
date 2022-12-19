@@ -35,6 +35,11 @@ export default function DrinkListView(props) {
               Give me a random
             </button>
           </div>
+          <div className="mb-2">
+            <button className="btn btn-primary" onClick={() => navigate("/popular")}>
+              Explore popular
+            </button>
+          </div>
           <div>
             <button className="btn btn-primary" onClick={() => navigate("/search")}>
               Search by name
