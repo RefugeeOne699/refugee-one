@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import ReturnBtn from "@/components/ReturnBtn";
+
 export default function SearchView(props) {
   const { searchData, onUserWantsToSearch } = props;
   const { data: searchResult, loading, error } = searchData;
@@ -12,35 +14,43 @@ export default function SearchView(props) {
     if (e.key === "Enter") onUserWantsToSearch(query);
   }
 
-  function renderResult(cocktail) {
-    const clickCocktail = (cocktail) => {
-      navigate(`/detail/${cocktail.idDrink}`);
-    };
+  function renderResults() {
+    if (loading) return <h1>Loading...</h1>;
+    if (error) return <h1>Error</h1>;
+    if (!searchResult) return;
 
-    return (
-      <div
-        key={cocktail.idDrink}
-        className="w-52 h-64 m-5 bg-base-200 shadow-xl rounded-xl hover:bg-base-300 hover:cursor-pointer"
-        onClick={() => {
-          clickCocktail(cocktail);
-        }}
-      >
-        <figure className="px-5 pt-5">
-          <img
-            src={cocktail.strDrinkThumb}
-            // alt={cocktail.strImageAttribution}
-            className="rounded-xl w-40 mx-auto"
-          />
-        </figure>
-        <div className="py-5 items-center text-center">
-          <h2 className="search-name">{cocktail.strDrink}</h2>
+    function renderResultCard(cocktail) {
+      const clickCocktail = (cocktail) => {
+        navigate(`/detail/${cocktail.idDrink}`);
+      };
+
+      return (
+        <div
+          key={cocktail.idDrink}
+          className="w-52 h-64 m-5 bg-base-200 shadow-xl rounded-xl hover:bg-base-300 hover:cursor-pointer"
+          onClick={() => {
+            clickCocktail(cocktail);
+          }}
+        >
+          <figure className="px-5 pt-5">
+            <img
+              src={cocktail.strDrinkThumb}
+              // alt={cocktail.strImageAttribution}
+              className="rounded-xl w-40 mx-auto"
+            />
+          </figure>
+          <div className="py-5 items-center text-center">
+            <h2 className="search-name">{cocktail.strDrink}</h2>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+    return searchResult.map(renderResultCard);
   }
 
   return (
-    <div className="">
+    <div>
+      <div className="p-2">{<ReturnBtn />}</div>
       <div className="form-control pt-20 pb-14">
         <div className="input-group justify-center">
           <input
@@ -72,9 +82,7 @@ export default function SearchView(props) {
         {searchResult === null ? (
           <div>{"Sorry! Can't find any cocktail."}</div>
         ) : (
-          <div className="flex flex-wrap max-w-screen-xl">
-            {searchResult.map(renderResult)}
-          </div>
+          <div className="flex flex-wrap max-w-screen-xl">{renderResults()}</div>
         )}
       </div>
     </div>
