@@ -1,18 +1,23 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function UserForm(props) {
   const { onSubmit, loading, titleText, btnText, displayHelp } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = () => {
     onSubmit({
       email,
       password,
     })
-      .then(() => navigate("/"))
+      .then(() => {
+        const from = new URLSearchParams(location.search).get("from");
+        if (from) navigate(from, { replace: true });
+        else navigate("/");
+      })
       .catch((err) => console.log(err));
   };
 

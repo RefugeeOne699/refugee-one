@@ -8,8 +8,11 @@ import { onValue, ref, set } from "firebase/database";
 
 import database, { auth } from "@/clients/firebase";
 
+import cocktailDB from "../clients/cocktail";
+
 export const initialState = {
   user: null,
+  drinkIdList: [],
   drinkList: [],
   register: {
     loading: false,
@@ -29,6 +32,9 @@ const userDataSlice = createSlice({
   reducers: {
     setUser: (state, { payload }) => {
       state.user = payload;
+    },
+    setDrinkIdList: (state, { payload }) => {
+      state.drinkIdList = payload;
     },
     setDrinkList: (state, { payload }) => {
       state.drinkList = payload;
@@ -166,7 +172,30 @@ export function initUserData() {
 
     onValue(ref(database, `userData/${uid}/drinkList`), (snapshot) => {
       const data = snapshot.val();
-      if (data) dispatch(setDrinkList(Object.keys(data)));
+      if (data) {
+        const drinkIds = Object.keys(data);
+        dispatch(setDrinkIdList(drinkIds));
+
+        const promises = drinkIds.map((drinkId) =>
+          cocktailDB
+            .get("lookup.php", {
+              params: {
+                i: drinkId,
+              },
+            })
+            .then((res) => {
+              return res?.data?.drinks?.[0];
+            })
+            .catch((err) => {
+              throw new Error(err);
+            })
+        );
+        Promise.allSettled(promises).then((res) => {
+          dispatch(
+            setDrinkList(res.filter((p) => p.status === "fulfilled").map((p) => p.value))
+          );
+        });
+      }
     });
   };
 }
@@ -177,6 +206,7 @@ export const {
   setRegisterError,
   setLoginLoading,
   setLoginError,
+  setDrinkIdList,
   setDrinkList,
 } = userDataSlice.actions;
 

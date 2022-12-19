@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppRoot from "./App";
 import Demo from "./pages/Demo";
 import Detail from "./pages/Detail";
+import DrinkList from "./pages/DrinkList";
 import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "popular",
         element: <Popular />,
+      },
+      {
+        path: "my-list",
+        element: <DrinkList />,
       },
     ],
   },

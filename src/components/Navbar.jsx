@@ -40,7 +40,7 @@ export default function Navbar(props) {
               className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <Link to="/profile">Profile</Link>
+                <Link to="/my-list">My Drink List</Link>
               </li>
               <li>
                 <a onClick={signOut}>Sign Out</a>
