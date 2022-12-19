@@ -14,12 +14,10 @@ export default function HomeView(props) {
     <div className="flex-1 hero">
       <div className="hero-content text-center">
         <div className="max-w-md">
-          <h1 className="text-5xl font-bold">
-            Looking for inspiration for a drink or practice your bartender skills?
-          </h1>
+          <h1 className="text-5xl font-bold">Looking for inspiration for a drink?</h1>
           <p className="py-6">
             Get a random drink recipe for the weekend to celebrate with friends and
-            family, or improve your bartender skills by practicing drink recipes.
+            family, or explore what drinks are popular.
           </p>
           <div className="input-group justify-center">
             <input
