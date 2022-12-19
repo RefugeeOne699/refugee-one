@@ -1,3 +1,5 @@
+import ReturnBtn from "./ReturnBtn";
+
 export default function CocktailDetail(props) {
   const { drink, onAddDrinkToList, onRemoveDrinkFromList, isDrinkInList } = props;
   if (drink.loading) {
@@ -70,6 +72,7 @@ export default function CocktailDetail(props) {
               Add to my favorite
             </button>
           )}
+          <span className="ml-4">{<ReturnBtn />}</span>
         </div>
         <div className="py-2">
           <h2 className="text-2xl font-bold">Instructions:</h2>
