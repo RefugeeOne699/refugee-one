@@ -15,19 +15,27 @@ export default function SearchView(props) {
   }
 
   function renderResults() {
-    if (loading) return <h1>Loading...</h1>;
+    if (loading)
+      return (
+        <div>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+            alt="loading icon"
+            className=""
+          />
+        </div>
+      );
     if (error) return <h1>Error</h1>;
     if (!searchResult) return;
 
-    function renderResultCard(cocktail) {
+    function renderResult(cocktail) {
       const clickCocktail = (cocktail) => {
         navigate(`/detail/${cocktail.idDrink}`);
       };
-
       return (
         <div
           key={cocktail.idDrink}
-          className="w-52 h-64 m-5 bg-base-200 shadow-xl rounded-xl hover:bg-base-300 hover:cursor-pointer"
+          className="w-52 h-64 m-5 bg-base-100 shadow-xl rounded-xl hover:bg-base-300 hover:cursor-pointer"
           onClick={() => {
             clickCocktail(cocktail);
           }}
@@ -45,13 +53,13 @@ export default function SearchView(props) {
         </div>
       );
     }
-    return searchResult.map(renderResultCard);
+    return searchResult.map(renderResult);
   }
 
   return (
     <div>
-      <div className="p-2">{<ReturnBtn />}</div>
-      <div className="form-control pt-20 pb-14">
+      {/* <div className="p-2">{<ReturnBtn />}</div> */}
+      <div className="form-control pt-5 pb-6">
         <div className="input-group justify-center">
           <input
             type="text"
@@ -76,9 +84,10 @@ export default function SearchView(props) {
               />
             </svg>
           </button>
+          <div className="ml-4">{<ReturnBtn />}</div>
         </div>
       </div>
-      <div className="flex justify-center">
+      <div className="search-height px-10 py-10 mx-20 border-2 overflow-auto flex flex-row flex-wrap">
         {searchResult === null ? (
           <div>{"Sorry! Can't find any cocktail."}</div>
         ) : (

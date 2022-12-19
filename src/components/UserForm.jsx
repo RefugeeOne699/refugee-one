@@ -58,7 +58,11 @@ export default function UserForm(props) {
         <Link className="btn-link mt-2" to="/login">
           Already have an account? Login here.
         </Link>
-      ) : null}
+      ) : (
+        <Link className="btn-link mt-2" to="/register">
+        Don't have an account? Register here.
+        </Link>
+      )}
     </div>
   );
 }
