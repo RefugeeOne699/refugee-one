@@ -5,16 +5,20 @@ export default function DetailView(props) {
   const { drinkDetail, userData, onAddDrinkToList, onRemoveDrinkFromList } = props;
   const { data: detailResult, loading, error } = drinkDetail;
   const [ingredients, setIngredients] = useState([]);
+  const [measures, setMeasures] = useState([]);
   const drinkList = userData.drinkList ?? [];
   const isDrinkInList = drinkList.includes(detailResult?.idDrink);
 
   useEffect(() => {
     if (!detailResult) return;
-    const ingredientsArray = Object.entries(detailResult)
-      .filter((entry) => entry[0].search("strIngredient") === 0)
-      .map((e) => e[1])
-      .filter((v) => !!v);
+    const ingredientsArray = Object.entries(detailResult).filter(([key]) =>
+      key.includes("strIngredient")
+    );
     setIngredients(ingredientsArray);
+    const measuresArray = Object.entries(detailResult).filter(([key]) =>
+      key.includes("strMeasure")
+    );
+    setMeasures(measuresArray);
   }, [detailResult]);
 
   if (error) return <div>Oops! Failed to fetch drink detail</div>;
@@ -30,8 +34,39 @@ export default function DetailView(props) {
     );
   if (!detailResult) return <div>Cannot find drink</div>;
 
+  function renderIngredientList(ingredients, measures) {
+    function ingredientTableRowCB(_element, index) {
+      let ingredient = ingredients[index][1];
+      let measure = measures[index][1] !== null ? measures[index][1] : "";
+      if (ingredient === null) return;
+
+      return (
+        <tr key={index + ingredient + measure}>
+          <th>{index + 1}</th>
+          <td>{ingredient}</td>
+          <td>{measure}</td>
+        </tr>
+      );
+    }
+
+    return (
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Ingredient</th>
+              <th>Measure</th>
+            </tr>
+          </thead>
+          <tbody>{ingredients.map(ingredientTableRowCB)}</tbody>
+        </table>
+      </div>
+    );
+  }
+
   return (
-    <div className="m-10 card lg:card-side bg-base-100 shadow-xl">
+    <div className="detail-height mx-10 mt-1 card lg:card-side bg-base-100 shadow-xl">
       <figure>
         <img src={detailResult.strDrinkThumb} alt="Picture" />
       </figure>
@@ -53,9 +88,10 @@ export default function DetailView(props) {
           <span className="font-semibold">Instructions:</span>
           {detailResult.strInstructions}
         </div>
-        <div>
+        {/* <div>
           <span className="font-semibold">Ingredient:</span> {ingredients.join(", ")}
-        </div>
+        </div> */}
+        {renderIngredientList(ingredients, measures)}
         <div>
           {/* <button className="btn btn-primary">add to list</button> */}
           {isDrinkInList ? (
