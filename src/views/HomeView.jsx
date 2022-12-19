@@ -14,15 +14,17 @@ export default function HomeView(props) {
     <div className="flex-1 hero">
       <div className="hero-content text-center">
         <div className="max-w-md">
-          <h1 className="text-5xl font-bold">Hello there</h1>
+          <h1 className="text-5xl font-bold">
+            Looking for inspiration for a drink or practise your bartender skills?
+          </h1>
           <p className="py-6">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
-            exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.
+            Get a random drink recipe for the weekend to celebrate with friends and
+            family, or improve your bartender skills by practicing drink recipes.
           </p>
           <div className="input-group justify-center">
             <input
               type="text"
-              placeholder="Search…"
+              placeholder="Vodka Martini"
               className="input input-bordered w-full"
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
