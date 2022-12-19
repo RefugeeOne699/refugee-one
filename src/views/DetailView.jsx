@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 
 export default function DetailView(props) {
-  const { drinkDetail } = props;
+  const { drinkDetail, userData, onAddDrinkToList, onRemoveDrinkFromList } = props;
   const { data: detailResult, loading, error } = drinkDetail;
   const [ingredients, setIngredients] = useState([]);
+  const drinkList = userData.drinkList ?? [];
+  const isDrinkInList = drinkList.includes(detailResult?.idDrink);
 
   useEffect(() => {
     if (!detailResult) return;
@@ -15,7 +17,16 @@ export default function DetailView(props) {
   }, [detailResult]);
 
   if (error) return <div>Oops! Failed to fetch drink detail</div>;
-  if (loading) return <div>Loading..</div>; // TODO: better loading
+  if (loading)
+    return (
+      <div>
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+          alt="loading icon"
+          className=""
+        />
+      </div>
+    );
   if (!detailResult) return <div>Cannot find drink</div>;
 
   return (
@@ -45,7 +56,22 @@ export default function DetailView(props) {
           <span className="font-semibold">Ingredient:</span> {ingredients.join(", ")}
         </div>
         <div>
-          <button className="btn btn-primary">add to list</button>
+          {/* <button className="btn btn-primary">add to list</button> */}
+          {isDrinkInList ? (
+            <button
+              className="btn btn-error"
+              onClick={() => onRemoveDrinkFromList(detailResult.idDrink)}
+            >
+              Remove from list
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              onClick={() => onAddDrinkToList(detailResult.idDrink)}
+            >
+              Add to my favorite
+            </button>
+          )}
         </div>
       </div>
     </div>
