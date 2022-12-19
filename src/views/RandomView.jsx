@@ -7,7 +7,7 @@ export default function RandomView(props) {
   const isDrinkInList = drinkList.includes(randomDrink?.data?.idDrink);
 
   return (
-    <div className="flex-1 bg-base-200 grid place-content-center">
+    <div className="flex-1 bg-base-100 grid place-content-center">
       <div className="flex justify-center py-5">
         <button className="btn btn-primary" onClick={props.getNewRandomDrink}>
           Press me for new random drink!
