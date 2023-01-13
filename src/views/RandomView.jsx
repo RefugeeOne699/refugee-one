@@ -13,15 +13,14 @@ export default function RandomView(props) {
           Press me for new random drink!
         </button>
       </div>
-      <div className="hero">
-        <div className="hero-content flex-col lg:flex-row">
-          <CocktailDetail
-            drink={props.randomDrink}
-            onAddDrinkToList={props.addDrinkToList}
-            onRemoveDrinkFromList={props.removeDrinkFromList}
-            isDrinkInList={isDrinkInList}
-          />
-        </div>
+      <div>
+        <CocktailDetail
+          drink={props.randomDrink}
+          userData={userData}
+          onAddDrinkToList={props.addDrinkToList}
+          onRemoveDrinkFromList={props.removeDrinkFromList}
+          isDrinkInList={isDrinkInList}
+        />
       </div>
     </div>
   );

@@ -1,8 +1,12 @@
 import ReturnBtn from "./ReturnBtn";
 
 export default function CocktailDetail(props) {
-  const { drink, onAddDrinkToList, onRemoveDrinkFromList, isDrinkInList } = props;
-  if (drink.loading)
+  const { drink, userData, onAddDrinkToList, onRemoveDrinkFromList, isDrinkInList } =
+    props;
+  const { data: drinkDetails, loading, error } = drink;
+
+  if (error) return <div>Oops! Failed to fetch drink detail</div>;
+  if (loading)
     return (
       <div>
         <img
@@ -12,14 +16,8 @@ export default function CocktailDetail(props) {
         />
       </div>
     );
-  if (drink.error) {
-    return <h1>Error</h1>;
-  }
-  if (!drink) {
-    return;
-  }
+  if (!drinkDetails) return <div>Cannot find drink</div>;
 
-  let drinkDetails = drink.data;
   let ingredients = Object.entries(drinkDetails).filter(([key]) =>
     key.includes("strIngredient")
   );
@@ -58,12 +56,43 @@ export default function CocktailDetail(props) {
     );
   }
 
+  function clickAddButton() {
+    if (!userData?.user?.uid) {
+      alert("Please login first, then you can add the cocktail to your favourite!");
+    } else {
+      onAddDrinkToList(drinkDetails.idDrink);
+    }
+  }
+
   return (
-    <>
-      <img src={drinkDetails.strDrinkThumb} className="max-w-sm rounded-lg shadow-2xl" />
-      <div>
-        <h1 className="text-5xl font-bold py-2">{drinkDetails.strDrink}</h1>
-        <div className="py-2">
+    <div className="detail-height mx-10 mt-1 card lg:card-side bg-base-100 shadow-xl">
+      <figure>
+        <img src={drinkDetails.strDrinkThumb} alt="Picture" />
+      </figure>
+      <div className="card-body">
+        <h2 className="card-title">{drinkDetails.strDrink}</h2>
+        <div>
+          <span className="font-semibold">Category:</span>
+          {drinkDetails.strCategory}
+        </div>
+        <div>
+          <span className="font-semibold">Glass:</span>
+          {drinkDetails.strGlass}
+        </div>
+        <div>
+          <span className="font-semibold">Alcoholic:</span>
+          {drinkDetails.strAlcoholic}
+        </div>
+        <div>
+          <span className="font-semibold">Instructions:</span>
+          {drinkDetails.strInstructions}
+        </div>
+        {/* <div>
+          <span className="font-semibold">Ingredient:</span> {ingredients.join(", ")}
+        </div> */}
+        {renderIngredientList(ingredients, measures)}
+        <div>
+          {/* <button className="btn btn-primary">add to list</button> */}
           {isDrinkInList ? (
             <button
               className="btn btn-error"
@@ -72,21 +101,13 @@ export default function CocktailDetail(props) {
               Remove from list
             </button>
           ) : (
-            <button
-              className="btn btn-primary"
-              onClick={() => onAddDrinkToList(drinkDetails.idDrink)}
-            >
+            <button className="btn btn-primary" onClick={clickAddButton}>
               Add to my favorite
             </button>
           )}
           <span className="ml-4">{<ReturnBtn />}</span>
         </div>
-        <div className="py-2">
-          <h2 className="text-2xl font-bold">Instructions:</h2>
-          <p>{drinkDetails.strInstructions}</p>
-        </div>
-        {renderIngredientList(ingredients, measures)}
       </div>
-    </>
+    </div>
   );
 }
