@@ -1,6 +1,6 @@
 # Refugee One Front End
 
-SI 699 2023 Winter
+SI 699 (2023 Winter)
 ## Techs
 - Vite
 - React.js (Javascript)
