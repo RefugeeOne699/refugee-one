@@ -1,12 +1,9 @@
-# Bartender CheatSheet
+# Refugee One Front End
 
-DH2642 Group 33
-
+SI 699 2023 Winter
 ## Techs
-
 - Vite
 - React.js (Javascript)
-- Tailwindcss
 - Firebase
 
 ## Relevant Docs
@@ -16,13 +13,12 @@ DH2642 Group 33
   - For components please refer to daisyUI
   - For simple preset css classes please refer to tailwind (e.g. display, border, color, font)
 - [React router](https://reactrouter.com/en/main/start/tutorial)
-- [Redux](https://redux.js.org/introduction/getting-started)
 
 ## Getting Started
 
 It is recommended to load the project using VSCode as there's settings for recommended plugins and editor. Saving the code shall trigger automatic linting and formatting.
 
-Before start, create `apiConfig.js` and `firebaseConfig.js` under `src` directory with configurations.
+Before start, create `firebaseConfig.js` under `src` directory with configurations.
 
 To start development:
 
