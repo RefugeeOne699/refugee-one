@@ -5,11 +5,13 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
+import { AuthContextProvider } from "./models/auth";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
 // import DrinkList from "./pages/DrinkList";
 // import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
+import SignUp from "./pages/SignUp";
 // import Login from "./pages/Login";
 // import Popular from "./pages/Popular";
 // import Random from "./pages/Random";
@@ -26,10 +28,10 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />, // TODO: home page
       },
-      // {
-      //   path: "demo",
-      //   element: <Demo />,
-      // },
+      {
+        path: "signUp",
+        element: <SignUp />,
+      },
       // {
       //   path: "login",
       //   element: <Login />,
@@ -68,6 +70,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthContextProvider>
+      <RouterProvider router={router} />
+    </AuthContextProvider>
   </React.StrictMode>
 );

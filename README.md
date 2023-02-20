@@ -7,8 +7,6 @@ SI 699 (2023 Winter)
 - Firebase
 
 ## Relevant Docs
-
-- We use firebase a bit different from the tutorial, please refer to [here](https://firebase.google.com/docs/database/web/read-and-write).
 - For UI development, please see [daisyUI](https://daisyui.com/components/) and [tailwind](https://tailwindcss.com/docs/installation)
   - For components please refer to daisyUI
   - For simple preset css classes please refer to tailwind (e.g. display, border, color, font)
