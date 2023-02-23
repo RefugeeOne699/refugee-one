@@ -20,6 +20,14 @@ export default function Navbar() {
       >
         SignUp
       </button>
+      <button
+        className="btn"
+        onClick={() => {
+          navigate("/profile");
+        }}
+      >
+        Profile
+      </button>
     </>
   );
 }

@@ -11,6 +11,7 @@ import { AuthContextProvider } from "./models/auth";
 // import DrinkList from "./pages/DrinkList";
 // import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 // import Login from "./pages/Login";
 // import Popular from "./pages/Popular";
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "signUp",
         element: <SignUp />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
       // {
       //   path: "login",
