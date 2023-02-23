@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/models";
+import { userTypes } from "@/utils/constants";
 
 export default function SignUp() {
   const auth = useAuth();
@@ -64,6 +65,21 @@ export default function SignUp() {
           type="number"
           className="input w-full max-w-xs input-bordered mb-4"
         />
+        <label className="label" htmlFor="role">
+          <span className="label-text">Role</span>
+        </label>
+        <select
+          className="input w-full max-w-xs input-bordered mb-4"
+          {...register("role", { required: true })}
+        >
+          {userTypes.map((type, index) => {
+            return (
+              <option value={type} key={index}>
+                {type}
+              </option>
+            );
+          })}
+        </select>
         <button
           type="submit"
           className={`btn btn-primary ${signUpLoading ? "loading" : ""}`}

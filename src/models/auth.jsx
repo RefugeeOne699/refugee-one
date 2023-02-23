@@ -44,13 +44,13 @@ const AuthContextProvider = ({ children }) => {
 
   const signUp = (payload) => {
     console.log(payload);
-    const { email, password, name, phone } = payload;
+    const { email, password, name, phone, role } = payload;
     return createUserWithEmailAndPassword(auth, email, password)
       .then(async (credential) => {
         await setDoc(doc(database, "Users", credential.user.uid), {
           name,
           email,
-          role: "Admin",
+          role,
           phone,
         });
       })
