@@ -17,6 +17,8 @@ export default function AdminJobPostings() {
 
   async function fetchOpenJobs() {
     // https://firebase.google.com/docs/firestore/query-data/queries
+    // https://firebase.google.com/docs/auth/web/manage-users
+
     onAuthStateChanged(firebaseAuth, async (user) => {
       if (user) {
         if (auth.user.role === "Admin") {
