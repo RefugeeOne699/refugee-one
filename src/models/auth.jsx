@@ -3,7 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
 
 import database, { auth } from "@/clients/firebase";
@@ -17,6 +17,7 @@ const AuthContext = createContext({
   signIn: () => {},
   signOut: () => {},
   signUp: () => {},
+  addJob: () => {},
 });
 
 const AuthContextProvider = ({ children }) => {
@@ -30,6 +31,12 @@ const AuthContextProvider = ({ children }) => {
     } else {
       setUser(undefined);
     }
+  };
+
+  const addJob = async (data) => {
+    console.log(data);
+    const jobRef = doc(collection(database, "jobListing"));
+    await setDoc(jobRef, data);
   };
 
   const signIn = (payload) => {
@@ -75,6 +82,7 @@ const AuthContextProvider = ({ children }) => {
       signIn,
       signOut,
       signUp,
+      addJob,
     }),
     [user, pullUser]
   );
