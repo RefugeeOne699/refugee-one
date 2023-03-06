@@ -5,9 +5,11 @@ import { useState } from "react";
 
 import database from "@/clients/firebase";
 import { auth as firebaseAuth } from "@/clients/firebase";
+import { useAuth } from "@/models";
 
 export default function EmployerJobPostings() {
   const [jobs, setJobs] = useState([]);
+  const auth = useAuth();
 
   useEffect(() => {
     fetchOpenJobs();
@@ -15,16 +17,21 @@ export default function EmployerJobPostings() {
 
   async function fetchOpenJobs() {
     // https://firebase.google.com/docs/firestore/query-data/queries
+    // https://firebase.google.com/docs/auth/web/manage-users
 
     onAuthStateChanged(firebaseAuth, async (user) => {
-      const jobOpenings = collection(database, "Jobs");
-      const q = query(jobOpenings, where("owner", "==", `/Users/${user.uid}`));
-      const querySnapshot = await getDocs(q);
-      const toDisplay = [];
-      querySnapshot.forEach((doc) => {
-        toDisplay.push(doc.data());
-      });
-      setJobs(toDisplay);
+      if (user) {
+        if (auth.user.role === "Employer") {
+          const jobOpenings = collection(database, "Jobs");
+          const q = query(jobOpenings, where("owner", "==", `/Users/${user.uid}`));
+          const querySnapshot = await getDocs(q);
+          const toDisplay = [];
+          querySnapshot.forEach((doc) => {
+            toDisplay.push(doc.data());
+          });
+          setJobs(toDisplay);
+        }
+      }
     });
   }
 
