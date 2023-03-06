@@ -6,12 +6,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
 import { AuthContextProvider } from "./models/auth";
+import EmployerJobPostings from "./pages/EmployerJobPostings";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
 // import DrinkList from "./pages/DrinkList";
 // import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
+
 // import Login from "./pages/Login";
 // import Popular from "./pages/Popular";
 // import Random from "./pages/Random";
@@ -31,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "signUp",
         element: <SignUp />,
+      },
+      {
+        path: "employer-jobpostings",
+        element: <EmployerJobPostings />,
       },
       // {
       //   path: "login",
