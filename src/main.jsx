@@ -14,6 +14,7 @@ import AddJob from "./pages/AddJob";
 // import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 // import Login from "./pages/Login";
 // import Popular from "./pages/Popular";
 // import Random from "./pages/Random";
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "addJob",
         element: <AddJob />, //add job listing
+      },
+      {
+        path: "adminDash",
+        element: <AdminDashboard />,
       },
 
       // {
