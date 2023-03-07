@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
 import { AuthContextProvider } from "./models/auth";
+import AdminJobPostings from "./pages/AdminJobPostings";
 import EmployerJobPostings from "./pages/EmployerJobPostings";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
@@ -13,7 +14,6 @@ import EmployerJobPostings from "./pages/EmployerJobPostings";
 // import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
-import AdminJobPostings from "./pages/AdminJobPostings";
 
 // import Login from "./pages/Login";
 // import Popular from "./pages/Popular";
