@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
 import { AuthContextProvider } from "./models/auth";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
 // import DrinkList from "./pages/DrinkList";
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "signUp",
         element: <SignUp />,
+      },
+      {
+        path: "adminDash",
+        element: <AdminDashboard />,
       },
       // {
       //   path: "login",
