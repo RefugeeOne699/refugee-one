@@ -13,6 +13,7 @@ import EmployerJobPostings from "./pages/EmployerJobPostings";
 // import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
+import AdminJobPostings from "./pages/AdminJobPostings";
 
 // import Login from "./pages/Login";
 // import Popular from "./pages/Popular";
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "employer-jobpostings",
         element: <EmployerJobPostings />,
+      },
+      {
+        path: "admin-jobpostings",
+        element: <AdminJobPostings />,
       },
       // {
       //   path: "login",
