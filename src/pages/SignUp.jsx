@@ -1,7 +1,9 @@
 import { useRequest } from "ahooks";
+import { sendEmailVerification } from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import { auth as firebaseAuth } from "@/clients/firebase";
 import { useAuth } from "@/models";
 import { userTypes } from "@/utils/constants";
 
@@ -15,7 +17,25 @@ export default function SignUp() {
     async (data) => auth.signUp(data),
     {
       manual: true,
-      onSuccess: () => {
+      onSuccess: async () => {
+        console.log(`Verification Status ${firebaseAuth.currentUser.emailVerified}`);
+        if (!firebaseAuth.currentUser.emailVerified) {
+          await sendEmailVerification(firebaseAuth.currentUser).then(() => {
+            auth.signOut();
+            alert(
+              "We have sent you a verification email! \n Please verfiy your email before logging in!"
+            );
+          });
+        }
+        // console.log(`Verification Status ${auth.user.emailVerified}`);
+        // if (firebaseAuth.currentUser.emailVerified) {
+        //   await auth.pullUser(user);
+        // } else {
+        //   sendEmailVerification(user).then(() => {
+        //     auth.signOut();
+        //     alert("Email Sent!");
+        //   });
+        // }
         navigate("/");
       },
       onError: (error) => {

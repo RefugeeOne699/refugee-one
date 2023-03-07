@@ -13,10 +13,10 @@ import database, { auth } from "@/clients/firebase";
  */
 const AuthContext = createContext({
   user: undefined,
-  pullUser: () => {},
-  signIn: () => {},
-  signOut: () => {},
-  signUp: () => {},
+  pullUser: () => { },
+  signIn: () => { },
+  signOut: () => { },
+  signUp: () => { },
 });
 
 const AuthContextProvider = ({ children }) => {
@@ -35,7 +35,7 @@ const AuthContextProvider = ({ children }) => {
   const signIn = (payload) => {
     const { email, password } = payload;
     return signInWithEmailAndPassword(auth, email, password)
-      .then(() => {})
+      .then(() => { })
       .catch((error) => {
         // todo: store error info
         throw new Error(error);
@@ -62,7 +62,7 @@ const AuthContextProvider = ({ children }) => {
 
   const signOut = () => {
     return firebaseSignOut(auth)
-      .then(() => {})
+      .then(() => { })
       .catch((error) => {
         throw new Error(error);
       });

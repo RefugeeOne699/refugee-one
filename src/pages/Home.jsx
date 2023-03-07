@@ -1,6 +1,7 @@
 import { useRequest } from "ahooks";
 import { useForm } from "react-hook-form";
 
+import { auth as firebaseAuth } from "@/clients/firebase";
 import { useAuth } from "@/models";
 
 export default function Home() {
@@ -11,6 +12,15 @@ export default function Home() {
     async (data) => auth.signIn(data),
     {
       manual: true,
+      onSuccess: () => {
+        console.log(`Verification Status ${firebaseAuth.currentUser.emailVerified}`);
+        if (!firebaseAuth.currentUser.emailVerified) {
+          auth.signOut();
+          alert(
+            "You haven't verified your email yet! Please log in again after you have verified your email."
+          );
+        }
+      },
       onError: (error) => {
         //todo: handle error
         console.error(error);
