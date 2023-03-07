@@ -5,11 +5,9 @@ import { useState } from "react";
 
 import database from "@/clients/firebase";
 import { auth as firebaseAuth } from "@/clients/firebase";
-import { useAuth } from "@/models";
 
 export default function AdminJobPostings() {
   const [jobs, setJobs] = useState([]);
-  const auth = useAuth();
 
   useEffect(() => {
     fetchOpenJobs();
@@ -21,37 +19,71 @@ export default function AdminJobPostings() {
 
     onAuthStateChanged(firebaseAuth, async (user) => {
       if (user) {
-        if (auth.user.role === "Admin") {
-          const jobOpenings = collection(database, "Jobs");
-          const q = query(jobOpenings, where("status", "==", "open"));
-          const querySnapshot = await getDocs(q);
-          const toDisplay = [];
-          querySnapshot.forEach((doc) => {
-            toDisplay.push(doc.data());
-          });
-          setJobs(toDisplay);
-        }
+        const jobOpenings = collection(database, "Jobs");
+        const q = query(jobOpenings, where("status", "==", "open"));
+        const querySnapshot = await getDocs(q);
+        const toDisplay = [];
+        querySnapshot.forEach((doc) => {
+          toDisplay.push(doc.data());
+        });
+        setJobs(toDisplay);
       }
     });
   }
 
+  const styleSheet = {
+    card: {
+      width: "30vw",
+      borderRadius: "5px",
+      marginTop: "25px",
+    },
+    cardColumn: {
+      width: "40vw",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "start",
+    },
+  };
+
   return (
-    <ul>
+    <div style={styleSheet.cardColumn} className="bg-base-300">
+      <h2>
+        <strong>Review Requests ({jobs.length})</strong>
+      </h2>
       {jobs.map((job) => (
-        <li key={job.postDate.nanoseconds}>
-          <h2>{job.title}</h2>
-          <ul>
-            <li key={1}>{job.company}</li>
-            <li key={2}>{job.description}</li>
-            <li key={3}>{job.postDate.seconds}</li>
-            <li key={4}>{job.availableUntil.seconds}</li>
-          </ul>
-          <div>
-            <button className="btn">Approve</button>
-            <button className="btn">Reject</button>
+        <div
+          key={job.postDate.nanoseconds}
+          style={styleSheet.card}
+          className="card bg-base-100"
+        >
+          <h2 className="card-title">{job.title}</h2>
+          <div className="card-body">
+            <ul>
+              <li key={1}>
+                <strong>Company: </strong>
+                {job.company}
+              </li>
+              <li key={2}>
+                <strong>Description: </strong>
+                {job.description}
+              </li>
+              <li key={3}>
+                <strong>Posted: </strong>
+                {`${new Date(job.postDate.seconds * 1000)}`}
+              </li>
+              <li key={4}>
+                <strong>Available Till: </strong>
+                {`${new Date(job.availableUntil.seconds * 1000)}`}
+              </li>
+            </ul>
           </div>
-        </li>
+          <div className="card-actions buttonRow">
+            <button className="btn btn-success">Approve</button>
+            <button className="btn btn-error">Reject</button>
+          </div>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }
