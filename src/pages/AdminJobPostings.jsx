@@ -1,55 +1,24 @@
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useEffect } from "react";
 import { useState } from "react";
-
 import database from "@/clients/firebase";
 import { auth as firebaseAuth } from "@/clients/firebase";
 import { JobView } from "@/components/JobView";
+import { fetchJobs } from "@/functions/fetchJobs";
 
 export default function AdminJobPostings() {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
-    fetchOpenJobs();
-  }, []);
-
-  async function fetchOpenJobs() {
-    // https://firebase.google.com/docs/firestore/query-data/queries
-    // https://firebase.google.com/docs/auth/web/manage-users
-    // https://stackoverflow.com/questions/47743082/waiting-for-a-foreach-to-finish-before-return-from-my-promise-function
-
     onAuthStateChanged(firebaseAuth, async (user) => {
-      if (user) {
-        const jobOpenings = collection(database, "Jobs");
-        const q = query(jobOpenings, where("status", "==", "open"));
-        const querySnapshot = await getDocs(q);
-        const jobList = [];
-        const owners = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          owners.push(getDoc(data.owner));
-          jobList.push(data);
-        });
-        const companies = [];
-        const retrievedOwners = await Promise.all(owners);
-        retrievedOwners.forEach((owner, i) => {
-          const parsedOwner = owner.data();
-          jobList[i].parsedOwner = parsedOwner;
-          companies.push(getDoc(parsedOwner.company));
-        });
-        const retrievedCompanies = await Promise.all(companies);
-        retrievedCompanies.forEach((company, i) => {
-          const parsedCompany = company.data();
-          jobList[i].parsedCompany = parsedCompany;
-        });
-        setJobs(jobList);
-        console.log(jobList[0]);
-        setSelectedJob(jobList.length > 0 ? jobList[0] : null);
-      }
-    });
-  }
+        if (user) {
+          const jobList = await fetchJobs(database, "admin",  "iKGlSJEUkWQjCHZMQhgrVixVAt42")
+          setJobs(jobList.filter(job => job.status === "open"));
+          setSelectedJob(jobList.length > 0 ? jobList[0] : null);
+        }
+      });
+  }, []);
 
   const styleSheet = {
     card: {
@@ -94,7 +63,7 @@ export default function AdminJobPostings() {
                 </li>
                 <li key={2}>
                   <strong>Poster: </strong>
-                  {job.parsedOwner.owner}
+                  {job.parsedOwner.name}
                 </li>
                 <li key={3}>
                   <strong>Posted: </strong>
