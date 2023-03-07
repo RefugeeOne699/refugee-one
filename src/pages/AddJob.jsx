@@ -1,16 +1,19 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { useRequest } from "ahooks";
+import { doc } from "firebase/firestore";
 import React from "react";
 import DatePicker from "react-datepicker";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "@/models";
+import database from "@/clients/firebase";
+import { useAuth, useJob } from "@/models";
 import { englishLevel } from "@/utils/constants";
 
 export default function AddJob() {
   const auth = useAuth();
+  const job = useJob();
   const navigate = useNavigate();
   const {
     control,
@@ -18,43 +21,56 @@ export default function AddJob() {
     handleSubmit,
     // formState: { errors }
   } = useForm();
-
-  const { run: addJob } = useRequest(async (data) => auth.addJob(data), {
-    manual: true,
-    onSuccess: () => {
-      navigate("/");
-    },
-    onError: () => {
-      //todo: handle error
-      //   console.error(error);
-    },
-  });
+  console.log(job);
+  const { run: addJob } = useRequest(
+    async (data) =>
+      job.createJob({
+        ...data,
+        company: auth.user.company,
+        owner: auth.userRef,
+        status: "open",
+        postDate: new Date(),
+        // fixme: temp solution: we need an admin to approve the job
+        admin: doc(database, "Users", "iKGlSJEUkWQjCHZMQhgrVixVAt42"),
+      }),
+    {
+      manual: true,
+      onSuccess: () => {
+        navigate("/");
+      },
+      onError: () => {
+        //todo: handle error
+        //   console.error(error);
+      },
+    }
+  );
 
   return (
     <div className="flex flex-col justify-center items-center">
       <form onSubmit={handleSubmit(addJob)}>
         <div className="form-control">
-          <label className="label" htmlFor="jobTitle">
-            Job Title
+          <label className="label" htmlFor="title">
+            Title
           </label>
           <input
             type="text"
             className="input input-bordered"
-            {...register("jobTitle", { required: true })}
+            {...register("title", { required: true })}
           />
         </div>
         <div className="form-control">
-          <label className="label" htmlFor="companyName">
+          <label className="label" htmlFor="company">
             Company Name
           </label>
           <input
             type="text"
             className="input input-bordered"
-            {...register("companyName", { required: true })}
+            {...register("company")}
+            disabled
           />
         </div>
         <div className="form-control">
-          <label className="label" htmlFor="dateInput">
+          <label className="label" htmlFor="startDate">
             Start Date
           </label>
           <div className="input-group">
@@ -130,12 +146,12 @@ export default function AddJob() {
           />
         </div>
         <div className="form-control">
-          <label className="label" htmlFor="english">
+          <label className="label" htmlFor="englishLevel">
             English Level
           </label>
           <select
             className="input input-bordered"
-            {...register("english", { required: true })}
+            {...register("englishLevel", { required: true })}
           >
             {englishLevel.map((type, index) => {
               return (
