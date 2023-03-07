@@ -3,7 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
 
 import database, { auth } from "@/clients/firebase";
@@ -13,30 +13,26 @@ import database, { auth } from "@/clients/firebase";
  */
 const AuthContext = createContext({
   user: undefined,
+  userRef: undefined,
   pullUser: () => {},
   signIn: () => {},
   signOut: () => {},
   signUp: () => {},
-  addJob: () => {},
 });
 
 const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const [userRef, setUserRef] = useState();
 
   const pullUser = async (authUser) => {
     if (authUser) {
       const docRef = doc(database, "Users", authUser.uid);
       const docSnap = await getDoc(docRef);
+      setUserRef(docRef);
       setUser(docSnap.data());
     } else {
       setUser(undefined);
     }
-  };
-
-  const addJob = async (data) => {
-    console.log(data);
-    const jobRef = doc(collection(database, "jobListing"));
-    await setDoc(jobRef, data);
   };
 
   const signIn = (payload) => {
@@ -78,11 +74,11 @@ const AuthContextProvider = ({ children }) => {
   const contextValue = useMemo(
     () => ({
       user,
+      userRef,
       pullUser,
       signIn,
       signOut,
       signUp,
-      addJob,
     }),
     [user, pullUser]
   );
