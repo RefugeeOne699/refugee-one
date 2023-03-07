@@ -8,6 +8,8 @@ import AppRoot from "./App";
 import { AuthContextProvider } from "./models/auth";
 import AdminJobPostings from "./pages/AdminJobPostings";
 import EmployerJobPostings from "./pages/EmployerJobPostings";
+import { JobContextProvider } from "./models/job";
+import AddJob from "./pages/AddJob";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
 // import DrinkList from "./pages/DrinkList";
@@ -43,6 +45,11 @@ const router = createBrowserRouter([
         path: "admin-jobpostings",
         element: <AdminJobPostings />,
       },
+      {
+        path: "addJob",
+        element: <AddJob />, //add job listing
+      },
+
       // {
       //   path: "login",
       //   element: <Login />,
@@ -82,7 +89,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthContextProvider>
-      <RouterProvider router={router} />
+      <JobContextProvider>
+        <RouterProvider router={router} />
+      </JobContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
 );
