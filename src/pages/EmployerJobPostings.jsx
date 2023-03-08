@@ -42,7 +42,7 @@ export default function AdminJobPostings() {
             <h2 className="card-title">{job.title}</h2>
             <div className="card-body">
               <ul>
-              <li key={0}>
+                <li key={0}>
                   <strong>Status: </strong>
                   {job.status}
                 </li>
