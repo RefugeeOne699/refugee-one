@@ -1,20 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { db, useAuth } from "@/models";
+import { useAuth, useProfile } from "@/models";
 
 export default function Profile() {
   const auth = useAuth();
-  const [profile, setProfile] = useState();
+  const prof = useProfile();
+  // const [profile, setProfile] = useState();
 
   useEffect(() => {
     console.log(auth.user);
     if (auth.user) {
-      console.log("Setting profile");
-      console.log("Users", auth.user.uid);
-      db.pullData("Users", auth.user.uid).then((data) => {
-        console.log("Data", data);
-        setProfile(data);
-      });
+      prof.pullUser("Users", auth.user.uid);
     }
   }, [auth.user]);
 
@@ -23,19 +19,27 @@ export default function Profile() {
       <label className="label" htmlFor="name">
         <span className="label-text">Full Name</span>
       </label>
-      <p className="input w-full max-w-xs input-bordered mb-4">{profile?.name}</p>
+      <p className="input w-full max-w-xs input-bordered mb-4">
+        {prof.fetchedData?.name}
+      </p>
       <label className="label" htmlFor="email">
         <span className="label-text">Email</span>
       </label>
-      <p className="input w-full max-w-xs input-bordered mb-4">{profile?.email}</p>
+      <p className="input w-full max-w-xs input-bordered mb-4">
+        {prof.fetchedData?.email}
+      </p>
       <label className="label" htmlFor="phone">
         <span className="label-text">Phone</span>
       </label>
-      <p className="input w-full max-w-xs input-bordered mb-4">{profile?.phone}</p>
+      <p className="input w-full max-w-xs input-bordered mb-4">
+        {prof.fetchedData?.phone}
+      </p>
       <label className="label" htmlFor="role">
         <span className="label-text">Role</span>
       </label>
-      <p className="input w-full max-w-xs input-bordered mb-4">{profile?.role}</p>
+      <p className="input w-full max-w-xs input-bordered mb-4">
+        {prof.fetchedData?.role}
+      </p>
     </div>
   );
 }

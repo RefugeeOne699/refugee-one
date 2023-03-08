@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
 import { AuthContextProvider } from "./models/auth";
+import { ProfileContextProvider } from "./models/profile";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
 // import DrinkList from "./pages/DrinkList";
@@ -76,7 +77,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthContextProvider>
-      <RouterProvider router={router} />
+      <ProfileContextProvider>
+        <RouterProvider router={router} />
+      </ProfileContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
 );

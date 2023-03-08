@@ -1,10 +1,10 @@
 import { useContext } from "react";
 
 import { AuthContext } from "./auth";
-import db from "./database";
+import { ProfileContext } from "./profile";
 
 const useAuth = () => useContext(AuthContext);
-//const useDB = () => useContext(DBContext);
+const useProfile = () => useContext(ProfileContext);
 
 export { useAuth };
-export { db };
+export { useProfile };
