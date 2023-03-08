@@ -38,8 +38,8 @@ const ProfileContext = createContext({
 const ProfileContextProvider = ({ children }) => {
   const [fetchedData, setFetchedData] = useState();
 
-  const pullUser = async (collection, id) => {
-    const docRef = doc(database, collection, id);
+  const pullUser = async (id) => {
+    const docRef = doc(database, "Users", id);
     const docSnap = await getDoc(docRef);
     console.log(docSnap.data());
     if (docSnap.exists()) {
@@ -49,8 +49,8 @@ const ProfileContextProvider = ({ children }) => {
     }
   };
 
-  const setUser = async (collection, id, data) => {
-    const docRef = doc(database, collection, id);
+  const setUser = async (id, data) => {
+    const docRef = doc(database, "Users", id);
     await setDoc(docRef, data);
   };
 

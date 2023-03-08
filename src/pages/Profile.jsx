@@ -10,7 +10,7 @@ export default function Profile() {
   useEffect(() => {
     console.log(auth.user);
     if (auth.user) {
-      prof.pullUser("Users", auth.user.uid);
+      prof.pullUser(auth.user.uid);
     }
   }, [auth.user]);
 
