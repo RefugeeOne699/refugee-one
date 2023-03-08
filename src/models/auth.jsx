@@ -7,10 +7,17 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
 
 import database, { auth } from "@/clients/firebase";
+
 /**
- * User field (todo)
- *
+ * User interface
+ * @param {DocumentReference} company - reference to a company doc
+ * @param {string} email - user's email
+ * @param {string} name - user's name
+ * @param {number} phone - user's phone
+ * @param {string} role - user's role
+ * @param {string} uid - user's uid
  */
+
 const AuthContext = createContext({
   user: undefined,
   userRef: undefined,
@@ -29,7 +36,10 @@ const AuthContextProvider = ({ children }) => {
       const docRef = doc(database, "Users", authUser.uid);
       const docSnap = await getDoc(docRef);
       setUserRef(docRef);
-      setUser(docSnap.data());
+      setUser({
+        ...docSnap.data(),
+        uid: authUser.uid,
+      });
     } else {
       setUser(undefined);
     }
