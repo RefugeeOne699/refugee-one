@@ -1,13 +1,11 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { useRequest } from "ahooks";
-import { doc } from "firebase/firestore";
 import React from "react";
 import DatePicker from "react-datepicker";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import database from "@/clients/firebase";
 import { useAuth, useJob } from "@/models";
 import { englishLevel } from "@/utils/constants";
 
@@ -31,7 +29,6 @@ export default function AddJob() {
         status: "pending",
         postDate: new Date(),
         // fixme: temp solution: we need an admin to approve the job
-        admin: doc(database, "Users", "iKGlSJEUkWQjCHZMQhgrVixVAt42"),
       }),
     {
       manual: true,
