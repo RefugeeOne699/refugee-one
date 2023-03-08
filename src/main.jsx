@@ -6,8 +6,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
 import { AuthContextProvider } from "./models/auth";
-import { ProfileContextProvider } from "./models/profile";
 import { JobContextProvider } from "./models/job";
+import { ProfileContextProvider } from "./models/profile";
 import AddJob from "./pages/AddJob";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";

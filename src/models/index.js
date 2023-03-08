@@ -6,5 +6,6 @@ import { ProfileContext } from "./profile";
 
 const useAuth = () => useContext(AuthContext);
 const useProfile = () => useContext(ProfileContext);
+const useJob = () => useContext(JobContext);
 
-export { useAuth, useProfile, useJob };
+export { useAuth, useJob, useProfile };
