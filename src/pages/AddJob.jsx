@@ -28,7 +28,7 @@ export default function AddJob() {
         ...data,
         company: auth.user.company,
         owner: auth.userRef,
-        status: "open",
+        status: "pending",
         postDate: new Date(),
         // fixme: temp solution: we need an admin to approve the job
         admin: doc(database, "Users", "iKGlSJEUkWQjCHZMQhgrVixVAt42"),
