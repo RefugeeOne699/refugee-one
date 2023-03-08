@@ -6,10 +6,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
 import { AuthContextProvider } from "./models/auth";
-import AdminJobPostings from "./pages/AdminJobPostings";
-import EmployerJobPostings from "./pages/EmployerJobPostings";
 import { JobContextProvider } from "./models/job";
 import AddJob from "./pages/AddJob";
+import AdminJobPostings from "./pages/AdminJobPostings";
+import EmployerJobPostings from "./pages/EmployerJobPostings";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
 // import DrinkList from "./pages/DrinkList";

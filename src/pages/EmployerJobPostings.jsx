@@ -1,10 +1,11 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useState } from "react";
-import { fetchJobs } from "@/functions/fetchJobs";
+
 import database from "@/clients/firebase";
 import { auth as firebaseAuth } from "@/clients/firebase";
 import { JobView } from "@/components/JobView";
+import { fetchJobs } from "@/functions/fetchJobs";
 
 export default function AdminJobPostings() {
   const [jobs, setJobs] = useState([]);
@@ -13,7 +14,11 @@ export default function AdminJobPostings() {
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, async (user) => {
       if (user) {
-        const jobList = await fetchJobs(database, "owner",  "iKGlSJEUkWQjCHZMQhgrVixVAt42")
+        const jobList = await fetchJobs(
+          database,
+          "owner",
+          "iKGlSJEUkWQjCHZMQhgrVixVAt42"
+        );
         setJobs(jobList);
         setSelectedJob(jobList.length > 0 ? jobList[0] : null);
       }

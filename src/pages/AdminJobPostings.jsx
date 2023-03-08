@@ -1,6 +1,7 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useState } from "react";
+
 import database from "@/clients/firebase";
 import { auth as firebaseAuth } from "@/clients/firebase";
 import { JobView } from "@/components/JobView";
@@ -12,12 +13,12 @@ export default function AdminJobPostings() {
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, async (user) => {
-        if (user) {
-          const jobList = await fetchJobs(database, "admin",  "iKGlSJEUkWQjCHZMQhgrVixVAt42")
-          setJobs(jobList.filter(job => job.status === "open"));
-          setSelectedJob(jobList.length > 0 ? jobList[0] : null);
-        }
-      });
+      if (user) {
+        const jobList = await fetchJobs(database, "admin", null);
+        setJobs(jobList.filter((job) => job.status === "open"));
+        setSelectedJob(jobList.length > 0 ? jobList[0] : null);
+      }
+    });
   }, []);
 
   const styleSheet = {
