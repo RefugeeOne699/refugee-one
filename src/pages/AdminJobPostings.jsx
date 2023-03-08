@@ -25,8 +25,8 @@ export default function AdminJobPostings() {
   };
 
   return (
-    <div className="flex flex-row w-screen justify-evenly bg-base-300">
-      <div className="flex flex-col w-half items-center">
+    <div className="flex flex-row w-screen h-screen justify-evenly bg-base-300">
+      <div className="flex flex-col w-half items-center overflow-scroll">
         <h2>
           <strong>Review Requests ({jobs.length})</strong>
         </h2>
