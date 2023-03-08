@@ -1,9 +1,28 @@
-//import Navbar from "@/components/Navbar";
-//import database from "@/clients/firebase";
+import database from "@/clients/firebase";
 import { useAuth, useJob } from "@/models";
+import { useEffect, useState } from "react";
+import { collection, getDocs,  } from "firebase/firestore";
 
 export default function AdminDashboard() {
     const auth = useAuth();
+    const [jobs, setJobs] = useState([]);
+
+    const fetchJobs = async()=>{
+        let jobListings = []
+        const jobColl = collection(database, "Jobs");
+        const jobdDocSnap = await getDocs(jobColl);
+        jobdDocSnap.forEach(doc=>{
+            if (doc.data().status=="pending"){
+                jobListings.push(doc.data)
+            }
+            console.log(doc.data())
+        })
+        setJobs(jobListings)
+    }
+
+    useEffect(()=>{
+        fetchJobs();
+    },[])
 
     return (
         <div className="flex flex-col justify-center items-center">
@@ -17,7 +36,7 @@ export default function AdminDashboard() {
                     <div className="bg-slate-200 w-1/3 p-4 rounded-xl">
                         <p className="text-lg font-semibold">Pending Job Request</p>
                         <div className="flex flex-col items-center">
-                            <p className="self-start p-2">You have 1 new pending job request</p>
+                            <p className="self-start p-2">You have {jobs.length} new pending job request</p>
                             <button className="btn btn-outline self-center">View</button>
                         </div>
 
