@@ -28,6 +28,14 @@ export default function Navbar() {
       >
         Profile
       </button>
+      <button
+        className="btn"
+        onClick={() => {
+          navigate("/addJob");
+        }}
+      >
+        Add Job
+      </button>
     </>
   );
 }
