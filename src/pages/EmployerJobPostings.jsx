@@ -1,62 +1,42 @@
-import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useState } from "react";
 
 import database from "@/clients/firebase";
-import { auth as firebaseAuth } from "@/clients/firebase";
 import { JobView } from "@/components/JobView";
 import { fetchJobs } from "@/functions/fetchJobs";
+import { useAuth } from "@/models";
 
 export default function AdminJobPostings() {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+  const auth = useAuth();
 
   useEffect(() => {
-    onAuthStateChanged(firebaseAuth, async (user) => {
-      if (user) {
-        const jobList = await fetchJobs(
-          database,
-          "owner",
-          "iKGlSJEUkWQjCHZMQhgrVixVAt42"
-        );
-        setJobs(jobList);
-        setSelectedJob(jobList.length > 0 ? jobList[0] : null);
-      }
-    });
+    if (auth) {
+      getJobs();
+    }
   }, []);
 
-  const styleSheet = {
-    card: {
-      width: "30vw",
-      borderRadius: "5px",
-      marginTop: "25px",
-    },
-    cardColumn: {
-      width: "40vw",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "start",
-    },
-    pageWrapper: {
-      display: "flex",
-      flexDirection: "row",
-      width: "100%",
-      justifyContent: "space-evenly",
-    },
+  const getJobs = async () => {
+    const jobList = await fetchJobs(database, "owner", auth.user.uid);
+    setJobs(jobList);
+    setSelectedJob(jobList.length > 0 ? jobList[0] : null);
   };
 
   return (
-    <div style={styleSheet.pageWrapper}>
-      <div style={styleSheet.cardColumn} className="bg-base-300">
+    <div className="flex flex-row w-screen justify-evenly bg-base-300">
+      <div className="flex flex-col w-half items-center">
         <h2>
           <strong>Review Requests ({jobs.length})</strong>
         </h2>
         {jobs.map((job) => (
           <div
             key={job.dateInput.seconds}
-            style={styleSheet.card}
-            className={job === selectedJob ? "card bg-accent" : "card bg-base-100"}
+            className={
+              job === selectedJob
+                ? "card bg-accent w-9/12 mt-5"
+                : "card bg-base-100 w-9/12 mt-5"
+            }
             onClick={() => setSelectedJob(job)}
           >
             <h2 className="card-title">{job.title}</h2>
