@@ -2,7 +2,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 import database from "@/clients/firebase";
-import { useAuth } from "@/models";
+import { useAuth, useJob } from "@/models";
 
 export default function AdminDashboard() {
   const auth = useAuth();
