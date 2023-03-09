@@ -5,8 +5,11 @@ import database from "@/clients/firebase";
 import { JobView } from "@/components/JobView";
 import { fetchJobs } from "@/functions/fetchJobs";
 import { useAuth } from "@/models";
+import { useJob } from "@/models";
 
 export default function AdminJobPostings() {
+  // consider changing useJob to just a module to import
+  const jobFunctions = useJob();
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const auth = useAuth();
@@ -22,6 +25,7 @@ export default function AdminJobPostings() {
     const filteredJobs = jobList.filter((job) => job.status === "pending");
     setJobs(filteredJobs);
     setSelectedJob(filteredJobs.length > 0 ? jobList[0] : null);
+    // console.log(jobs[0])
   };
 
   return (
@@ -58,8 +62,18 @@ export default function AdminJobPostings() {
               </ul>
             </div>
             <div className="card-actions buttonRow">
-              <button className="btn btn-success">Approve</button>
-              <button className="btn btn-error">Reject</button>
+              <button
+                className="btn btn-success"
+                onClick={() => jobFunctions.approveJob(job.jobId)}
+              >
+                Approve
+              </button>
+              <button
+                className="btn btn-error"
+                onClick={() => jobFunctions.rejectJob(job.jobId, 'Bad Job!')}
+              >
+                Reject
+              </button>
             </div>
           </div>
         ))}
