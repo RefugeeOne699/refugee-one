@@ -13,9 +13,11 @@ export default function AdminJobPostings() {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
 
-  // states for approve and reject alert/overlay
+  // states for approve and reject alert/overlay and also the reject message
   const [showApprove, setShowApprove] = useState(false);
   const [showReject, setShowReject] = useState(false);
+  const [rejectMessage, setRejectMessage] = useState("");
+  const [rejectJobId, setRejectJobId] = useState(undefined);
 
   const auth = useAuth();
 
@@ -67,7 +69,7 @@ export default function AdminJobPostings() {
               </ul>
             </div>
             <div className="card-actions buttonRow">
-              <button
+              <label
                 className="btn btn-success"
                 onClick={async () => {
                   jobFunctions.approveJob(job.jobId);
@@ -78,19 +80,21 @@ export default function AdminJobPostings() {
                 }}
               >
                 Approve
-              </button>
-              <button
+              </label>
+              <label
+                htmlFor="reject-modal"
                 className="btn btn-error"
-                onClick={() => jobFunctions.rejectJob(job.jobId, "Bad Job!")}
+                onClick={() => setRejectJobId(job.jobId)}
               >
                 Reject
-              </button>
+              </label>
             </div>
           </div>
         ))}
       </div>
 
-      {/* approval alert */}
+      {/* Approval Alert */}
+      {/* Out-of-box alert from DaisyUI - see https://daisyui.com/components/alert/ */}
       {showApprove ? (
         <div className="absolute alert alert-success shadow-lg w-1/4">
           <div>
@@ -111,6 +115,46 @@ export default function AdminJobPostings() {
           </div>
         </div>
       ) : null}
+
+      {/* Reject Modal */}
+      {/* Out-of-box modal from DaisyUI - see https://daisyui.com/components/modal/#modal-using-label--hidden-checkbox */}
+      <input type="checkbox" id="reject-modal" className="modal-toggle" />
+      <div className="modal">
+        <div className="modal-box gap-10">
+          <h3 className="font-bold text-lg">Reject Job Listing</h3>
+          <textarea
+            type="text"
+            rows="3"
+            placeholder="Please write down reason for the rejection."
+            value={rejectMessage}
+            onChange={(e) => setRejectMessage(e.target.value)}
+            className="textarea textarea-bordered w-full mt-2"
+          />
+          <div className="modal-action">
+            <label
+              htmlFor="reject-modal"
+              className="btn btn-ghost"
+              onClick={() => {
+                setRejectMessage("");
+                setRejectJobId(undefined);
+              }}
+            >
+              Cancel
+            </label>
+            <label
+              htmlFor="reject-modal"
+              className="btn"
+              onClick={() => {
+                jobFunctions.rejectJob(rejectJobId, rejectMessage);
+                setRejectMessage("");
+                setRejectJobId(undefined);
+              }}
+            >
+              Reject
+            </label>
+          </div>
+        </div>
+      </div>
 
       <JobView job={selectedJob} />
     </div>
