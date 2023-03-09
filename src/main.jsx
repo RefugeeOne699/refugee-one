@@ -8,6 +8,7 @@ import AppRoot from "./App";
 import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
 import AddJob from "./pages/AddJob";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminJobPostings from "./pages/AdminJobPostings";
 import EmployerJobPostings from "./pages/EmployerJobPostings";
 // import Demo from "./pages/Demo";
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "addJob",
         element: <AddJob />, //add job listing
+      },
+      {
+        path: "adminDash",
+        element: <AdminDashboard />,
       },
 
       // {
