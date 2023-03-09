@@ -9,6 +9,9 @@ import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
 import { ProfileContextProvider } from "./models/profile";
 import AddJob from "./pages/AddJob";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminJobPostings from "./pages/AdminJobPostings";
+import EmployerJobPostings from "./pages/EmployerJobPostings";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
 // import DrinkList from "./pages/DrinkList";
@@ -16,6 +19,7 @@ import AddJob from "./pages/AddJob";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
+
 // import Login from "./pages/Login";
 // import Popular from "./pages/Popular";
 // import Random from "./pages/Random";
@@ -37,12 +41,24 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
+        path: "employer-jobpostings",
+        element: <EmployerJobPostings />,
+      },
+      {
+        path: "admin-jobpostings",
+        element: <AdminJobPostings />,
+      },
+      {
         path: "profile",
         element: <Profile />,
       },
       {
         path: "addJob",
         element: <AddJob />, //add job listing
+      },
+      {
+        path: "adminDash",
+        element: <AdminDashboard />,
       },
       // {
       //   path: "login",
