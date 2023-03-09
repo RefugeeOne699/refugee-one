@@ -7,7 +7,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppRoot from "./App";
 import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
-import { ProfileContextProvider } from "./models/profile";
 import AddJob from "./pages/AddJob";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminJobPostings from "./pages/AdminJobPostings";
@@ -99,11 +98,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthContextProvider>
-      <ProfileContextProvider>
-        <JobContextProvider>
-          <RouterProvider router={router} />
-        </JobContextProvider>
-      </ProfileContextProvider>
+      <JobContextProvider>
+        <RouterProvider router={router} />
+      </JobContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
 );
