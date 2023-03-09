@@ -35,6 +35,24 @@ export default function Navbar() {
        }}>
         Dashboard
       </button>
+
+      <button
+        className="btn"
+        onClick={() => {
+          navigate("/admin-jobpostings");
+        }}
+      >
+        View Jobs (admin)
+      </button>
+
+      <button
+        className="btn"
+        onClick={() => {
+          navigate("/employer-jobpostings");
+        }}
+      >
+        View Jobs (employer)
+      </button>
     </>
   );
 }
