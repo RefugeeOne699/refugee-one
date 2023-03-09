@@ -14,12 +14,13 @@ export default function Home() {
       manual: true,
       onSuccess: () => {
         console.log(`Verification Status ${firebaseAuth.currentUser.emailVerified}`);
-        if (!firebaseAuth.currentUser.emailVerified) {
-          auth.signOut();
-          alert(
-            "You haven't verified your email yet! Please log in again after you have verified your email."
-          );
-        }
+        // fixme: temp for demo
+        // if (!firebaseAuth.currentUser.emailVerified) {
+        //   auth.signOut();
+        //   alert(
+        //     "You haven't verified your email yet! Please log in again after you have verified your email."
+        //   );
+        // }
       },
       onError: (error) => {
         //todo: handle error

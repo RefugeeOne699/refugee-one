@@ -1,10 +1,10 @@
 import { useRequest } from "ahooks";
-import { sendEmailVerification } from "firebase/auth";
+// import { sendEmailVerification } from "firebase/auth";
 import { doc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { auth as firebaseAuth } from "@/clients/firebase";
+// import { auth as firebaseAuth } from "@/clients/firebase";
 // fixme: temp hard code company
 import database from "@/clients/firebase";
 import { useAuth } from "@/models";
@@ -28,14 +28,15 @@ export default function SignUp() {
     {
       manual: true,
       onSuccess: async () => {
-        if (!firebaseAuth.currentUser.emailVerified) {
-          await sendEmailVerification(firebaseAuth.currentUser).then(() => {
-            auth.signOut();
-            alert(
-              "We have sent you a verification email! \n Please verfiy your email before logging in!"
-            );
-          });
-        }
+        // fixme: temp for demo
+        // if (!firebaseAuth.currentUser.emailVerified) {
+        //   await sendEmailVerification(firebaseAuth.currentUser).then(() => {
+        //     auth.signOut();
+        //     alert(
+        //       "We have sent you a verification email! \n Please verfiy your email before logging in!"
+        //     );
+        //   });
+        // }
         navigate("/");
       },
       onError: (error) => {
