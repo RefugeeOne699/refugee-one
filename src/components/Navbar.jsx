@@ -29,10 +29,11 @@ export default function Navbar() {
         Add Job
       </button>
       <button
-       className="btn"
-       onClick={()=>{
-        navigate("/adminDash")
-       }}>
+        className="btn"
+        onClick={() => {
+          navigate("/adminDash");
+        }}
+      >
         Dashboard
       </button>
 
