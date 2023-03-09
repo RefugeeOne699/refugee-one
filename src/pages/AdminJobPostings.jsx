@@ -12,6 +12,11 @@ export default function AdminJobPostings() {
   const jobFunctions = useJob();
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+
+  // states for approve and reject alert/overlay
+  const [showApprove, setShowApprove] = useState(false);
+  const [showReject, setShowReject] = useState(false);
+
   const auth = useAuth();
 
   useEffect(() => {
@@ -64,13 +69,19 @@ export default function AdminJobPostings() {
             <div className="card-actions buttonRow">
               <button
                 className="btn btn-success"
-                onClick={() => jobFunctions.approveJob(job.jobId)}
+                onClick={async () => {
+                  jobFunctions.approveJob(job.jobId);
+                  setShowApprove(true);
+                  setTimeout(() => {
+                    setShowApprove(false);
+                  }, 1000);
+                }}
               >
                 Approve
               </button>
               <button
                 className="btn btn-error"
-                onClick={() => jobFunctions.rejectJob(job.jobId, 'Bad Job!')}
+                onClick={() => jobFunctions.rejectJob(job.jobId, "Bad Job!")}
               >
                 Reject
               </button>
@@ -78,6 +89,29 @@ export default function AdminJobPostings() {
           </div>
         ))}
       </div>
+
+      {/* approval alert */}
+      {showApprove ? (
+        <div className="absolute alert alert-success shadow-lg w-1/4">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current flex-shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Job Approved!</span>
+          </div>
+        </div>
+      ) : null}
+
       <JobView job={selectedJob} />
     </div>
   );
