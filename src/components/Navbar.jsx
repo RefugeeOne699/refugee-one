@@ -155,7 +155,9 @@ export default function Navbar() {
             />
           </Menu>
         ) : (
-          <NavbarList />
+          <div className="w-48 m-3 h-full">
+            <NavbarList />
+          </div>
         )
       }
     </>

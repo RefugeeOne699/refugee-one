@@ -26,13 +26,13 @@ export default function App() {
   }, []);
 
   return (
-    <>
-      <div className="flex-none">
+    <div className="flex flex-row gap-2">
+      <>
         <Navbar />
-      </div>
-      <div className="flex-auto flex flex-col">
+      </>
+      <div className="flex-auto flex flex-col m-3">
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }
