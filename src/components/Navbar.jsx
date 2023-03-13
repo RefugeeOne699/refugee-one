@@ -8,12 +8,13 @@ import { slide as Menu } from "react-burger-menu";
 
 import { userTypes, screenSize } from "@/utils/constants";
 
-function NavbarList() {
+function NavbarList(props) {
   const navigate = useNavigate();
   const auth = useAuth();
 
   const userMap = {
     "Home": "/",
+    "Profile": "/profile",
     "SignUp": "/signUp",
     "Add Job": "/addJob",
     "Dashboard": "/adminDash",
@@ -22,6 +23,7 @@ function NavbarList() {
 
   const adminMap = {
     "Home": "/",
+    "Profile": "/profile",
     "SignUp": "/signUp",
     "Add Job": "/addJob",
     "Dashboard": "/adminDash",
@@ -31,6 +33,7 @@ function NavbarList() {
 
   const employerMap = {
     "Home": "/",
+    "Profile": "/profile",
     "SignUp": "/signUp",
     "Add Job": "/addJob",
     "Dashboard": "/adminDash",
@@ -46,6 +49,7 @@ function NavbarList() {
             className="btn w-full m-2"
             onClick={() => {
               navigate(adminMap[key]);
+              props.setOpen(false);
             }}
           >
             {key}
@@ -58,6 +62,7 @@ function NavbarList() {
             className="btn w-full m-2"
             onClick={() => {
               navigate(employerMap[key]);
+              props.setOpen(false);
             }}
           >
             {key}
@@ -70,6 +75,7 @@ function NavbarList() {
             className="btn w-full m-2"
             onClick={() => {
               navigate(userMap[key]);
+              props.setOpen(false);
             }}
           >
             {key}
@@ -82,6 +88,7 @@ function NavbarList() {
 
 export default function Navbar() {
   const [width, setWidth] = useState(window.innerWidth);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -139,8 +146,13 @@ export default function Navbar() {
     <>
       {
         width < screenSize.mobile ? (
-          <Menu styles={styles}>
-            <NavbarList />
+          <Menu styles={styles} 
+            isOpen={open}
+            onStateChange={(state) => setOpen(state.isOpen)}
+          >
+            <NavbarList 
+              setOpen={setOpen}
+            />
           </Menu>
         ) : (
           <NavbarList />
