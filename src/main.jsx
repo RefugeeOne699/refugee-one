@@ -2,14 +2,15 @@ import "./index.css";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
+import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
 import AddJob from "./pages/AddJob";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminJobPostings from "./pages/AdminJobPostings";
+import AdminJobPostings from "./pages/admin/AdminPendingJobs";
 import EmployerJobPostings from "./pages/EmployerJobPostings";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
@@ -44,14 +45,6 @@ const router = createBrowserRouter([
         element: <EmployerJobPostings />,
       },
       {
-        path: "admin-jobpostings",
-        element: <AdminJobPostings />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-      {
         path: "addJob",
         element: <AddJob />, //add job listing
       },
@@ -59,6 +52,31 @@ const router = createBrowserRouter([
         path: "adminDash",
         element: <AdminDashboard />,
       },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      // example: example for router and nested router
+      {
+        path: "admin",
+        element: (
+          <AdminContextProvider>
+            <Outlet />
+          </AdminContextProvider>
+        ),
+        // element: <AdminContextProvider />,
+        children: [
+          {
+            index: true,
+            element: <AdminDashboard />,
+          },
+          {
+            path: "pendingJobs",
+            element: <AdminJobPostings />,
+          },
+        ],
+      },
+
       // {
       //   path: "login",
       //   element: <Login />,
