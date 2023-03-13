@@ -16,6 +16,7 @@ import EmployerJobPostings from "./pages/EmployerJobPostings";
 // import DrinkList from "./pages/DrinkList";
 // import ErrorBoundary from "./pages/ErrorBoundary";
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 
 // import Login from "./pages/Login";
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
         element: <AdminJobPostings />,
       },
       {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
         path: "addJob",
         element: <AddJob />, //add job listing
       },
@@ -54,7 +59,6 @@ const router = createBrowserRouter([
         path: "adminDash",
         element: <AdminDashboard />,
       },
-
       // {
       //   path: "login",
       //   element: <Login />,

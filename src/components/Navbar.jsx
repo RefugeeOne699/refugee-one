@@ -23,6 +23,14 @@ export default function Navbar() {
       <button
         className="btn"
         onClick={() => {
+          navigate("/profile");
+        }}
+      >
+        Profile
+      </button>
+      <button
+        className="btn"
+        onClick={() => {
           navigate("/addJob");
         }}
       >
