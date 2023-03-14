@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { useAuth } from "@/models";
 
 export default function Profile() {
