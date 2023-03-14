@@ -47,6 +47,7 @@ function NavbarList(props) {
         Object.keys(adminMap).map((key) => (
           <button
             className="btn w-full m-2"
+            key={key}
             onClick={() => {
               navigate(adminMap[key]);
               props.setOpen(false);
@@ -60,6 +61,7 @@ function NavbarList(props) {
         Object.keys(employerMap).map((key) => (
           <button
             className="btn w-full m-2"
+            key={key}
             onClick={() => {
               navigate(employerMap[key]);
               props.setOpen(false);
@@ -73,6 +75,7 @@ function NavbarList(props) {
         Object.keys(userMap).map((key) => (
           <button
             className="btn w-full m-2"
+            key={key}
             onClick={() => {
               navigate(userMap[key]);
               props.setOpen(false);
@@ -156,7 +159,9 @@ export default function Navbar() {
           </Menu>
         ) : (
           <div className="w-48 m-3 h-full">
-            <NavbarList />
+            <NavbarList 
+              setOpen={setOpen}
+            />
           </div>
         )
       }
