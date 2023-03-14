@@ -11,8 +11,6 @@ import AddJob from "./pages/AddJob";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminJobPostings from "./pages/AdminJobPostings";
 import EmployerJobPostings from "./pages/EmployerJobPostings";
-import UserJobPage from "./pages/UserJobPostings";
-import UserSavedJobs from "./pages/UserSavedJobs";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
 // import DrinkList from "./pages/DrinkList";
@@ -20,6 +18,8 @@ import UserSavedJobs from "./pages/UserSavedJobs";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
+import UserJobPage from "./pages/UserJobPostings";
+import UserSavedJobs from "./pages/UserSavedJobs";
 
 // import Login from "./pages/Login";
 // import Popular from "./pages/Popular";

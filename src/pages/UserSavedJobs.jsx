@@ -1,3 +1,4 @@
+import { collection, doc, getDoc, getDocs, setDoc, where } from "firebase/firestore";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -5,7 +6,6 @@ import database from "@/clients/firebase";
 import { JobView } from "@/components/JobView";
 import { fetchJobs } from "@/functions/fetchJobs";
 import { useAuth } from "@/models";
-import { collection, doc, getDoc, getDocs, setDoc, where } from "firebase/firestore";
 
 export default function UserSavedJobs() {
   const [jobs, setJobs] = useState([]);
