@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth, useJob } from "@/models";
 import { englishLevel } from "@/utils/constants";
+import { doc } from "firebase/firestore";
+import database from "@/clients/firebase";
 
 export default function AddJob() {
   const auth = useAuth();
@@ -24,7 +26,9 @@ export default function AddJob() {
     async (data) =>
       job.createJob({
         ...data,
-        company: auth.user.company,
+        // fixme: temp demo solution
+        company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
+        // company: auth.user.company,
         owner: auth.userRef,
         status: "pending",
         postDate: new Date(),
