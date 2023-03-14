@@ -11,6 +11,8 @@ import AddJob from "./pages/AddJob";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminJobPostings from "./pages/AdminJobPostings";
 import EmployerJobPostings from "./pages/EmployerJobPostings";
+import UserJobPage from "./pages/UserJobPostings";
+import UserSavedJobs from "./pages/UserSavedJobs";
 // import Demo from "./pages/Demo";
 // import Detail from "./pages/Detail";
 // import DrinkList from "./pages/DrinkList";
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
       {
         path: "adminDash",
         element: <AdminDashboard />,
+      },
+      {
+        path: "user-jobpostings",
+        element: <UserJobPage />,
+      },
+      {
+        path: "user-savedjobs",
+        element: <UserSavedJobs />,
       },
       // {
       //   path: "login",

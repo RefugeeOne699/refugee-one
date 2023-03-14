@@ -62,6 +62,22 @@ export default function Navbar() {
       >
         View Jobs (employer)
       </button>
+      <button
+        className="btn"
+        onClick={() => {
+          navigate("/user-jobpostings");
+        }}
+      >
+        View Jobs (User)
+      </button>
+      <button
+        className="btn"
+        onClick={() => {
+          navigate("/user-savedjobs");
+        }}
+      >
+        View Jobs (User)
+      </button>
     </>
   );
 }

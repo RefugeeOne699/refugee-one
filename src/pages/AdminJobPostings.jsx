@@ -18,7 +18,7 @@ export default function AdminJobPostings() {
   }, []);
 
   const getJobs = async () => {
-    const jobList = await fetchJobs(database, "admin", null);
+    const jobList = await fetchJobs(database, "Admin", null);
     const filteredJobs = jobList.filter((job) => job.status === "pending");
     setJobs(filteredJobs);
     setSelectedJob(filteredJobs.length > 0 ? jobList[0] : null);

@@ -6,14 +6,19 @@ export const fetchJobs = async (database, role, uid) => {
   // https://stackoverflow.com/questions/47743082/waiting-for-a-foreach-to-finish-before-return-from-my-promise-function
 
   const jobOpenings = collection(database, "Jobs");
-  const q = uid
-    ? query(jobOpenings, where(role, "==", doc(database, "Users", uid)))
-    : jobOpenings;
+  let q;
+  if(role === "Admin"){
+    q = jobOpenings
+  }else if(role === "Employer"){
+    q = query(jobOpenings, where("owner", "==", doc(database, "Users", uid)))
+  }else{
+    q = query(jobOpenings, where("status", "==","pending"))
+  }
   const querySnapshot = await getDocs(q);
   const jobList = [];
   const owners = [];
   querySnapshot.forEach((doc) => {
-    const data = doc.data();
+    const data = {...doc.data(), id: doc.id};
     owners.push(getDoc(data.owner));
     jobList.push(data);
   });

@@ -5,8 +5,10 @@ import database from "@/clients/firebase";
 import { JobView } from "@/components/JobView";
 import { fetchJobs } from "@/functions/fetchJobs";
 import { useAuth } from "@/models";
+import { collection, doc, getDoc, getDocs, setDoc, where } from "firebase/firestore";
 
-export default function AdminJobPostings() {
+
+export default function UserSavedJobs() {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const auth = useAuth();
@@ -17,17 +19,28 @@ export default function AdminJobPostings() {
     }
   }, []);
 
+
   const getJobs = async () => {
-    const jobList = await fetchJobs(database, "Employer", auth.user.uid);
-    setJobs(jobList);
+    const jobList = await fetchJobs(database, "User", null);
+    const fetchEmployee = await getDoc(doc(database, "Users", auth.user.uid))
+    const employee = fetchEmployee.data()
+    setJobs(jobList.filter(job => employee.jobs.includes(job.id)));
     setSelectedJob(jobList.length > 0 ? jobList[0] : null);
   };
+
+  const removeJob = async (jobId) =>{
+    await setDoc(doc(database, "Users", auth.user.uid), {
+        ...auth.user,
+        jobs: auth.user.jobs.filter(job => job !== jobId)
+    });
+    await getJobs()
+  }
 
   return (
     <div className="flex flex-row w-screen h-screen justify-evenly bg-base-300">
       <div className="flex flex-col w-half items-center overflow-scroll">
         <h2>
-          <strong>Review Requests ({jobs.length})</strong>
+          <strong>Saved Jobs ({jobs.length})</strong>
         </h2>
         {jobs.map((job) => (
           <div
@@ -61,7 +74,7 @@ export default function AdminJobPostings() {
               </ul>
             </div>
             <div className="card-actions buttonRow">
-              <button className="btn btn-error">Request Removal</button>
+              <button onClick={()=>removeJob(job.id)} className="btn btn-success">Remove Job</button>
             </div>
           </div>
         ))}
