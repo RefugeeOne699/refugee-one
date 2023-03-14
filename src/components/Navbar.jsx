@@ -57,7 +57,7 @@ export default function Navbar() {
       <button
         className="btn"
         onClick={() => {
-          navigate("/employer-jobpostings");
+          navigate("/employer/jobs");
         }}
       >
         View Jobs (employer)
