@@ -14,6 +14,8 @@ export const fetchJobs = async (database, role, uid) => {
   const owners = [];
   querySnapshot.forEach((doc) => {
     const data = doc.data();
+    // need to store jobId for future job operations
+    data.jobId = doc.id;
     owners.push(getDoc(data.owner));
     jobList.push(data);
   });

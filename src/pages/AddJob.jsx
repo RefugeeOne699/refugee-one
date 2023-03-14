@@ -28,6 +28,8 @@ export default function AddJob() {
         owner: auth.userRef,
         status: "pending",
         postDate: new Date(),
+        // field for reject messages
+        message: "",
         // fixme: temp solution: we need an admin to approve the job
       }),
     {
