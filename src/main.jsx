@@ -1,29 +1,26 @@
 import "./index.css";
 
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import AppRoot from "./App";
+import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
-import AddJob from "./pages/AddJob";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminJobPostings from "./pages/AdminJobPostings";
-import EmployerJobPostings from "./pages/EmployerJobPostings";
-// import Demo from "./pages/Demo";
-// import Detail from "./pages/Detail";
-// import DrinkList from "./pages/DrinkList";
-// import ErrorBoundary from "./pages/ErrorBoundary";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import SignUp from "./pages/SignUp";
 
-// import Login from "./pages/Login";
-// import Popular from "./pages/Popular";
-// import Random from "./pages/Random";
-// import Register from "./pages/Register";
-// import Search from "./pages/Search";
+const AddJob = lazy(async () => import("@/pages/AddJob"));
+const Admin = {
+  Dashboard: lazy(async () => import("@/pages/admin/AdminDashboard")),
+  PendingJobs: lazy(async () => import("@/pages/admin/AdminPendingJobs")),
+};
+const Employer = {
+  Jobs: lazy(async () => import("@/pages/EmployerJobPostings")),
+};
+
+const SignUp = lazy(async () => import("@/pages/SignUp"));
+const Home = lazy(async () => import("@/pages/Home"));
+const Profile = lazy(async () => import("@/pages/Profile"));
 
 const router = createBrowserRouter([
   {
@@ -40,25 +37,43 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path: "employer-jobpostings",
-        element: <EmployerJobPostings />,
-      },
-      {
-        path: "admin-jobpostings",
-        element: <AdminJobPostings />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
+        path: "employer",
+        children: [
+          {
+            path: "jobs",
+            element: <Employer.Jobs />,
+          },
+        ],
       },
       {
         path: "addJob",
         element: <AddJob />, //add job listing
       },
       {
-        path: "adminDash",
-        element: <AdminDashboard />,
+        path: "profile",
+        element: <Profile />,
       },
+      // example: example for router and nested router
+      {
+        path: "admin",
+        element: (
+          <AdminContextProvider>
+            <Outlet />
+          </AdminContextProvider>
+        ),
+        // element: <AdminContextProvider />,
+        children: [
+          {
+            index: true,
+            element: <Admin.Dashboard />,
+          },
+          {
+            path: "pendingJobs",
+            element: <Admin.PendingJobs />,
+          },
+        ],
+      },
+
       // {
       //   path: "login",
       //   element: <Login />,
@@ -97,10 +112,12 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthContextProvider>
-      <JobContextProvider>
-        <RouterProvider router={router} />
-      </JobContextProvider>
-    </AuthContextProvider>
+    <Suspense>
+      <AuthContextProvider>
+        <JobContextProvider>
+          <RouterProvider router={router} />
+        </JobContextProvider>
+      </AuthContextProvider>
+    </Suspense>
   </React.StrictMode>
 );
