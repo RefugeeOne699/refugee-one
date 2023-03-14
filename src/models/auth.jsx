@@ -67,6 +67,7 @@ const AuthContextProvider = ({ children }) => {
           role,
           phone,
           jobs,
+          company,
         });
       })
       .catch((error) => {
