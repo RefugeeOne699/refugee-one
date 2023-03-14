@@ -24,7 +24,9 @@ export default function AddJob() {
     async (data) =>
       job.createJob({
         ...data,
-        company: auth.user.company,
+        // fixme: temp solution: for demo usage
+        //company: auth.user.company,
+        company: "tmp for demo",
         owner: auth.userRef,
         status: "pending",
         postDate: new Date(),
