@@ -72,7 +72,7 @@ export default function UserSavedJobs() {
               </ul>
             </div>
             <div className="card-actions buttonRow">
-              <button onClick={() => removeJob(job.id)} className="btn btn-success">
+              <button onClick={() => removeJob(job.id)} className="btn btn-error">
                 Remove Job
               </button>
             </div>
