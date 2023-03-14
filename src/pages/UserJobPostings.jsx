@@ -7,7 +7,6 @@ import { fetchJobs } from "@/functions/fetchJobs";
 import { useAuth } from "@/models";
 import { collection, doc, getDoc, getDocs, setDoc, where } from "firebase/firestore";
 
-
 export default function UserJobPage() {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
@@ -19,22 +18,21 @@ export default function UserJobPage() {
     }
   }, []);
 
-
   const getJobs = async () => {
     const jobList = await fetchJobs(database, "User", null);
-    const fetchEmployee = await getDoc(doc(database, "Users", auth.user.uid))
-    const employee = fetchEmployee.data()
-    setJobs(jobList.filter(job => !employee.jobs.includes(job.id)));
+    const fetchEmployee = await getDoc(doc(database, "Users", auth.user.uid));
+    const employee = fetchEmployee.data();
+    setJobs(jobList.filter((job) => !employee.jobs.includes(job.id)));
     setSelectedJob(jobList.length > 0 ? jobList[0] : null);
   };
 
-  const saveJob = async (jobId) =>{
+  const saveJob = async (jobId) => {
     await setDoc(doc(database, "Users", auth.user.uid), {
-        ...auth.user,
-        jobs: [...auth.user.jobs, jobId]
+      ...auth.user,
+      jobs: [...auth.user.jobs, jobId],
     });
-    await getJobs()
-  }
+    await getJobs();
+  };
 
   return (
     <div className="flex flex-row w-screen h-screen justify-evenly bg-base-300">
@@ -74,7 +72,9 @@ export default function UserJobPage() {
               </ul>
             </div>
             <div className="card-actions buttonRow">
-              <button onClick={()=>saveJob(job.id)} className="btn btn-success">Save Job</button>
+              <button onClick={() => saveJob(job.id)} className="btn btn-success">
+                Save Job
+              </button>
             </div>
           </div>
         ))}

@@ -7,18 +7,18 @@ export const fetchJobs = async (database, role, uid) => {
 
   const jobOpenings = collection(database, "Jobs");
   let q;
-  if(role === "Admin"){
-    q = jobOpenings
-  }else if(role === "Employer"){
-    q = query(jobOpenings, where("owner", "==", doc(database, "Users", uid)))
-  }else{
-    q = query(jobOpenings, where("status", "==","pending"))
+  if (role === "Admin") {
+    q = jobOpenings;
+  } else if (role === "Employer") {
+    q = query(jobOpenings, where("owner", "==", doc(database, "Users", uid)));
+  } else {
+    q = query(jobOpenings, where("status", "==", "pending"));
   }
   const querySnapshot = await getDocs(q);
   const jobList = [];
   const owners = [];
   querySnapshot.forEach((doc) => {
-    const data = {...doc.data(), id: doc.id};
+    const data = { ...doc.data(), id: doc.id };
     owners.push(getDoc(data.owner));
     jobList.push(data);
   });
