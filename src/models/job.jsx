@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getCountFromServer,
   getDoc,
   getDocs,
   query,
@@ -25,6 +26,8 @@ const JobContext = createContext({
    */
   // eslint-disable-next-line no-unused-vars
   getJobs: (queryConstraints) => [],
+  // eslint-disable-next-line no-unused-vars
+  countJobs: (queryConstraints) => Number,
 });
 
 const JobContextProvider = ({ children }) => {
@@ -34,12 +37,21 @@ const JobContextProvider = ({ children }) => {
   };
 
   /**
-   * get a list of job according to the query provided
+   * get a list of JobBase according to the query provided
    * todo: pagination
    * why pagination needed?: please consider a time we have 1000 jobs, we could not download them at once,
    * otherwise the memory will overload
    * @param {null | QueryConstraint | QueryConstraint[]} queryConstraints
-   * @returns job list
+   * @returns a list of JobBase that only contains the title, company name and job id
+   * JobBase will be like
+   * {
+   *    title: "title of the job",
+   *    id: "id of the job doc",
+   *    company: {
+   *      name: "name of the company",
+   *      id: "id of the company doc"
+   *    }
+   * }
    */
   const getJobs = async (queryConstraints) => {
     const jobCollection = collection(database, "Jobs");
@@ -49,20 +61,30 @@ const JobContextProvider = ({ children }) => {
     const jobDocs = await getDocs(jobQuery);
     const jobList = jobDocs.docs.map(async (doc) => {
       const job = doc.data();
-      job.id = doc.id;
-      const owner = await getDoc(job.owner);
-      job.owner = {
-        ...owner.data(),
-        uid: owner.id,
+      const companyDoc = await getDoc(job.company);
+      const company = {
+        id: companyDoc.id,
+        name: company,
       };
-      const company = await getDoc(job.company);
-      job.company = {
-        ...company.data(),
-        id: company.id,
+      return {
+        id: doc.id,
+        title: job.title,
+        company,
       };
-      return job;
     });
     return await Promise.all(jobList);
+  };
+  /**
+   * Count the number of jobs that meets the certain conditions (pending jobs, jobs that are owned by the user)
+   * @param {null | QueryConstraint | QueryConstraint[]} queryConstraints
+   */
+  const countJobs = async (queryConstraints) => {
+    const jobCollection = collection(database, "Jobs");
+    const jobQuery = queryConstraints
+      ? query(jobCollection, queryConstraints)
+      : jobCollection;
+    const snapshot = await getCountFromServer(jobQuery);
+    return snapshot.data().count;
   };
 
   const value = useMemo(
@@ -73,6 +95,7 @@ const JobContextProvider = ({ children }) => {
       // todo
       deleteJob: () => {},
       getJobs,
+      countJobs,
     }),
     []
   );
