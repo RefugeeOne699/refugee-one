@@ -3,7 +3,7 @@ export const ROLES = {
   EMPLOYER: "employer",
   CLIENT: "client",
 };
-export const ENGLISH_LEVEL = ["Beginner", "Intermediate", "Fluent"];
+export const ENGLISH_LEVEL = ["beginner", "intermediate", "fluent"];
 export const JOB_STATUS = {
   REJECTED: "rejected",
   PENDING: "pending",
