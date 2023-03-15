@@ -39,7 +39,7 @@ export default function Navbar() {
       <button
         className="btn"
         onClick={() => {
-          navigate("/adminDash");
+          navigate("/admin");
         }}
       >
         Dashboard
@@ -48,7 +48,7 @@ export default function Navbar() {
       <button
         className="btn"
         onClick={() => {
-          navigate("/admin-jobpostings");
+          navigate("/admin/pendingJobs");
         }}
       >
         View Jobs (admin)
@@ -57,7 +57,7 @@ export default function Navbar() {
       <button
         className="btn"
         onClick={() => {
-          navigate("/employer-jobpostings");
+          navigate("/employer/jobs");
         }}
       >
         View Jobs (employer)

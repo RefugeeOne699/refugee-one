@@ -1,28 +1,27 @@
-import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useRequest } from "ahooks";
+import { where } from "firebase/firestore";
+import { useEffect } from "react";
 
-import database from "@/clients/firebase";
 import { useAuth, useJob } from "@/models";
 
 export default function AdminDashboard() {
   const auth = useAuth();
-  const [jobs, setJobs] = useState([]);
-
-  const fetchJobs = async () => {
-    let jobListings = [];
-    const jobColl = collection(database, "Jobs");
-    const jobdDocSnap = await getDocs(jobColl);
-    jobdDocSnap.forEach((doc) => {
-      if (doc.data().status == "pending") {
-        jobListings.push(doc.data);
-      }
-      console.log(doc.data());
-    });
-    setJobs(jobListings);
-  };
+  const { countJobs } = useJob();
+  /**
+   * @tianchi use countJobs, which uses count(), for displaying the number
+   * https://firebase.google.com/docs/firestore/query-data/aggregation-queries
+   */
+  const pendingJobsRequest = useRequest(
+    async () => countJobs(where("status", "==", "pending")),
+    {
+      manual: true,
+    }
+  );
 
   useEffect(() => {
-    fetchJobs();
+    (async () => {
+      await pendingJobsRequest.run();
+    })();
   }, []);
 
   return (
@@ -37,7 +36,9 @@ export default function AdminDashboard() {
             <p className="text-lg font-semibold">Pending Job Request</p>
             <div className="flex flex-col items-center">
               <p className="self-start p-2">
-                You have {jobs.length} new pending job request
+                You have{" "}
+                {pendingJobsRequest.loading ? "Loading" : pendingJobsRequest.data} new
+                pending job request
               </p>
               <button className="btn btn-outline self-center">View</button>
             </div>
