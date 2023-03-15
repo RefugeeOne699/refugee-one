@@ -64,7 +64,7 @@ const JobContextProvider = ({ children }) => {
       const companyDoc = await getDoc(job.company);
       const company = {
         id: companyDoc.id,
-        name: company,
+        name: companyDoc.data().name,
       };
       return {
         id: doc.id,
