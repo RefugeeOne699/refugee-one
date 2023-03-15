@@ -1,15 +1,15 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { useRequest } from "ahooks";
+import { doc } from "firebase/firestore";
 import React from "react";
 import DatePicker from "react-datepicker";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth, useJob } from "@/models";
-import { englishLevel } from "@/utils/constants";
-import { doc } from "firebase/firestore";
 import database from "@/clients/firebase";
+import { useAuth, useJob } from "@/models";
+import { ENGLISH_LEVEL, JOB_STATUS } from "@/utils/constants";
 
 export default function AddJob() {
   const auth = useAuth();
@@ -30,7 +30,7 @@ export default function AddJob() {
         company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
         // company: auth.user.company,
         owner: auth.userRef,
-        status: "pending",
+        status: JOB_STATUS.PENDING,
         postDate: new Date(),
         // fixme: temp solution: we need an admin to approve the job
       }),
@@ -154,7 +154,7 @@ export default function AddJob() {
             className="input input-bordered"
             {...register("englishLevel", { required: true })}
           >
-            {englishLevel.map((type, index) => {
+            {ENGLISH_LEVEL.map((type, index) => {
               return (
                 <option value={type} key={index}>
                   {type}

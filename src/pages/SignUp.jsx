@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 // fixme: temp hard code company
 import database from "@/clients/firebase";
 import { useAuth } from "@/models";
-import { userTypes } from "@/utils/constants";
+import { ROLES } from "@/utils/constants";
 
 export default function SignUp() {
   const auth = useAuth();
@@ -103,7 +103,7 @@ export default function SignUp() {
           className="input w-full max-w-xs input-bordered mb-4"
           {...register("role", { required: true })}
         >
-          {userTypes.map((type, index) => {
+          {Object.values(ROLES).map((type, index) => {
             return (
               <option value={type} key={index}>
                 {type}

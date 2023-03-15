@@ -8,7 +8,7 @@ const AdminContext = createContext({});
 
 const AdminContextProvider = ({ children }) => {
   // todo: somewhere deny access, should be in main.jsx
-  //   if (auth.user.role !== "admin") {
+  //   if (auth.user.role !== ROLES.ADMIN) {
   //     console.error("?");
   //   }
   const value = useMemo(() => ({}), []);
