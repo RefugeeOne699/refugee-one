@@ -1,8 +1,18 @@
-export const userTypes = ["Admin", "Client", "Employer"];
-export const englishLevel = ["Beginner", "Intermediate", "Fluent"];
-export const screenSize = {
-    mobile: 768,
-    tablet: 1024,
-    desktop: 1280,
-    largeDesktop: 1440,
+export const ROLES = {
+  ADMIN: "admin",
+  EMPLOYER: "employer",
+  CLIENT: "client",
+};
+export const ENGLISH_LEVEL = ["beginner", "intermediate", "fluent"];
+export const JOB_STATUS = {
+  REJECTED: "rejected",
+  PENDING: "pending",
+  APPROVED: "approved",
+  CLOSED: "closed",
+};
+export const SCREEN_SIZE = {
+    MOBILE: 768,
+    TABLET: 1024,
+    DESKTOP: 1280,
+    LARGE_DESKTOP: 1440,
 };

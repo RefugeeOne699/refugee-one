@@ -1,7 +1,7 @@
 import "./App.css";
 
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Outlet } from "react-router-dom";
 
 import { auth as firebaseAuth } from "@/clients/firebase";
@@ -24,15 +24,30 @@ export default function App() {
       }
     });
   }, []);
-
-  return (
-    <div className="flex flex-row gap-2">
-      <>
-        <Navbar />
-      </>
-      <div className="flex-auto flex flex-col m-3">
-        <Outlet />
-      </div>
-    </div>
+  
+  /**
+   * what's happening here:
+   * if you access a page that requires auth information,
+   * you need to let the website fetch the auth information before loading the page.
+   * Otherwise, there will be an error
+   */
+  const main = useMemo(
+    () =>
+      auth.user ? (
+        <div className="flex flex-row gap-2">
+          <div className="flex-none">
+            <Navbar />
+          </div>
+          <div className="flex-auto flex flex-col">
+            <Outlet />
+          </div>
+        </div>
+      ) : (
+        // todo: add a loading spin
+        "Loading"
+      ),
+    [auth.user]
   );
+
+  return main;
 }

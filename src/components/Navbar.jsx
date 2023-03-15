@@ -6,7 +6,7 @@ import { useAuth } from "@/models";
 
 import { slide as Menu } from "react-burger-menu";
 
-import { userTypes, screenSize } from "@/utils/constants";
+import { ROLES, SCREEN_SIZE } from "@/utils/constants";
 
 function NavbarList(props) {
   const navigate = useNavigate();
@@ -17,8 +17,6 @@ function NavbarList(props) {
     "Profile": "/profile",
     "SignUp": "/signUp",
     "Add Job": "/addJob",
-    "Dashboard": "/adminDash",
-    "View Jobs (employer)": "/employer-jobpostings",
   };
 
   const adminMap = {
@@ -26,9 +24,8 @@ function NavbarList(props) {
     "Profile": "/profile",
     "SignUp": "/signUp",
     "Add Job": "/addJob",
-    "Dashboard": "/adminDash",
-    "View Jobs (admin)": "/admin-jobpostings",
-    "View Jobs (employer)": "/employer-jobpostings",
+    "Dashboard": "/admin",
+    "View Jobs (admin)": "/admin/pendingJobs",
   };
 
   const employerMap = {
@@ -36,13 +33,12 @@ function NavbarList(props) {
     "Profile": "/profile",
     "SignUp": "/signUp",
     "Add Job": "/addJob",
-    "Dashboard": "/adminDash",
-    "View Jobs (employer)": "/employer-jobpostings",
+    "View Jobs (employer)": "/employer/jobs",
   };
 
   return (
     <>
-      {auth.user?.role === userTypes[0] ? (
+      {auth.user?.role === ROLES.ADMIN ? (
         // admin
         Object.keys(adminMap).map((key) => (
           <button
@@ -56,7 +52,7 @@ function NavbarList(props) {
             {key}
           </button>
         ))
-      ) : auth.user?.role === userTypes[1] ? (
+      ) : auth.user?.role === ROLES.EMPLOYER ? (
         // employer
         Object.keys(employerMap).map((key) => (
           <button
@@ -148,7 +144,7 @@ export default function Navbar() {
   return (
     <>
       {
-        width < screenSize.mobile ? (
+        width < SCREEN_SIZE.MOBILE ? (
           <Menu styles={styles} 
             isOpen={open}
             onStateChange={(state) => setOpen(state.isOpen)}

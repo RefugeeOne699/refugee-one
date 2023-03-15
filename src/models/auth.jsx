@@ -57,7 +57,7 @@ const AuthContextProvider = ({ children }) => {
 
   const signUp = (payload) => {
     console.log(payload);
-    const { email, password, name, phone, role } = payload;
+    const { email, password, name, phone, role, company } = payload;
     return createUserWithEmailAndPassword(auth, email, password)
       .then(async (credential) => {
         await setDoc(doc(database, "Users", credential.user.uid), {
@@ -65,6 +65,7 @@ const AuthContextProvider = ({ children }) => {
           email,
           role,
           phone,
+          company,
         });
       })
       .catch((error) => {
