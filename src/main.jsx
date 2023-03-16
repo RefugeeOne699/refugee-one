@@ -4,6 +4,8 @@ import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
+import JobRoot from "@/pages/Job";
+
 import AppRoot from "./App";
 import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider } from "./models/auth";
@@ -12,15 +14,15 @@ import { JobContextProvider } from "./models/job";
 const AddJob = lazy(async () => import("@/pages/AddJob"));
 const Admin = {
   Dashboard: lazy(async () => import("@/pages/admin/AdminDashboard")),
-  PendingJobs: lazy(async () => import("@/pages/admin/AdminPendingJobs")),
-};
-const Employer = {
-  Jobs: lazy(async () => import("@/pages/EmployerJobPostings")),
 };
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Profile = lazy(async () => import("@/pages/Profile"));
+const Blank = lazy(async () => import("@/components/Blank"));
+const Job = {
+  View: lazy(async () => import("@/components/job/JobView")),
+};
 
 const router = createBrowserRouter([
   {
@@ -35,15 +37,6 @@ const router = createBrowserRouter([
       {
         path: "signUp",
         element: <SignUp />,
-      },
-      {
-        path: "employer",
-        children: [
-          {
-            path: "jobs",
-            element: <Employer.Jobs />,
-          },
-        ],
       },
       {
         path: "addJob",
@@ -67,45 +60,19 @@ const router = createBrowserRouter([
             index: true,
             element: <Admin.Dashboard />,
           },
+        ],
+      },
+      {
+        path: "jobs",
+        element: <JobRoot />,
+        children: [
+          { index: true, element: <Blank /> },
           {
-            path: "pendingJobs",
-            element: <Admin.PendingJobs />,
+            path: ":jobId",
+            element: <Job.View />,
           },
         ],
       },
-
-      // {
-      //   path: "login",
-      //   element: <Login />,
-      // },
-      // {
-      //   path: "register",
-      //   element: <Register />,
-      // },
-      // {
-      //   path: "profile",
-      //   element: <div>Profile</div>, // TODO: note we need route guard
-      // },
-      // {
-      //   path: "random",
-      //   element: <Random />, // TODO: get a random cocktail when loading, click to get another
-      // },
-      // {
-      //   path: "search",
-      //   element: <Search />, // TODO: search results page; read query from url param; multiple filters
-      // },
-      // {
-      //   path: "detail/:cocktailId",
-      //   element: <Detail />,
-      // },
-      // {
-      //   path: "popular",
-      //   element: <Popular />,
-      // },
-      // {
-      //   path: "my-list",
-      //   element: <DrinkList />,
-      // },
     ],
   },
 ]);
