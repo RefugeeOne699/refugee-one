@@ -1,4 +1,3 @@
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
@@ -67,19 +66,6 @@ export default function JobList() {
 
   return (
     <div className="w-full">
-      <div className="w-full flex flex-row justify-center">
-        <div className="w-4/5 flex flex-row justify-between	">
-          <input
-            aria-label="Search"
-            type="text"
-            placeholder={"Search job or company name"}
-            className="input input-bordered w-4/5"
-          />
-          <div className={`h-full aspect-square`}>
-            <FilterAltIcon style={{ fontSize: "6.5vh" }} />
-          </div>
-        </div>
-      </div>
       <ul className="menu w-full">{jobs}</ul>
     </div>
   );
