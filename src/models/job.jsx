@@ -101,8 +101,8 @@ const JobContextProvider = ({ children }) => {
         company,
         status: job.status,
         location: job.location,
-        wageHourlyMin: job.wageHourlyMin,
-        hasMedicalBenefit: job.hasMedicalBenefit,
+        wage: job.wage,
+        benefits: job.benefit,
       };
     });
     return await Promise.all(jobList);

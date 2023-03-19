@@ -48,11 +48,13 @@ export default function JobList() {
                       <p className="w-1/2 truncate">{`${job.location}`}</p>
                     </div>
                     <div className="flex felx-row w-11/12">
-                      <p className="w-1/2 flex justify-start">
-                        {job.hasMedicalBenefit ? "Offers Benefits" : "No Benefits"}
+                      <p className="w-1/2 truncate">
+                        {job.benefits.hasMedical
+                          ? "Medical Benefits"
+                          : "No Medical Benefits"}
                       </p>
-                      <p className="w-1/2  flex justify-start">
-                        Min $/hr: {job.wageHourlyMin}
+                      <p className="w-1/2 truncate">
+                        Minimum Pay: {job.wage.min} {job.wage.type}
                       </p>
                     </div>
                   </div>

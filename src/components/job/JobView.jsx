@@ -53,7 +53,6 @@ export default function JobView() {
               <CalendarMonthIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">Starting Date:</p>
-                Date Created:
                 {`${new Date(data.dateJobStart.seconds * 1000)}`
                   .split(" ")
                   .slice(0, 4)
@@ -64,8 +63,7 @@ export default function JobView() {
               <WorkIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">Job Type:</p>
-                Based of Benefits:
-                {data.jobType}
+                Database TBD
               </div>
             </div>
           </div>
