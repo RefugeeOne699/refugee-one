@@ -1,13 +1,13 @@
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
+
 import { ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 export default function JobList() {
-
   const { listJobs } = useJob();
   const { jobId } = useParams();
   const { run, data } = useRequest(async () => listJobs(), {
@@ -28,20 +28,33 @@ export default function JobList() {
       ? data.map((job) => {
           return (
             <li className="flex flex-row justify-center w-full mt-5" key={job.id}>
-              <Link  to={job.id} className={`${job.id && job.id == jobId ? "active" : ""}  w-4/5 rounded-xl border-slate-400 border-4`}>
+              <Link
+                to={job.id}
+                className={`${
+                  job.id && job.id == jobId ? "active" : ""
+                }  w-4/5 rounded-xl border-slate-400 border-4`}
+              >
                 <div className="card card-compact w-full">
-                  <div className={`absolute right-0 translate-y-1/2 bottom-1/2 text-xl ${auth.user.role === ROLES.CLIENT?"":"hidden"}`}>
-                    <StarBorderIcon style={{ fontSize: "5vh" }}/>
+                  <div
+                    className={`absolute right-0 translate-y-1/2 bottom-1/2 text-xl ${
+                      auth.user.role === ROLES.CLIENT ? "" : "hidden"
+                    }`}
+                  >
+                    <StarBorderIcon style={{ fontSize: "5vh" }} />
                   </div>
                   <div className="card-body">
-                  <div className="card-title text-xl">{job.title}</div>
+                    <div className="card-title text-xl">{job.title}</div>
                     <div className="flex felx-row w-11/12">
                       <p className="w-1/2 truncate">{job.company.name}</p>
-                      <p className="w-1/2 truncate" >{`${job.location}`}</p>
+                      <p className="w-1/2 truncate">{`${job.location}`}</p>
                     </div>
                     <div className="flex felx-row w-11/12">
-                      <p className="w-1/2 flex justify-start">{job.hasMedicalBenefit ? "Offers Benefits" : "No Benefits"}</p>
-                      <p className="w-1/2  flex justify-start">Min $/hr: {job.wageHourlyMin}</p>
+                      <p className="w-1/2 flex justify-start">
+                        {job.hasMedicalBenefit ? "Offers Benefits" : "No Benefits"}
+                      </p>
+                      <p className="w-1/2  flex justify-start">
+                        Min $/hr: {job.wageHourlyMin}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -56,9 +69,14 @@ export default function JobList() {
     <div className="w-full">
       <div className="w-full flex flex-row justify-center">
         <div className="w-4/5 flex flex-row justify-between	">
-          <input aria-label='Search' type="text" placeholder={"Search job or company name"} className="input input-bordered w-4/5"/>
+          <input
+            aria-label="Search"
+            type="text"
+            placeholder={"Search job or company name"}
+            className="input input-bordered w-4/5"
+          />
           <div className={`h-full aspect-square`}>
-            <FilterAltIcon style={{ fontSize: "6.5vh" }}/>
+            <FilterAltIcon style={{ fontSize: "6.5vh" }} />
           </div>
         </div>
       </div>

@@ -1,21 +1,22 @@
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import DescriptionIcon from "@mui/icons-material/Description";
+import LanguageIcon from "@mui/icons-material/Language";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import TranslateIcon from "@mui/icons-material/Translate";
+import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { numberToDaysOfWeek } from "@/utils";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import WorkIcon from '@mui/icons-material/Work';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import TranslateIcon from '@mui/icons-material/Translate';
-import LanguageIcon from '@mui/icons-material/Language';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { useJob } from "@/models";
 import { Link } from "react-router-dom";
 
+import { useJob } from "@/models";
+import { numberToDaysOfWeek } from "@/utils";
+
 export default function JobView() {
-  const iconSize = "6.5vh"
+  const iconSize = "6.5vh";
   const { jobId } = useParams();
   const { getJob } = useJob();
   if (!jobId) {
@@ -42,88 +43,90 @@ export default function JobView() {
     return data ? (
       <div className="flex flex-col card">
         <div className="card-body items-center">
-            <p className="card-title text-2xl">{data.title}</p>
-            <p className="text-bold text-1xl">{data.company.name}</p>
-            <p className="text-bold text-1xl">Posted: {(`${new Date(data.datePost.seconds*1000)}`).split(" ").slice(0,4).join(" ")}</p>
+          <p className="card-title text-2xl">{data.title}</p>
+          <p className="text-bold text-1xl">{data.company.name}</p>
+          <p className="text-bold text-1xl">
+            Posted:{" "}
+            {`${new Date(data.datePost.seconds * 1000)}`.split(" ").slice(0, 4).join(" ")}
+          </p>
           <div className="flex w-full flex-col lg:flex-row">
             <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
-              <CalendarMonthIcon style={{ fontSize: iconSize }}/>
+              <CalendarMonthIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">Starting Date:</p>
-                {(`${new Date(data.datePost.seconds*1000)}`).split(" ").slice(0,4).join(" ")}
+                {`${new Date(data.datePost.seconds * 1000)}`
+                  .split(" ")
+                  .slice(0, 4)
+                  .join(" ")}
               </div>
             </div>
             <div className="flex flex-row mt-5 w-full lg:w-1/2">
-              <WorkIcon style={{ fontSize: iconSize }}/>
+              <WorkIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">Job Type:</p>
-                {data.hasMedicalBenefit ? "Full-Time": "Part-Time"}
+                {data.hasMedicalBenefit ? "Full-Time" : "Part-Time"}
               </div>
             </div>
           </div>
           <div className="flex w-full flex-col lg:flex-row">
             <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
-              <AttachMoneyIcon style={{ fontSize: iconSize }}/>
+              <AttachMoneyIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">Salary Range:</p>
-                <p>{`${data.wageHourlyMin} - ${data.wageHourlyMax} dollars/hr` }</p>
+                <p>{`${data.wageHourlyMin} - ${data.wageHourlyMax} dollars/hr`}</p>
               </div>
             </div>
             <div className="flex flex-row mt-5 w-full lg:w-1/2">
-              <LocalHospitalIcon style={{ fontSize: iconSize }}/>
+              <LocalHospitalIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">Medical Benefits:</p>
-                <p>{data.hasMedicalBenefit ? "Included": "None"}</p>
+                <p>{data.hasMedicalBenefit ? "Included" : "None"}</p>
               </div>
             </div>
           </div>
           <div className="flex w-full flex-col lg:flex-row">
             <div className="flex flex-row mt-5 w-full lg:w-1/2">
-              <LanguageIcon style={{ fontSize: iconSize}}/>
+              <LanguageIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">English Level:</p>
                 <p>{data.langEnglishLevel}</p>
               </div>
             </div>
             <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
-              <TranslateIcon style={{ fontSize: iconSize }}/>
+              <TranslateIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
-                <p className="font-bold" >Language Notes:</p>
+                <p className="font-bold">Language Notes:</p>
                 <p>{data.langNote}</p>
               </div>
             </div>
           </div>
           <div className="flex w-full mt-5 flex-row">
-            <LocationOnIcon style={{ fontSize: iconSize }}/>
+            <LocationOnIcon style={{ fontSize: iconSize }} />
             <div className="ml-3">
               <p className="font-bold">Job Location:</p>
               <p>{data.location}</p>
             </div>
           </div>
           <div className="flex w-full mt-5 flex-row">
-            <AccessTimeIcon style={{ fontSize: iconSize }}/>
+            <AccessTimeIcon style={{ fontSize: iconSize }} />
             <div className="ml-3">
               <p className="font-bold">Job Timing:</p>
-              <p >Days: {numberToDaysOfWeek(data.shift.daysOfWeek).join(", ")}</p>
+              <p>Days: {numberToDaysOfWeek(data.shift.daysOfWeek).join(", ")}</p>
               <p>Hours: {`${data.shift.timeStart} - ${data.shift.timeEnd}`}</p>
             </div>
           </div>
           <div className="flex flex-row w-full mt-5">
-            <DescriptionIcon style={{ fontSize: iconSize }}/>
+            <DescriptionIcon style={{ fontSize: iconSize }} />
             <div className="ml-3">
               <p className="font-bold">Job Description:</p>
               <p>{data.description}</p>
             </div>
           </div>
           <div className="w-full flex flex-row justify-center mt-5">
-          <Link to={".."}>
-            <button className="btn btn-primary mr-10 md:hidden">
-              Back
-            </button>
-          </Link>
-            <button className="btn btn-success">
-              Saved
-            </button>
+            <Link to={".."}>
+              <button className="btn btn-primary mr-10 md:hidden">Back</button>
+            </Link>
+            <button className="btn btn-success">Saved</button>
           </div>
         </div>
       </div>
