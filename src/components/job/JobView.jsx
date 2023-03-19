@@ -11,14 +11,12 @@ import LanguageIcon from '@mui/icons-material/Language';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { OverlayContext } from "@/pages/Job";
-import { useContext } from "react";
 import { useJob } from "@/models";
+import { Link } from "react-router-dom";
 
 export default function JobView() {
   const { jobId } = useParams();
   const { getJob } = useJob();
-  const {setOverlay} = useContext(OverlayContext)
   if (!jobId) {
     // todo: add an error page
     return <p className="text-bold text-3xl">404 not found.</p>;
@@ -40,12 +38,11 @@ export default function JobView() {
     if (loading) {
       return <p>loading</p>;
     }
-    console.log(data)
     return data ? (
       <div className="flex flex-col card">
-        <button className="btn btn-primary absolute ml-10 mt-10 md:hidden lg:hidden" onClick={()=>setOverlay(false)}>
-          Exit
-        </button>
+          <button className="btn btn-primary absolute ml-10 mt-10 md:hidden" onClick={()=>setOverlay(false)}>
+            Back
+          </button>
         <div className="card-body items-center">
             <p className="card-title text-2xl">{data.title}</p>
             <p className="text-bold text-1xl">{data.company.name}</p>
