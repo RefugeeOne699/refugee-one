@@ -1,5 +1,6 @@
 import "./App.css";
 
+import { useRequest } from "ahooks";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useMemo } from "react";
 import { Outlet } from "react-router-dom";
@@ -11,16 +12,19 @@ import { useAuth } from "./models";
 
 export default function App() {
   const auth = useAuth();
+  const { run, loading } = useRequest(async (user) => auth.pullUser(user), {
+    manual: true,
+  });
   useEffect(() => {
     // Global observer for firebase user
     onAuthStateChanged(firebaseAuth, async (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        await auth.pullUser(user);
+        await run(user);
       } else {
         // User is signed out
-        await auth.pullUser(undefined);
+        await run(undefined);
       }
     });
   }, []);
@@ -33,7 +37,10 @@ export default function App() {
    */
   const main = useMemo(
     () =>
-      auth.user ? (
+      loading ? (
+        // todo: add a loading spin
+        "Loading"
+      ) : (
         <div className="flex flex-row gap-2">
           <div className="flex-none">
             <Navbar />
@@ -42,11 +49,8 @@ export default function App() {
             <Outlet />
           </div>
         </div>
-      ) : (
-        // todo: add a loading spin
-        "Loading"
       ),
-    [auth.user]
+    [loading, auth.user]
   );
 
   return main;

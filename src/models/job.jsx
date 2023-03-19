@@ -20,20 +20,46 @@ const JobContext = createContext({
   // todo
   deleteJob: () => {},
   /**
+   * @param {string} id - id of the job
+   * @returns the job detail
+   */
+  // eslint-disable-next-line no-unused-vars
+  getJob: (id) => {},
+  /**
    *
    * @param {undefined | QueryConstraint | QueryConstraint[]} queryConstraints
    * @returns job list
    */
   // eslint-disable-next-line no-unused-vars
-  getJobs: (queryConstraints) => [],
+  listJobs: (queryConstraints) => [],
   // eslint-disable-next-line no-unused-vars
   countJobs: (queryConstraints) => Number,
 });
 
 const JobContextProvider = ({ children }) => {
-  //   const [jobList, setJobList] = useState([]);
   const createJob = async (payload) => {
     await setDoc(doc(collection(database, "Jobs")), payload);
+  };
+  /**
+   * get the detail of a job by id
+   * @param {string} id
+   * @returns job detail
+   */
+  const getJob = async (id) => {
+    const jobDocRef = doc(database, "Jobs", id);
+    const jobDoc = await getDoc(jobDocRef);
+    const job = jobDoc.data();
+    const companyDoc = await getDoc(job.company);
+    job.company = {
+      id: companyDoc.id,
+      name: companyDoc.data().name,
+    };
+    const ownerDoc = await getDoc(job.owner);
+    job.owner = {
+      uid: ownerDoc.id,
+      name: ownerDoc.data().name,
+    };
+    return job;
   };
 
   /**
@@ -50,10 +76,11 @@ const JobContextProvider = ({ children }) => {
    *    company: {
    *      name: "name of the company",
    *      id: "id of the company doc"
-   *    }
+   *    },
+   *    stauts: "pending",
    * }
    */
-  const getJobs = async (queryConstraints) => {
+  const listJobs = async (queryConstraints) => {
     const jobCollection = collection(database, "Jobs");
     const jobQuery = queryConstraints
       ? query(jobCollection, queryConstraints)
@@ -62,9 +89,11 @@ const JobContextProvider = ({ children }) => {
     const jobList = jobDocs.docs.map(async (doc) => {
       const job = doc.data();
       const companyDoc = await getDoc(job.company);
+      const data = companyDoc.data();
       const company = {
         id: companyDoc.id,
-        name: company,
+        name: data.name,
+        status: data.status,
       };
       return {
         id: doc.id,
@@ -94,7 +123,8 @@ const JobContextProvider = ({ children }) => {
       updateJob: () => {},
       // todo
       deleteJob: () => {},
-      getJobs,
+      getJob,
+      listJobs,
       countJobs,
     }),
     []

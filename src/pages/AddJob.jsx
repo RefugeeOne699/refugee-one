@@ -8,8 +8,8 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import database from "@/clients/firebase";
+import { ENGLISH_LEVEL, JOB_STATUS } from "@/constants";
 import { useAuth, useJob } from "@/models";
-import { ENGLISH_LEVEL, JOB_STATUS } from "@/utils/constants";
 
 export default function AddJob() {
   const auth = useAuth();

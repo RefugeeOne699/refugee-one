@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 // import { auth as firebaseAuth } from "@/clients/firebase";
 // fixme: temp hard code company
 import database from "@/clients/firebase";
+import { ROLES } from "@/constants";
 import { useAuth } from "@/models";
-import { ROLES } from "@/utils/constants";
 
 export default function SignUp() {
   const auth = useAuth();
