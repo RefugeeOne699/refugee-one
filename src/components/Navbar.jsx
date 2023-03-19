@@ -6,7 +6,7 @@ import { useAuth } from "@/models";
 
 import { slide as Menu } from "react-burger-menu";
 
-import { ROLES, SCREEN_SIZE } from "@/utils/constants";
+import { ROLES, SCREEN_SIZE } from "@/constants";
 
 function NavbarList(props) {
   const navigate = useNavigate();
