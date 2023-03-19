@@ -99,6 +99,7 @@ const JobContextProvider = ({ children }) => {
         id: doc.id,
         title: job.title,
         company,
+        status: job.status,
         location: job.location,
         wageHourlyMin: job.wageHourlyMin,
         hasMedicalBenefit: job.hasMedicalBenefit
