@@ -92,7 +92,7 @@ export default function JobView() {
               <div className="ml-3">
                 <p className="font-bold">Benefits:</p>
                 <p>Medical: {data.benefit.hasMedical ? "Included" : "None"}</p>
-                <p>Others: {data.benefit.hasOthers ? data.benefit.others  : "None"}</p>
+                <p>Others: {data.benefit.hasOthers ? data.benefit.others : "None"}</p>
               </div>
             </div>
             <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
