@@ -54,6 +54,7 @@ export default function JobView() {
               <CalendarMonthIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">Starting Date:</p>
+                Date Created:
                 {`${new Date(data.datePost.seconds * 1000)}`
                   .split(" ")
                   .slice(0, 4)
@@ -64,6 +65,7 @@ export default function JobView() {
               <WorkIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">Job Type:</p>
+                Based of Benefits:
                 {data.hasMedicalBenefit ? "Full-Time" : "Part-Time"}
               </div>
             </div>
@@ -73,23 +75,24 @@ export default function JobView() {
               <AttachMoneyIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">Salary Range:</p>
-                <p>{`${data.wageHourlyMin} - ${data.wageHourlyMax} dollars/hr`}</p>
+                <p>{`${data.wage.min} - ${data.wage.max} ${data.wage.type}`}</p>
               </div>
             </div>
-            <div className="flex flex-row mt-5 w-full lg:w-1/2">
-              <LocalHospitalIcon style={{ fontSize: iconSize }} />
-              <div className="ml-3">
-                <p className="font-bold">Medical Benefits:</p>
-                <p>{data.hasMedicalBenefit ? "Included" : "None"}</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex w-full flex-col lg:flex-row">
             <div className="flex flex-row mt-5 w-full lg:w-1/2">
               <LanguageIcon style={{ fontSize: iconSize }} />
               <div className="ml-3">
                 <p className="font-bold">English Level:</p>
                 <p>{data.langEnglishLevel}</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex w-full flex-col lg:flex-row">
+            <div className="flex flex-row mt-5 w-full lg:w-1/2">
+              <LocalHospitalIcon style={{ fontSize: iconSize }} />
+              <div className="ml-3">
+                <p className="font-bold">Benefits:</p>
+                <p>Medical: {data.benefit.hasMedical ? "Included" : "None"}</p>
+                <p>Others: {data.benefit.hasOthers ? data.benefit.others  : "None"}</p>
               </div>
             </div>
             <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
@@ -111,8 +114,7 @@ export default function JobView() {
             <AccessTimeIcon style={{ fontSize: iconSize }} />
             <div className="ml-3">
               <p className="font-bold">Job Timing:</p>
-              <p>Days: {numberToDaysOfWeek(data.shift.daysOfWeek).join(", ")}</p>
-              <p>Hours: {`${data.shift.timeStart} - ${data.shift.timeEnd}`}</p>
+              <p>{data.shift.detail}</p>
             </div>
           </div>
           <div className="flex flex-row w-full mt-5">
