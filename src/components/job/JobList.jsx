@@ -5,8 +5,12 @@ import { Link, useParams } from "react-router-dom";
 import { useAuth, useJob } from "@/models";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { OverlayContext } from "@/pages/Job";
+import { useContext } from "react";
 
 export default function JobList() {
+
+  const {setOverlay} = useContext(OverlayContext)
   const { listJobs } = useJob();
   const { jobId } = useParams();
   const { run, data } = useRequest(async () => listJobs(), {
@@ -28,7 +32,7 @@ export default function JobList() {
         console.log(job)
           return (
             <li className="flex flex-row justify-center w-full mt-5" key={job.id}>
-              <Link  to={job.id} className={`${job.id && job.id == jobId ? "active" : ""}  w-4/5 rounded-xl border-slate-400 border-4`}>
+              <Link  to={job.id} className={`${job.id && job.id == jobId ? "active" : ""}  w-4/5 rounded-xl border-slate-400 border-4`} onClick={()=>setOverlay(true)}>
                 <div className="card card-compact w-full">
                   <div className={`absolute right-0 translate-y-1/2 bottom-1/2 text-xl ${auth.user.role === "admin"?"":"hidden"}`}>
                     <StarBorderIcon style={{ fontSize: "6.5vh" }}/>
