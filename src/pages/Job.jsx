@@ -11,7 +11,9 @@ export default function Job() {
       <div className={`${sideMenuMobile} md:block md:basis-1/2 lg:basis-1/3 flex-none`}>
         <JobList />
       </div>
-      <div className={`${contentMobile} md:block md:basis-1/2 lg:basis-2/3 flex-none`}>
+      <div
+        className={`${contentMobile} md:block md:basis-1/2 lg:basis-2/3 flex-none bg-slate-200`}
+      >
         <Outlet />
       </div>
     </div>

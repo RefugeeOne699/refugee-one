@@ -99,6 +99,10 @@ const JobContextProvider = ({ children }) => {
         id: doc.id,
         title: job.title,
         company,
+        status: job.status,
+        location: job.location,
+        wage: job.wage,
+        benefits: job.benefit,
       };
     });
     return await Promise.all(jobList);
