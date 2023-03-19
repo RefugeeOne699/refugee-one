@@ -4,18 +4,14 @@ import JobList from "@/components/job/JobList";
 
 export default function Job() {
   const { jobId } = useParams();
-  const sideMenuMobile = jobId ? "hidden" : "w-full";
-  const contentMobile = jobId ? "w-full" : "hidden";
+  const sideMenuMobile = jobId ? "hidden" : "basis-full";
+  const contentMobile = jobId ? "basis-full" : "hidden";
   return (
-    <div className="flex flex-row min-h-screen h-fit w-screen">
-      <div
-        className={`${sideMenuMobile} md:block md:basis-1/2 lg:basis-5/12 flex-none h-full`}
-      >
+    <div className="flex flex-row">
+      <div className={`${sideMenuMobile} md:block md:basis-1/2 lg:basis-1/3 flex-none`}>
         <JobList />
       </div>
-      <div
-        className={`${contentMobile} md:block md:basis-1/2 lg:basis-7/12 flex-none bg-slate-200 h-full`}
-      >
+      <div className={`${contentMobile} md:block md:basis-1/2 lg:basis-2/3 flex-none bg-slate-200`}>
         <Outlet />
       </div>
     </div>
