@@ -13,7 +13,6 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { useJob } from "@/models";
-import { numberToDaysOfWeek } from "@/utils";
 
 export default function JobView() {
   const iconSize = "6.5vh";
