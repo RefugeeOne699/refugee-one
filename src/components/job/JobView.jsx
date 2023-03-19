@@ -54,7 +54,7 @@ export default function JobView() {
               <div className="ml-3">
                 <p className="font-bold">Starting Date:</p>
                 Date Created:
-                {`${new Date(data.datePost.seconds * 1000)}`
+                {`${new Date(data.dateJobStart.seconds * 1000)}`
                   .split(" ")
                   .slice(0, 4)
                   .join(" ")}
@@ -65,7 +65,7 @@ export default function JobView() {
               <div className="ml-3">
                 <p className="font-bold">Job Type:</p>
                 Based of Benefits:
-                {data.hasMedicalBenefit ? "Full-Time" : "Part-Time"}
+                {data.jobType}
               </div>
             </div>
           </div>
