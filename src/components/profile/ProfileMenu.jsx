@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 
 export default function ProfileMenu() {
   return (
-    <div className="w-2/3 flex flex-col justify-center items-center">
-      <ul className="menu bg-base-100 w-full p-2 rounded-box">
+    <div className="w-full flex flex-col justify-center items-center">
+      <ul className="menu bg-base-100 w-full p-12 rounded-box">
         <li className="w-full">
           <Link to="account" className="flex justify-between">
             <div className="flex justify-start gap-4">
@@ -20,7 +20,7 @@ export default function ProfileMenu() {
           </Link>
         </li>
         <li className="w-full">
-          <a className="flex justify-between">
+          <Link to="help" className="flex justify-between">
             <div className="flex justify-start gap-4">
               <InfoIcon />
               Help
@@ -28,7 +28,7 @@ export default function ProfileMenu() {
             <div className="flex justify-end">
               <KeyboardArrowRightIcon />
             </div>
-          </a>
+          </Link>
         </li>
         <li className="w-full">
           <a className="flex justify-between">
