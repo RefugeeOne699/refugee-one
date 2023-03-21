@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import JobRoot from "@/pages/Job";
+import ProfileRoot from "@/pages/Profile";
 
 import AppRoot from "./App";
 import { AdminContextProvider } from "./models/admin";
@@ -18,10 +19,14 @@ const Admin = {
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
 const Home = lazy(async () => import("@/pages/Home"));
-const Profile = lazy(async () => import("@/pages/Profile"));
 const Blank = lazy(async () => import("@/components/Blank"));
 const Job = {
   View: lazy(async () => import("@/components/job/JobView")),
+};
+const Profile = {
+  Menu: lazy(async () => import("@/components/profile/ProfileMenu")),
+  Help: lazy(async () => import("@/components/profile/ProfileHelp")),
+  Account: lazy(async () => import("@/components/profile/ProfileAccount")),
 };
 
 const router = createBrowserRouter([
@@ -70,6 +75,21 @@ const router = createBrowserRouter([
           {
             path: ":jobId",
             element: <Job.View />,
+          },
+        ],
+      },
+      {
+        path: "profile",
+        element: <ProfileRoot />,
+        children: [
+          { index: true, element: <Profile.Menu /> },
+          {
+            path: "account",
+            element: <Profile.Account />,
+          },
+          {
+            path: "help",
+            element: <Profile.Help />,
           },
         ],
       },
