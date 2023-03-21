@@ -30,7 +30,6 @@ export default function JobList() {
   const jobs = useMemo(() => {
     return data
       ? data.map((job) => {
-          console.log(statusColor[job.status]);
           return (
             <li className="flex flex-row justify-center w-full mt-5" key={job.id}>
               <Link
