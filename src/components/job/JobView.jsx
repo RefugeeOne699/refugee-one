@@ -9,84 +9,11 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
-import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { ROLES } from "@/constants";
-import { useAuth, useJob } from "@/models";
+import { useJob } from "@/models";
 
-// Component that handles the different button displays in jobView
-const ActionButtons = ({ job }) => {
-  const auth = useAuth();
-  const [hideFeedback, sethideFeedback] = useState(true);
-  if (auth.user.role === ROLES.CLIENT) {
-    return (
-      <button
-        onClick={() => {
-          /*updateFunction()*/
-        }}
-        className="btn btn-success"
-      >
-        Save/Unsave TBD
-      </button>
-    );
-  } else if (auth.user.role === ROLES.EMPLOYER) {
-    return (
-      <button
-        onClick={() => {
-          /*updateFunction()*/
-        }}
-        className="btn btn-error"
-      >
-        Request Removal
-      </button>
-    );
-  } else {
-    return (
-      <div className="items-center text-center w-3/4">
-        {hideFeedback ? (
-          ""
-        ) : (
-          <div className="w-full">
-            <label className="label">
-              <span className="label-text">Reason for Rejection (Not Required)</span>
-            </label>
-            <textarea className="textarea textarea-bordered w-full"></textarea>
-          </div>
-        )}
-        {hideFeedback ? (
-          <div className="w-full flex flex-row justify-center">
-            <button onClick={() => sethideFeedback(false)} className="btn btn-error">
-              Reject
-            </button>
-            <button
-              onClick={() => {
-                /*updateJob()*/
-              }}
-              className="btn btn-success ml-5"
-            >
-              Approve
-            </button>
-          </div>
-        ) : (
-          <div className="mt-5">
-            <button onClick={() => sethideFeedback(true)} className="btn btn-warning">
-              Undo
-            </button>
-            <button
-              onClick={() => {
-                /*deleteJob()*/
-              }}
-              className="btn btn-error ml-5"
-            >
-              Reject
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  }
-};
+import ActionButtons from "./ActionButtons";
 
 export default function JobView() {
   const iconSize = "6.5vh";
