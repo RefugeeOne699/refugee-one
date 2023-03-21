@@ -49,67 +49,75 @@ export default function AddJob() {
   return (
     <div className="flex flex-col justify-center items-center">
       <form onSubmit={handleSubmit(addJob)}>
-        <div className="form-control">
-          <label className="label" htmlFor="title">
-            Title
+        <div className="flex flex-row form-control mb-4 items-center">
+          <label className="label flex basis-44" htmlFor="title">
+            Job Title
           </label>
           <input
             type="text"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             {...register("title", { required: true })}
           />
         </div>
-        <div className="form-control">
-          <label className="label" htmlFor="company">
+        <div className="flex flex-row form-control">
+          <label className="label flex basis-44" htmlFor="company">
             Company Name
           </label>
           <input
             type="text"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             {...register("company")}
             disabled
           />
         </div>
-        <div className="form-control">
-          <label className="label" htmlFor="startDate">
-            Start Date
-          </label>
-          <div className="input-group">
-            <div
-              className="relative max-w-sm"
-              style={{ zIndex: "9999", left: "17rem", top: "-0.5rem" }}
-            >
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg
-                  aria-hidden="true"
-                  className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
+
+        <div className="flex flex-row">
+          <div className="form-control">
+            <label className="label" htmlFor="startDate">
+              Start Date
+            </label>
+            <div className="input-group">
+              <div
+                className="relative max-w-sm"
+                style={{ zIndex: "9999", left: "17rem", top: "-0.5rem" }}
+              >
+                {/* <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    aria-hidden="true"
+                    className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </div> */}
               </div>
+              <Controller
+                name="dateInput"
+                control={control}
+                render={({ field }) => (
+                  <DatePicker
+                    className="input w-full max-w-xs input-bordered mb-4"
+                    // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholderText="Select Start Date"
+                    onChange={(date) => field.onChange(date)}
+                    selected={field.value}
+                  />
+                )}
+              />
             </div>
-            <Controller
-              name="dateInput"
-              control={control}
-              render={({ field }) => (
-                <DatePicker
-                  className="input w-full max-w-xs input-bordered mb-4"
-                  // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholderText="Select Start Date"
-                  onChange={(date) => field.onChange(date)}
-                  selected={field.value}
-                />
-              )}
-            />
+          </div>
+
+          <div>
+            <label>Job Type</label>
           </div>
         </div>
+
         <div className="form-control">
           <label className="label" htmlFor="wage">
             Wages
