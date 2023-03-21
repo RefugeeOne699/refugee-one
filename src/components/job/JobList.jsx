@@ -7,6 +7,11 @@ import { ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
 export default function JobList() {
+  const statusColor = {
+    approved: "badge-success",
+    rejected: "badge-error",
+    pending: "badge-warning",
+  };
   const { listJobs } = useJob();
   const { jobId } = useParams();
   const { run, data } = useRequest(async () => listJobs(), {
@@ -25,6 +30,7 @@ export default function JobList() {
   const jobs = useMemo(() => {
     return data
       ? data.map((job) => {
+          console.log(statusColor[job.status]);
           return (
             <li className="flex flex-row justify-center w-full mt-5" key={job.id}>
               <Link
@@ -42,7 +48,16 @@ export default function JobList() {
                     <StarBorderIcon style={{ fontSize: "5vh" }} />
                   </div>
                   <div className="card-body">
-                    <div className="card-title text-xl">{job.title}</div>
+                    <div className="card-title text-xl">
+                      {job.title}
+                      {auth.user.role !== ROLES.CLIENT ? (
+                        <div className={`badge ${statusColor[job.status]}`}>
+                          {job.status}
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                     <div className="flex felx-row w-11/12">
                       <p className="w-1/2 truncate">{job.company.name}</p>
                       <p className="w-1/2 truncate">{`${job.location}`}</p>

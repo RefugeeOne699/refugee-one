@@ -11,8 +11,48 @@ import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
-import { useJob } from "@/models";
+import { useAuth, useJob } from "@/models";
+import { ROLES } from "@/constants";
+
+const ActionButtons = ({job}) =>{
+  const auth = useAuth()
+  const [hideFeedback, sethideFeedback] = useState(true)
+  console.log(auth.user.role)
+
+  if(auth.user.role === ROLES.CLIENT){
+    return(
+      <button onClick={()=>{/*updateFunction()*/}} className="btn btn-success">Save/Unsave TBD</button>
+    )
+  }else if(auth.user.role === ROLES.EMPLOYER){
+    return(
+      <button onClick={()=>{/*updateFunction()*/}} className="btn btn-error">Request Removal</button>
+    )
+  }else{
+    return(
+      <div className="items-center text-center w-3/4">
+        {hideFeedback ? "" : 
+        <div className="w-full">
+          <label className="label">
+            <span className="label-text">Reason for Rejection (Not Required)</span>
+          </label>
+          <textarea className="textarea textarea-bordered w-full"></textarea>
+        </div>}
+        {hideFeedback ?
+        <div className="w-full flex flex-row justify-center">
+          <button onClick={()=>sethideFeedback(false)} className="btn btn-error">Reject</button>
+          <button  onClick={()=>{/*updateJob()*/}} className="btn btn-success ml-5">Approve</button>
+        </div> :
+        <div className="mt-5">
+          <button onClick={()=>sethideFeedback(true)} className="btn btn-warning">Undo</button>
+          <button  onClick={()=>{/*updateJob()*/}} className="btn btn-error ml-5">Reject</button>
+        </div>}
+      </div>
+    )
+  }
+}
+
 
 export default function JobView() {
   const iconSize = "6.5vh";
@@ -123,9 +163,9 @@ export default function JobView() {
           </div>
           <div className="w-full flex flex-row justify-center mt-5">
             <Link to={".."}>
-              <button className="btn btn-primary mr-10 md:hidden">Back</button>
+              <button className="btn btn-primary mr-5 md:hidden">Back</button>
             </Link>
-            <button className="btn btn-success">Saved</button>
+            <ActionButtons job={data}/>
           </div>
         </div>
       </div>
