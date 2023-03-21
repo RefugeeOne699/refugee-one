@@ -26,15 +26,13 @@ export default function JobList() {
     return data
       ? data.map((job) => {
           return (
-            <li
-              className="flex flex-row w-full mt-5 rounded-xl border-slate-400 border-4 "
-              key={job.id}
-            >
-              <Link
-                to={job.id}
-                className={`${job.id && job.id == jobId ? "active" : ""} w-full`}
+            <li className="flex flex-row w-full mt-5 " key={job.id}>
+              <div
+                className={`card card-compact w-full rounded-xl border-slate-400 border-4 ${
+                  job.id && job.id == jobId ? "active" : ""
+                }`}
               >
-                <div className="card card-compact w-full flex flex-row justify-between">
+                <Link to={job.id} className="w-full flex flex-row justify-between">
                   <div className="card-body basis-9/12 flex-none">
                     <div className="card-title text-xl">{job.title}</div>
                     <div className="flex flex-row flex-none">
@@ -55,8 +53,8 @@ export default function JobList() {
                   <div className="card-actions basis-1/12 items-center justify-center">
                     <JobSave jobId={job.id} mode={"list"} />
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
             </li>
           );
         })
