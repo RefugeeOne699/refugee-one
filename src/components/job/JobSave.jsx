@@ -1,7 +1,7 @@
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import { useRequest } from "ahooks";
 import { useMemo } from "react";
-import { useParams } from "react-router-dom";
 
 import Spin from "@/components/Spin";
 import { useAuth, useJobSave } from "@/models";
@@ -14,13 +14,14 @@ export default function JobSave({ jobId, mode }) {
     jobsSavedLoading: checking,
   } = useJobSave();
   const auth = useAuth();
-  const { jobId: jobIdUrl } = useParams();
   const { uid } = auth.user;
-  // only trick onClick when the job page/item in the list is active
+  const saveJobRequest = useRequest(async () => saveJob.run(jobId, uid), {
+    manual: true,
+    // todo: alert success message here
+    onSuccess: () => {},
+  });
   const onClick = async () => {
-    if (jobIdUrl && jobId === jobIdUrl) {
-      await saveJob.run(jobId, uid);
-    }
+    await saveJobRequest.run(jobId, uid);
   };
 
   const loading = saveJob.loading || checking;
