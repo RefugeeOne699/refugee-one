@@ -10,8 +10,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
