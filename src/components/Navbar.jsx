@@ -37,51 +37,57 @@ function NavbarList(props) {
   };
 
   return (
-    <>
+    <ul className="menu w-56 p-2 gap-5 text-black">
       {auth.user?.role === ROLES.ADMIN ? (
         // admin
         Object.keys(adminMap).map((key) => (
-          <button
-            className="btn w-full m-2"
-            key={key}
-            onClick={() => {
-              navigate(adminMap[key]);
-              props.setOpen(false);
-            }}
-          >
-            {key}
-          </button>
+          <li className="border-b-2 border-grey">
+            <button
+              className=""
+              key={key}
+              onClick={() => {
+                navigate(adminMap[key]);
+                props.setOpen(false);
+              }}
+            >
+              {key}
+            </button>
+          </li>
         ))
       ) : auth.user?.role === ROLES.EMPLOYER ? (
         // employer
         Object.keys(employerMap).map((key) => (
-          <button
-            className="btn w-full m-2"
-            key={key}
-            onClick={() => {
-              navigate(employerMap[key]);
-              props.setOpen(false);
-            }}
-          >
-            {key}
-          </button>
+          <li className="border-b-2 border-grey">
+            <button
+              className=""
+              key={key}
+              onClick={() => {
+                navigate(employerMap[key]);
+                props.setOpen(false);
+              }}
+            >
+              {key}
+            </button>
+          </li>
         ))
       ) : (
         // user
         Object.keys(userMap).map((key) => (
-          <button
-            className="btn w-full m-2"
-            key={key}
-            onClick={() => {
-              navigate(userMap[key]);
-              props.setOpen(false);
-            }}
-          >
-            {key}
-          </button>
+          <li className="border-b-2 border-grey">
+            <button
+              className=""
+              key={key}
+              onClick={() => {
+                navigate(userMap[key]);
+                props.setOpen(false);
+              }}
+            >
+              {key}
+            </button>
+          </li>
         ))
       )}
-    </>
+    </ul>
   );
 }
 
@@ -103,7 +109,7 @@ export default function Navbar() {
       top: '36px',
     },
     bmBurgerBars: {
-      background: '#FFFFFF'
+      background: 'black'
     },
     bmBurgerBarsHover: {
       background: '#a90000'
@@ -113,28 +119,12 @@ export default function Navbar() {
       width: '24px'
     },
     bmCross: {
-      background: '#bdc3c7'
-    },
-    bmMenuWrap: {
-      position: 'fixed',
-      height: '100%'
+      background: 'black'
     },
     bmMenu: {
-      background: '#373a47',
+      background: 'white',
       padding: '2.5em 1.5em 0',
       fontSize: '1.15em'
-    },
-    bmMorphShape: {
-      fill: '#373a47'
-    },
-    bmItemList: {
-      color: '#b8b7ad',
-      padding: '0.8em',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'start',
-    },
-    bmItem: {
     },
     bmOverlay: {
       background: 'rgba(0, 0, 0, 0.3)'
