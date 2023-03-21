@@ -12,10 +12,10 @@ export const JOB_STATUS = {
 };
 
 export const SCREEN_SIZE = {
-    MOBILE: 768,
-    TABLET: 1024,
-    DESKTOP: 1280,
-    LARGE_DESKTOP: 1440,
+  MOBILE: 768,
+  TABLET: 1024,
+  DESKTOP: 1280,
+  LARGE_DESKTOP: 1440,
 };
 
 export const DAYS_OF_WEEK = [

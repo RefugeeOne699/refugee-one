@@ -28,7 +28,7 @@ export default function App() {
       }
     });
   }, []);
-  
+
   /**
    * what's happening here:
    * if you access a page that requires auth information,
