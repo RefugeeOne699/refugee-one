@@ -1,6 +1,5 @@
 import { useAuth } from "@/models";
 import { Outlet } from "react-router-dom";
-import ProfileMenu from "@/components/profile/ProfileMenu";
 
 export default function Profile() {
   const auth = useAuth();

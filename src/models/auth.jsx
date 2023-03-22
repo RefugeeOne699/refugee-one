@@ -2,8 +2,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
+  updatePassword,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
 
 import database, { auth } from "@/clients/firebase";
@@ -25,6 +26,8 @@ const AuthContext = createContext({
   signIn: () => {},
   signOut: () => {},
   signUp: () => {},
+  updatePassword: () => {},
+  updateProfile: () => {},
 });
 
 const AuthContextProvider = ({ children }) => {
@@ -82,6 +85,26 @@ const AuthContextProvider = ({ children }) => {
       });
   };
 
+  const updatePassword = (newPassword) => {
+    return updatePassword(auth.currentUser, newPassword)
+      .then(() => {})
+      .catch((error) => {
+        throw new Error(error);
+      });
+  };
+
+  const updateProfile = (newProfile) => {
+    const docRef = doc(database, "Users", auth.currentUser.uid);
+    return updateDoc(docRef, {
+      name: newProfile.name,
+      phone: newProfile.phone,
+    })
+      .then(() => {})
+      .catch((error) => {
+        throw new Error(error);
+      });
+  };
+
   const contextValue = useMemo(
     () => ({
       user,
@@ -90,6 +113,8 @@ const AuthContextProvider = ({ children }) => {
       signIn,
       signOut,
       signUp,
+      updatePassword,
+      updateProfile,
     }),
     [user, pullUser]
   );
