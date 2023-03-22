@@ -7,16 +7,15 @@ import { useAuth } from "@/models";
 import { useRequest } from "ahooks";
 
 export default function ProfileMenu() {
+  const auth = useAuth();
 
-    const auth = useAuth();
-
-    const { run: signOut } = useRequest(async () => auth.signOut(), {
-        manual: true,
-        onError: (error) => {
-          //todo: handle error
-          console.error(error);
-        },
-      });
+  const { run: signOut } = useRequest(async () => auth.signOut(), {
+    manual: true,
+    onError: (error) => {
+      //todo: handle error
+      console.error(error);
+    },
+  });
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
@@ -43,8 +42,8 @@ export default function ProfileMenu() {
             </div>
           </Link>
         </li>
-    </ul>
-    <ul className="menu bg-base-100 w-full px-12 rounded-box mt-8">
+      </ul>
+      <ul className="menu bg-base-100 w-full px-12 rounded-box mt-8">
         <li className="w-full">
           <a onClick={signOut} className="flex bg-red-800 text-white justify-between">
             <div className="flex justify-start gap-4">
