@@ -16,6 +16,7 @@ export default function ProfileAccount() {
     // fixme: temp hard code company
     async (data) => {
       console.log(data);
+      // TODO: add modify password
       return auth.updateProfile(data);
     },
     {
