@@ -7,8 +7,8 @@ import {
   query,
   // eslint-disable-next-line no-unused-vars
   QueryConstraint,
+  runTransaction,
   setDoc,
-  runTransaction
 } from "firebase/firestore";
 import { createContext, useMemo } from "react";
 
@@ -38,7 +38,7 @@ const JobContext = createContext({
 /* Mike's code he provided*/
 const updateJob = async (payload) => {
   const jobId = payload.id;
-  delete payload.id
+  delete payload.id;
   // why use runTransaction? It may happen when you try to update a doc that may be deleted
   await runTransaction(database, async (transaction) => {
     const jobDocRef = doc(database, "Jobs", jobId);
@@ -50,20 +50,19 @@ const updateJob = async (payload) => {
   });
 };
 
-const approveJob = async (jobId) =>{
+const approveJob = async (jobId) => {
   const jobDocRef = doc(database, "Jobs", jobId);
   const jobDoc = await getDoc(jobDocRef);
   const job = jobDoc.data();
-  updateJob({...job, id: jobId, status: "approved"})
-}
+  updateJob({ ...job, id: jobId, status: "approved" });
+};
 
-const rejectJob = async (jobId) =>{
-  console.log("JI")
+const rejectJob = async (jobId) => {
   const jobDocRef = doc(database, "Jobs", jobId);
   const jobDoc = await getDoc(jobDocRef);
   const job = jobDoc.data();
-  updateJob({...job, id: jobId, status: "rejected"})
-}
+  updateJob({ ...job, id: jobId, status: "rejected" });
+};
 
 const JobContextProvider = ({ children }) => {
   const createJob = async (payload) => {
