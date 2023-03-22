@@ -20,20 +20,17 @@ const JobContext = createContext({
   // todo
   deleteJob: () => {},
   /**
-   * @param {string} id - id of the job
+   * @param {string} _id - id of the job
    * @returns the job detail
    */
-  // eslint-disable-next-line no-unused-vars
-  getJob: (id) => {},
+  getJob: (_id) => {},
   /**
    *
-   * @param {undefined | QueryConstraint | QueryConstraint[]} queryConstraints
+   * @param {undefined | QueryConstraint | QueryConstraint[]} _queryConstraints
    * @returns job list
    */
-  // eslint-disable-next-line no-unused-vars
-  listJobs: (queryConstraints) => [],
-  // eslint-disable-next-line no-unused-vars
-  countJobs: (queryConstraints) => Number,
+  listJobs: (_queryConstraints) => [],
+  countJobs: (_queryConstraints) => Number,
 });
 
 const JobContextProvider = ({ children }) => {

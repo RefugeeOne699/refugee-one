@@ -13,6 +13,8 @@ import { Link, useParams } from "react-router-dom";
 
 import { useJob } from "@/models";
 
+import JobSave from "./JobSave";
+
 export default function JobView() {
   const iconSize = "6.5vh";
   const { jobId } = useParams();
@@ -124,7 +126,7 @@ export default function JobView() {
             <Link to={".."}>
               <button className="btn btn-primary mr-10 md:hidden">Back</button>
             </Link>
-            <button className="btn btn-success">Saved</button>
+            <JobSave jobId={jobId} />
           </div>
         </div>
       </div>
