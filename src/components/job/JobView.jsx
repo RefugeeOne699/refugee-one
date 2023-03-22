@@ -104,7 +104,12 @@ export default function JobView() {
             <div className="ml-3">
               <p className="font-bold">Job Location:</p>
               <p>{data.location}</p>
-              <a className="text-blue-400" href={"https://www.google.com/maps/search/?api=1&query=" + data.location}>View location on Google Map</a>
+              <a
+                className="text-blue-400"
+                href={"https://www.google.com/maps/search/?api=1&query=" + data.location}
+              >
+                View location on Google Map
+              </a>
             </div>
           </div>
           <div className="flex w-full mt-5 flex-row">
