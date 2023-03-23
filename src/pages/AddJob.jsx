@@ -49,7 +49,7 @@ export default function AddJob() {
   return (
     <div className="flex flex-col justify-center items-center">
       <form onSubmit={handleSubmit(addJob)}>
-        <div className="flex flex-row mb-4 items-center">
+        <div className="flex flex-row mb-4 mt-4 items-center">
           <label className="label flex basis-44" htmlFor="title">
             Job Title
           </label>
@@ -76,10 +76,10 @@ export default function AddJob() {
             <label className="label flex basis-44" htmlFor="startDate">
               Start Date
             </label>
-            <div className="input-group input">
+            <div className="input-group input ml-2">
               <div
                 className="relative max-w-sm"
-                style={{ zIndex: "9999", left: "14rem" }}
+                style={{ zIndex: "9999", left: "16rem" }}
               >
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <svg
@@ -114,7 +114,7 @@ export default function AddJob() {
           </div>
 
           <div className="dropdown dropdown-right flex flex-row mb-4 items-center w-1/2">
-            <label className="label flex basis-40" htmlFor="jobType">
+            <label className="label flex basis-44 ml-4" htmlFor="jobType">
               Job Type
             </label>
             <select
@@ -145,13 +145,13 @@ export default function AddJob() {
           ></textarea>
         </div>
 
-        <div className="flex flex-row justify-between">
-          <div className="flex flex-row  mb-4 items-center w-1/3">
+        <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-row mb-4 items-center w-1/2">
             <label className="label flex basis-44" htmlFor="salaryType">
               Salary Type
             </label>
             <select
-              className="input input-bordered w-full"
+              className="input input-bordered w-4/5"
               {...register("salaryType", { required: true })}
             >
               {SALARY_TYPE.map((type, index) => {
@@ -164,47 +164,64 @@ export default function AddJob() {
             </select>
           </div>
 
-          <div className="flex flex-row w-1/2 items-center">
-            <label className="label flex basis-44">Salary Range</label>
-            <div className="inline-flex">
+          <div className="flex flex-row mb-4 w-1/2 items-center">
+            <label className="label flex basis-44 ml-4">Salary Range</label>
+            <div className="inline-flex w-full">
               <input
                 type="number"
-                className="input input-bordered w-1/2"
+                className="input input-bordered w-1/3"
+                placeholder="Min $"
                 {...register("minWage", { required: true })}
               />
-              <span> - </span>
+              <div>
+                <span className="ml-4 mr-4 text-center self-center text-4xl"> - </span>
+              </div>
+
               <input
                 type="number"
-                className="input input-bordered w-1/2"
+                className="input input-bordered w-1/3"
+                placeholder="Max $"
                 {...register("maxWage", { required: true })}
               />
             </div>
           </div>
         </div>
 
-        <div>
-          <div className="flex flex-row items-center">
+        <div className="flex flex-row items-center w-full mb-4">
+          <div className="flex flex-row items-center w-full">
             <label className="label flex basis-44">Benefits</label>
-            <div className="flex flex-row">
-              <div>
-                <input type="checkbox" name="medical" value="medical" />
-                <label>Medical</label>
+            <div className="flex flex-row w-full">
+              <div className="self-center items-center w-1/3">
+                <input
+                  type="checkbox"
+                  name="medical"
+                  value="medical"
+                  className="scale-125"
+                />
+                <label className="pl-2">Medical</label>
               </div>
-              <div>
-                <input type="checkbox" name="other" value="other" />
-                <label>Others</label>
+              <div className="self-center items-center w-1/3">
+                <input type="checkbox" name="other" value="other" className="scale-125" />
+                <label className="pl-2">Others</label>
               </div>
+              <textarea
+                type="text"
+                rows="2"
+                className="textarea textarea-bordered w-full"
+                placeholder="Add other benefits provided"
+                {...register("otherBenefits")}
+              ></textarea>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-row items-center justify-between">
-          <div className="flex flex-row items-center w-1/3">
+        <div className="flex flex-row items-center mb-4 justify-between">
+          <div className="flex flex-row items-center w-1/2">
             <label className="label flex basis-44" htmlFor="englishLevel">
               English level
             </label>
             <select
-              className="input input-bordered w-full"
+              className="input input-bordered w-4/5"
               {...register("englishLevel", { required: true })}
             >
               {ENGLISH_LEVEL.map((type, index) => {
@@ -216,64 +233,69 @@ export default function AddJob() {
               })}
             </select>
           </div>
-          <div className="flex flex-row items-center ">
-            <label className="label flex basis-44" htmlFor="otherLanguage">
+          <div className="flex flex-row items-center w-1/2">
+            <label className="label flex basis-48 ml-4" htmlFor="otherLanguage">
               Other language(s)
             </label>
             <input
               type="text"
-              className="input input-bordered w-full"
+              className="input input-bordered w-4/5"
               {...register("otherLanguage")}
             />
           </div>
         </div>
 
-        <div>
-          <label className="label" htmlFor="address">
+        <div className="flex flex-row items-center mb-4">
+          <label className="label flex basis-44" htmlFor="address">
             Job Location
           </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            placeholder="Address"
-            {...register("address", { required: true })}
-          />
-          <input
-            type="text"
-            className="input input-bordered"
-            placeholder="City"
-            {...register("city", { required: true })}
-          />
-          <input
-            type="text"
-            className="input input-bordered"
-            placeholder="State"
-            {...register("state", { required: true })}
-          />
-          <input
-            type="number"
-            className="input input-bordered"
-            placeholder="Zip code"
-            {...register("zipcode", { required: true })}
-          />
+          <div className="flex flex-row w-full justify-between">
+            <input
+              type="text"
+              className="input input-bordered w-1/3"
+              placeholder="Address"
+              {...register("address", { required: true })}
+            />
+            <input
+              type="text"
+              className="input input-bordered w-1/5"
+              placeholder="City"
+              {...register("city", { required: true })}
+            />
+            <input
+              type="text"
+              className="input input-bordered w-1/6"
+              placeholder="State"
+              {...register("state", { required: true })}
+            />
+            <input
+              type="number"
+              className="input input-bordered w-1/6"
+              placeholder="Zip code"
+              {...register("zipcode", { required: true })}
+            />
+          </div>
         </div>
-        <div className="form-control">
-          <label className="label" htmlFor="description">
+
+        <div className="flex flex-row items-center mb-4">
+          <label className="label flex basis-44" htmlFor="description">
             Job Description
           </label>
           <textarea
             type="text"
             rows="10"
-            className="textarea textarea-bordered"
+            className="textarea textarea-bordered w-full"
             {...register("description", { required: true })}
           />
         </div>
-
-        <button type="submit" className="btn btn-primary">
-          Submit Job Listing
-        </button>
-
-        <button className="btn btn-outline btn-primary">Save as draft</button>
+        <div className="flex w-full justify-end mb-4">
+          <div className="flex flex-row justify-around w-1/2">
+            <button type="submit" className="btn btn-primary w-1/3">
+              Submit
+            </button>
+            <button className="btn btn-outline btn-primary w-1/3">Save as draft</button>
+          </div>
+        </div>
       </form>
     </div>
   );
