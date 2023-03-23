@@ -23,7 +23,8 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <p className="text-center m-4">{auth.user?.email}</p>
+        <p className="text-center mt-4">{auth.user?.email}</p>
+        <p className="text-center mb-4">{auth.user?.role + " account"}</p>
       </div>
       <Outlet />
     </div>
