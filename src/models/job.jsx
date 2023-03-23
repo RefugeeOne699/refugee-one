@@ -7,16 +7,19 @@ import {
   query,
   // eslint-disable-next-line no-unused-vars
   QueryConstraint,
+  runTransaction,
   setDoc,
 } from "firebase/firestore";
 import { createContext, useMemo } from "react";
 
 import database from "@/clients/firebase";
+import { JOB_STATUS } from "@/constants";
 
 const JobContext = createContext({
   createJob: () => {},
-  // todo
   updateJob: () => {},
+  approveJob: () => {},
+  rejectJob: () => {},
   // todo
   deleteJob: () => {},
   /**
@@ -32,6 +35,30 @@ const JobContext = createContext({
   listJobs: (_queryConstraints) => [],
   countJobs: (_queryConstraints) => Number,
 });
+
+const updateJob = async (jobId, payload) => {
+  // remove the jobId field if existed. No need to put the doc id into the doc data
+  if (payload.id) {
+    payload.id == undefined;
+  }
+  // why use runTransaction? It may happen when you try to update a doc that may be deleted
+  await runTransaction(database, async (transaction) => {
+    const jobDocRef = doc(database, "Jobs", jobId);
+    const jobDoc = await transaction.get(jobDocRef);
+    if (!jobDoc.exists()) {
+      throw `Job ${jobId} does not exist`;
+    }
+    transaction.update(jobDocRef, payload);
+  });
+};
+
+const approveJob = async (jobId) => {
+  await updateJob(jobId, { status: JOB_STATUS.APPROVED });
+};
+
+const rejectJob = async (jobId) => {
+  await updateJob(jobId, { status: JOB_STATUS.REJECTED });
+};
 
 const JobContextProvider = ({ children }) => {
   const createJob = async (payload) => {
@@ -120,8 +147,9 @@ const JobContextProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       createJob,
-      // todo
-      updateJob: () => {},
+      updateJob,
+      approveJob,
+      rejectJob,
       // todo
       deleteJob: () => {},
       getJob,
