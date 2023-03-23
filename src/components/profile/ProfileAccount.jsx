@@ -5,7 +5,6 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useAuth } from "@/models";
-import { Navigate } from "react-router-dom";
 
 export default function ProfileAccount() {
   const auth = useAuth();
@@ -32,66 +31,84 @@ export default function ProfileAccount() {
   );
 
   return (
-    <>
+    <div className="w-full">
       <form onSubmit={handleSubmit(modifiedContent)}>
-        <div className="w-full flex flex-col justify-center items-center">
-          <ul className="menu bg-base-100 w-full px-12 rounded-box">
-            <li className="w-full">
-              <div className="flex justify-between">
-                <div className="flex justify-start gap-4">
-                  <PersonIcon />
-                  Name
-                </div>
-                <div className="flex justify-end">
-                  {edit ? (
+        <div className="w-full flex flex-col items-center">
+          <ul className="menu bg-base-100 px-12 w-full rounded-box">
+            <li>
+              {edit ? (
+                <div className="flex justify-between">
+                  <div className="flex justify-start gap-4">
+                    <PersonIcon />
+                  </div>
+                  <div className="flex w-full justify-end">
                     <input
                       {...register("name", { required: true })}
                       type="text"
-                      className="input w-full max-w-xs input-bordered mb-4"
+                      placeholder="name"
+                      className="input w-full input-bordered"
                     />
-                  ) : (
-                    auth.user?.name
-                  )}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex justify-between">
+                  <div className="flex justify-start gap-4">
+                    <PersonIcon />
+                    Name
+                  </div>
+                  <div className="flex justify-end">{auth.user?.name}</div>
+                </div>
+              )}
             </li>
             <li>
-              <div className="flex justify-between">
-                <div className="flex justify-start gap-4">
-                  <KeyIcon />
-                  password
-                </div>
-                <div className="flex justify-end">
-                  {edit ? (
+              {edit ? (
+                <div className="flex justify-between">
+                  <div className="flex justify-start gap-4">
+                    <KeyIcon />
+                  </div>
+                  <div className="flex w-full justify-end">
                     <input
                       {...register("password", { required: true })}
-                      type="password"
-                      className="input w-full max-w-xs input-bordered mb-4"
+                      type="text"
+                      placeholder="password"
+                      className="input w-full input-bordered"
                     />
-                  ) : (
-                    "********"
-                  )}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex justify-between">
+                  <div className="flex justify-start gap-4">
+                    <KeyIcon />
+                    Password
+                  </div>
+                  <div className="flex justify-end">********</div>
+                </div>
+              )}
             </li>
             <li>
-              <div className="flex justify-between">
-                <div className="flex justify-start gap-4">
-                  <PhoneIcon />
-                  Phone Number
-                </div>
-                <div className="flex justify-end">
-                  {edit ? (
+              {edit ? (
+                <div className="flex justify-between">
+                  <div className="flex justify-start gap-4">
+                    <PhoneIcon />
+                  </div>
+                  <div className="flex w-full justify-end">
                     <input
                       {...register("phone", { required: true })}
                       type="text"
-                      className="input w-full max-w-xs input-bordered mb-4"
+                      placeholder="phone number"
+                      className="input w-full input-bordered"
                     />
-                  ) : (
-                    auth.user?.phone
-                  )}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex justify-between">
+                  <div className="flex justify-start gap-4">
+                    <PhoneIcon />
+                    Phone Number
+                  </div>
+                  <div className="flex justify-end">{auth.user?.phone}</div>
+                </div>
+              )}
             </li>
           </ul>
           {edit ? (
@@ -110,7 +127,7 @@ export default function ProfileAccount() {
             </>
           ) : (
             <button
-              className="btn btn-xs btn-md lg:btn-lg"
+              className="btn btn-xs btn-md lg:btn-lg m-2"
               onClick={() => {
                 setEdit(true);
               }}
@@ -120,6 +137,6 @@ export default function ProfileAccount() {
           )}
         </div>
       </form>
-    </>
+    </div>
   );
 }
