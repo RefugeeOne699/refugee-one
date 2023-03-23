@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 
 export default function Profile() {
   const auth = useAuth();
+
   const parseName = (name) => {
     let nameArray = name.split(" ");
     if (nameArray.length > 1) {

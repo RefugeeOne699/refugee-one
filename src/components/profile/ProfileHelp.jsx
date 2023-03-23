@@ -11,12 +11,14 @@ export default function ProfileHelp() {
         </p>
         <p className="font-bold mt-4">Contact</p>
         <p>
-          p: (773) 989-5647 <br />
-          f: (773) 989-0484 <br />
+          phone: <a href="tel:7739895647">(773) 989-5647</a> <br />
+          fax: <a href="tel:7739890484">(773) 989-0484</a> <br />
         </p>
-        <p>info@refugeeone.org​</p>
+        <a href="mailto:info@refugeeone.org">info@refugeeone.org</a>
         <p className="font-bold mt-4">Website</p>
-        <p>https://www.refugeeone.org/</p>
+        <a href="https://www.refugeeone.org/" rel="nofollow noreferrer">
+          www.refugeeone.org
+        </a>
         <p className="font-bold mt-4">Office Hours</p>
         <p>8:30 a.m. – 4:30 p.m Monday – Friday</p>
       </div>

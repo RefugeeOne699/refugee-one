@@ -12,10 +12,7 @@ export default function ProfileAccount() {
   const { register, handleSubmit } = useForm();
 
   const { run: modifiedContent, loading: modificationLoading } = useRequest(
-    // fixme: temp hard code company
     async (data) => {
-      console.log(data);
-      // TODO: add modify password
       return auth.updateProfile(data);
     },
     {
