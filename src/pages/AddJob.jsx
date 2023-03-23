@@ -8,7 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import database from "@/clients/firebase";
-import { ENGLISH_LEVEL, JOB_STATUS } from "@/constants";
+import { ENGLISH_LEVEL, JOB_STATUS, JOB_TYPE, SALARY_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
 export default function AddJob() {
@@ -49,7 +49,7 @@ export default function AddJob() {
   return (
     <div className="flex flex-col justify-center items-center">
       <form onSubmit={handleSubmit(addJob)}>
-        <div className="flex flex-row form-control mb-4 items-center">
+        <div className="flex flex-row mb-4 items-center">
           <label className="label flex basis-44" htmlFor="title">
             Job Title
           </label>
@@ -59,7 +59,7 @@ export default function AddJob() {
             {...register("title", { required: true })}
           />
         </div>
-        <div className="flex flex-row form-control">
+        <div className="flex flex-row mb-4 items-center">
           <label className="label flex basis-44" htmlFor="company">
             Company Name
           </label>
@@ -71,20 +71,20 @@ export default function AddJob() {
           />
         </div>
 
-        <div className="flex flex-row">
-          <div className="form-control">
-            <label className="label" htmlFor="startDate">
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row mb-4 items-center w-1/2">
+            <label className="label flex basis-44" htmlFor="startDate">
               Start Date
             </label>
-            <div className="input-group">
+            <div className="input-group input">
               <div
                 className="relative max-w-sm"
-                style={{ zIndex: "9999", left: "17rem", top: "-0.5rem" }}
+                style={{ zIndex: "9999", left: "14rem" }}
               >
-                {/* <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <svg
                     aria-hidden="true"
-                    className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                    className="w-8 h-8 text-gray-500 dark:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -95,14 +95,14 @@ export default function AddJob() {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                </div> */}
+                </div>
               </div>
               <Controller
                 name="dateInput"
                 control={control}
                 render={({ field }) => (
                   <DatePicker
-                    className="input w-full max-w-xs input-bordered mb-4"
+                    className="input w-full max-w-xs input-bordered"
                     // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholderText="Select Start Date"
                     onChange={(date) => field.onChange(date)}
@@ -113,63 +113,149 @@ export default function AddJob() {
             </div>
           </div>
 
-          <div>
-            <label>Job Type</label>
+          <div className="dropdown dropdown-right flex flex-row mb-4 items-center w-1/2">
+            <label className="label flex basis-40" htmlFor="jobType">
+              Job Type
+            </label>
+            <select
+              className="input input-bordered w-full"
+              {...register("jobType", { required: true })}
+            >
+              {JOB_TYPE.map((type, index) => {
+                return (
+                  <option value={type} key={index}>
+                    {type}
+                  </option>
+                );
+              })}
+            </select>
           </div>
         </div>
 
-        <div className="form-control">
-          <label className="label" htmlFor="wage">
-            Wages
-          </label>
-          <div style={{ display: "inline-flex" }}>
-            <label className="input-group input-md">
-              <span>Min Wage</span>
+        <div className="flex flex-row items-center w-full mb-4">
+          <label className="label flex basis-44">Shift Detail</label>
+          <textarea
+            type="text"
+            rows="3"
+            className="textarea textarea-bordered w-full"
+            placeholder="Please enter shift details in the following format:
+            Monday-Tuesday 8:30 AM to 1 PM
+            Thursday - Friday 1 PM to 5 PM"
+            {...register("shiftDetail", { required: true })}
+          ></textarea>
+        </div>
+
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row  mb-4 items-center w-1/3">
+            <label className="label flex basis-44" htmlFor="salaryType">
+              Salary Type
+            </label>
+            <select
+              className="input input-bordered w-full"
+              {...register("salaryType", { required: true })}
+            >
+              {SALARY_TYPE.map((type, index) => {
+                return (
+                  <option value={type} key={index}>
+                    {type}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <div className="flex flex-row w-1/2 items-center">
+            <label className="label flex basis-44">Salary Range</label>
+            <div className="inline-flex">
               <input
                 type="number"
-                className="input input-bordered"
+                className="input input-bordered w-1/2"
                 {...register("minWage", { required: true })}
               />
-              <span>USD</span>
-            </label>
-            <span> - </span>
-            <label className="input-group input-md">
-              <span>Max Wage</span>
+              <span> - </span>
               <input
                 type="number"
-                className="input input-bordered"
+                className="input input-bordered w-1/2"
                 {...register("maxWage", { required: true })}
               />
-              <span>USD</span>
-            </label>
+            </div>
           </div>
         </div>
-        <div className="form-control">
-          <label className="label" htmlFor="location">
+
+        <div>
+          <div className="flex flex-row items-center">
+            <label className="label flex basis-44">Benefits</label>
+            <div className="flex flex-row">
+              <div>
+                <input type="checkbox" name="medical" value="medical" />
+                <label>Medical</label>
+              </div>
+              <div>
+                <input type="checkbox" name="other" value="other" />
+                <label>Others</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center w-1/3">
+            <label className="label flex basis-44" htmlFor="englishLevel">
+              English level
+            </label>
+            <select
+              className="input input-bordered w-full"
+              {...register("englishLevel", { required: true })}
+            >
+              {ENGLISH_LEVEL.map((type, index) => {
+                return (
+                  <option value={type} key={index}>
+                    {type}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex flex-row items-center ">
+            <label className="label flex basis-44" htmlFor="otherLanguage">
+              Other language(s)
+            </label>
+            <input
+              type="text"
+              className="input input-bordered w-full"
+              {...register("otherLanguage")}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="label" htmlFor="address">
             Job Location
           </label>
           <input
             type="text"
             className="input input-bordered"
-            {...register("location", { required: true })}
+            placeholder="Address"
+            {...register("address", { required: true })}
           />
-        </div>
-        <div className="form-control">
-          <label className="label" htmlFor="englishLevel">
-            English Level
-          </label>
-          <select
+          <input
+            type="text"
             className="input input-bordered"
-            {...register("englishLevel", { required: true })}
-          >
-            {ENGLISH_LEVEL.map((type, index) => {
-              return (
-                <option value={type} key={index}>
-                  {type}
-                </option>
-              );
-            })}
-          </select>
+            placeholder="City"
+            {...register("city", { required: true })}
+          />
+          <input
+            type="text"
+            className="input input-bordered"
+            placeholder="State"
+            {...register("state", { required: true })}
+          />
+          <input
+            type="number"
+            className="input input-bordered"
+            placeholder="Zip code"
+            {...register("zipcode", { required: true })}
+          />
         </div>
         <div className="form-control">
           <label className="label" htmlFor="description">
@@ -182,9 +268,12 @@ export default function AddJob() {
             {...register("description", { required: true })}
           />
         </div>
+
         <button type="submit" className="btn btn-primary">
           Submit Job Listing
         </button>
+
+        <button className="btn btn-outline btn-primary">Save as draft</button>
       </form>
     </div>
   );
