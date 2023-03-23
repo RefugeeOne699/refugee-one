@@ -39,7 +39,7 @@ const JobContext = createContext({
 const updateJob = async (jobId, payload) => {
   // remove the jobId field if existed. No need to put the doc id into the doc data
   if (payload.id) {
-    payload.id == undefined;
+    payload.id = undefined;
   }
   // why use runTransaction? It may happen when you try to update a doc that may be deleted
   await runTransaction(database, async (transaction) => {
