@@ -2,7 +2,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { useRequest } from "ahooks";
 import { doc } from "firebase/firestore";
-import React from "react";
+import { React } from "react";
 import DatePicker from "react-datepicker";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ import { useAuth, useJob } from "@/models";
 export default function AddJob() {
   const auth = useAuth();
   const job = useJob();
+
   const navigate = useNavigate();
   const {
     control,
@@ -32,6 +33,7 @@ export default function AddJob() {
         owner: auth.userRef,
         status: JOB_STATUS.PENDING,
         postDate: new Date(),
+        location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
         // fixme: temp solution: we need an admin to approve the job
       }),
     {
@@ -73,7 +75,7 @@ export default function AddJob() {
 
         <div className="flex flex-row justify-between">
           <div className="flex flex-row mb-4 items-center w-1/2">
-            <label className="label flex basis-44" htmlFor="startDate">
+            <label className="label flex basis-44" htmlFor="dateJobStart">
               Start Date
             </label>
             <div className="input-group input ml-2">
@@ -98,7 +100,7 @@ export default function AddJob() {
                 </div>
               </div>
               <Controller
-                name="dateInput"
+                name="dateJobStart"
                 control={control}
                 render={({ field }) => (
                   <DatePicker
@@ -133,7 +135,9 @@ export default function AddJob() {
         </div>
 
         <div className="flex flex-row items-center w-full mb-4">
-          <label className="label flex basis-44">Shift Detail</label>
+          <label className="label flex basis-44" htmlFor="shift">
+            Shift Detail
+          </label>
           <textarea
             type="text"
             rows="3"
@@ -141,18 +145,18 @@ export default function AddJob() {
             placeholder="Please enter shift details in the following format:
             Monday-Tuesday 8:30 AM to 1 PM
             Thursday - Friday 1 PM to 5 PM"
-            {...register("shiftDetail", { required: true })}
+            {...register("shift")}
           ></textarea>
         </div>
 
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-row mb-4 items-center w-1/2">
-            <label className="label flex basis-44" htmlFor="salaryType">
+            <label className="label flex basis-44" htmlFor="wage.type">
               Salary Type
             </label>
             <select
               className="input input-bordered w-4/5"
-              {...register("salaryType", { required: true })}
+              {...register("wage.type", { required: true })}
             >
               {SALARY_TYPE.map((type, index) => {
                 return (
@@ -171,7 +175,7 @@ export default function AddJob() {
                 type="number"
                 className="input input-bordered w-1/3"
                 placeholder="Min $"
-                {...register("minWage", { required: true })}
+                {...register("wage.min", { required: true })}
               />
               <div>
                 <span className="ml-4 mr-4 text-center self-center text-4xl"> - </span>
@@ -181,7 +185,7 @@ export default function AddJob() {
                 type="number"
                 className="input input-bordered w-1/3"
                 placeholder="Max $"
-                {...register("maxWage", { required: true })}
+                {...register("wage.max", { required: true })}
               />
             </div>
           </div>
@@ -197,11 +201,20 @@ export default function AddJob() {
                   name="medical"
                   value="medical"
                   className="scale-125"
+                  {...register("benefit.hasMedical")}
                 />
-                <label className="pl-2">Medical</label>
+                <label className="pl-2" htmlFor="hasMedical">
+                  Medical
+                </label>
               </div>
               <div className="self-center items-center w-1/3">
-                <input type="checkbox" name="other" value="other" className="scale-125" />
+                <input
+                  type="checkbox"
+                  name="other"
+                  value="other"
+                  className="scale-125"
+                  {...register("benefit.hasOthers")}
+                />
                 <label className="pl-2">Others</label>
               </div>
               <textarea
@@ -209,7 +222,7 @@ export default function AddJob() {
                 rows="2"
                 className="textarea textarea-bordered w-full"
                 placeholder="Add other benefits provided"
-                {...register("otherBenefits")}
+                {...register("benefit.others")}
               ></textarea>
             </div>
           </div>
@@ -217,7 +230,7 @@ export default function AddJob() {
 
         <div className="flex flex-row items-center mb-4 justify-between">
           <div className="flex flex-row items-center w-1/2">
-            <label className="label flex basis-44" htmlFor="englishLevel">
+            <label className="label flex basis-44" htmlFor="langEnglishLevel">
               English level
             </label>
             <select
@@ -234,45 +247,43 @@ export default function AddJob() {
             </select>
           </div>
           <div className="flex flex-row items-center w-1/2">
-            <label className="label flex basis-48 ml-4" htmlFor="otherLanguage">
+            <label className="label flex basis-48 ml-4" htmlFor="langNote">
               Other language(s)
             </label>
             <input
               type="text"
               className="input input-bordered w-4/5"
-              {...register("otherLanguage")}
+              {...register("langNote")}
             />
           </div>
         </div>
 
         <div className="flex flex-row items-center mb-4">
-          <label className="label flex basis-44" htmlFor="address">
-            Job Location
-          </label>
+          <label className="label flex basis-44">Job Location</label>
           <div className="flex flex-row w-full justify-between">
             <input
               type="text"
               className="input input-bordered w-1/3"
               placeholder="Address"
-              {...register("address", { required: true })}
+              {...register("address.street", { required: true })}
             />
             <input
               type="text"
               className="input input-bordered w-1/5"
               placeholder="City"
-              {...register("city", { required: true })}
+              {...register("address.city", { required: true })}
             />
             <input
               type="text"
               className="input input-bordered w-1/6"
               placeholder="State"
-              {...register("state", { required: true })}
+              {...register("address.state", { required: true })}
             />
             <input
               type="number"
               className="input input-bordered w-1/6"
               placeholder="Zip code"
-              {...register("zipcode", { required: true })}
+              {...register("address.zipcode", { required: true })}
             />
           </div>
         </div>
