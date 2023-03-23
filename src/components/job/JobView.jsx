@@ -107,6 +107,8 @@ export default function JobView() {
               <a
                 className="text-blue-400"
                 href={"https://www.google.com/maps/search/?api=1&query=" + data.location}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 View location on Google Map
               </a>
