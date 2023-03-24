@@ -51,7 +51,9 @@ export default function JobView() {
           </p>
           <div className="flex w-full flex-col lg:flex-row">
             <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
-              <CalendarMonthIcon style={{ fontSize: iconSize }} />
+            <div className="text-5xl">
+              <CalendarMonthIcon fontSize="inherit" />
+            </div>
               <div className="ml-3">
                 <p className="font-bold">Starting Date:</p>
                 {`${new Date(data.dateJobStart.seconds * 1000)}`
@@ -61,7 +63,9 @@ export default function JobView() {
               </div>
             </div>
             <div className="flex flex-row mt-5 w-full lg:w-1/2">
-              <WorkIcon style={{ fontSize: iconSize }} />
+            <div className="text-5xl">
+              <WorkIcon fontSize="inherit" />
+            </div>
               <div className="ml-3">
                 <p className="font-bold">Job Type:</p>
                 Database TBD
@@ -70,14 +74,18 @@ export default function JobView() {
           </div>
           <div className="flex w-full flex-col lg:flex-row">
             <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
-              <AttachMoneyIcon style={{ fontSize: iconSize }} />
+            <div className="text-5xl">
+              <AttachMoneyIcon fontSize="inherit" />
+            </div>
               <div className="ml-3">
                 <p className="font-bold">Salary Range:</p>
                 <p>{`${data.wage.min} - ${data.wage.max} ${data.wage.type}`}</p>
               </div>
             </div>
             <div className="flex flex-row mt-5 w-full lg:w-1/2">
-              <LanguageIcon style={{ fontSize: iconSize }} />
+            <div className="text-5xl">
+              <LanguageIcon fontSize="inherit" />
+            </div>
               <div className="ml-3">
                 <p className="font-bold">English Level:</p>
                 <p>{data.langEnglishLevel}</p>
@@ -86,7 +94,9 @@ export default function JobView() {
           </div>
           <div className="flex w-full flex-col lg:flex-row">
             <div className="flex flex-row mt-5 w-full lg:w-1/2">
-              <LocalHospitalIcon style={{ fontSize: iconSize }} />
+            <div className="text-5xl">
+              <LocalHospitalIcon fontSize="inherit" />
+            </div>
               <div className="ml-3">
                 <p className="font-bold">Benefits:</p>
                 <p>Medical: {data.benefit.hasMedical ? "Included" : "None"}</p>
@@ -94,7 +104,9 @@ export default function JobView() {
               </div>
             </div>
             <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
-              <TranslateIcon style={{ fontSize: iconSize }} />
+            <div className="text-5xl">
+              <TranslateIcon fontSize="inherit" />
+            </div>
               <div className="ml-3">
                 <p className="font-bold">Language Notes:</p>
                 <p>{data.langNote}</p>
@@ -102,21 +114,27 @@ export default function JobView() {
             </div>
           </div>
           <div className="flex w-full mt-5 flex-row">
-            <LocationOnIcon style={{ fontSize: iconSize }} />
+          <div className="text-5xl">
+              <LocationOnIcon fontSize="inherit" />
+            </div>
             <div className="ml-3">
               <p className="font-bold">Job Location:</p>
               <p>{data.location}</p>
             </div>
           </div>
           <div className="flex w-full mt-5 flex-row">
-            <AccessTimeIcon style={{ fontSize: iconSize }} />
+          <div className="text-5xl">
+              <AccessTimeIcon fontSize="inherit" />
+            </div>
             <div className="ml-3">
               <p className="font-bold">Job Timing:</p>
               <p>{data.shift.detail}</p>
             </div>
           </div>
           <div className="flex flex-row w-full mt-5">
-            <DescriptionIcon style={{ fontSize: iconSize }} />
+          <div className="text-5xl">
+              <DescriptionIcon fontSize="inherit" />
+            </div>
             <div className="ml-3">
               <p className="font-bold">Job Description:</p>
               <p>{data.description}</p>
