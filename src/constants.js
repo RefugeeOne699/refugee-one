@@ -19,3 +19,14 @@ export const DAYS_OF_WEEK = [
   "Friday",
   "Saturday",
 ];
+
+export const WAGE_TYPE = {
+  YEARLY: "Yearly",
+  HOURLY: "Hourly",
+};
+
+export const SHIFT_TYPE = {
+  FULL_TIME: "Full-time",
+  PART_TIME: "Part-time",
+  SHIFT_BASED: "Shift based",
+};
