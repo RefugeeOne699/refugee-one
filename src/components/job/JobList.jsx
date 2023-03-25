@@ -7,8 +7,8 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import SearchIcon from "@mui/icons-material/Search";
 import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
-import { orderBy, query, where } from "firebase/firestore";
-import { useEffect, useMemo, useState } from "react";
+import _ from "lodash";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 
@@ -20,6 +20,7 @@ import {
   WAGE_FILTER,
 } from "@/constants";
 import { useAuth, useJob } from "@/models";
+import { getSearchAndFilterResult } from "@/utils";
 
 import JobSave from "./JobSave";
 
@@ -31,31 +32,31 @@ export default function JobList() {
   });
   const auth = useAuth();
 
-  const [showFilter, setShowFilter] = useState(false);
-  const { register, reset, handleSubmit } = useForm({
-    defaultValues: {
-      jobPosted: "Anytime",
-      jobType: [],
-      wage: "0",
-      english: [],
-      benefit: [],
-    },
-    shouldUnregister: false,
-  });
-  // test only
-  const onSubmit = async (data) => {
-    //stringify json
-    // base64??? -> string
-    console.log(data);
-    setShowFilter(!showFilter);
-    data.english;
-    //test for the english level
-    data.english;
-    const a = where("langEnglishLevel", "==", "advanced");
-    const myJobs = await listJobs(a);
-    console.log(myJobs);
+  const emptyFilter = {
+    jobPosted: "0",
+    jobType: [],
+    wage: "0",
+    english: [],
+    benefit: [],
+  };
 
-    //<Link to="/jobs/1234?english=advanced&wageGE=20"
+  // useStates for filter and search
+  const [filter, setFilter] = useState(emptyFilter);
+  const [search, setSearch] = useState("");
+  const [filteredJobs, setFilteredJobs] = useState(null);
+  const [showFilter, setShowFilter] = useState(false);
+
+  const searchRef = useRef();
+
+  const { register, reset, handleSubmit } = useForm({
+    defaultValues: emptyFilter,
+  });
+
+  // submit Filter
+  const onSubmit = (data) => {
+    console.log(data);
+    setFilter(data);
+    setShowFilter(!showFilter);
   };
 
   useEffect(() => {
@@ -66,9 +67,15 @@ export default function JobList() {
     }
   }, []);
 
+  // useEffect for filter and search
+  useEffect(() => {
+    const filteredResult = getSearchAndFilterResult(data, search, filter);
+    setFilteredJobs(filteredResult);
+  }, [filter, search, data]);
+
   const jobs = useMemo(() => {
-    return data
-      ? data.map((job) => {
+    return filteredJobs
+      ? filteredJobs.map((job) => {
           return (
             <li className="flex flex-row w-full mt-5 " key={job.id}>
               <div
@@ -84,7 +91,7 @@ export default function JobList() {
                         <p className="truncate w-1/2">{job.company.name}</p>
                         <p className="truncate w-1/2">{`${job.location}`}</p>
                         <p className="truncate w-1/2">
-                          {job.benefits.hasMedical
+                          {job.benefit.hasMedical
                             ? "Medical Benefits"
                             : "No Medical Benefits"}
                         </p>
@@ -103,25 +110,42 @@ export default function JobList() {
           );
         })
       : "Loading";
-  }, [data, jobId]);
+  }, [filteredJobs, jobId]);
 
   return (
     <div className="relative flex flex-col h-screen  bg-yellow-100">
       {/* Search bar and filter icon */}
       <div className="flex flex-row items-center justify-between h-16 p-3 bg-blue-100">
         <div className="relative text-gray-600">
-          {/* todo: add functionality to search bar */}
           <input
             className="w-64 border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-lg text-sm focus:outline-none"
             type="search"
             name="search"
             placeholder="Search"
+            ref={searchRef}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") setSearch(searchRef.current.value);
+            }}
           />
-          <button className="absolute right-0 top-1.5  mr-4">
+          <button
+            className="absolute right-0 top-1.5  mr-4 "
+            onClick={() => {
+              setSearch(searchRef.current.value);
+            }}
+          >
             <SearchIcon />
           </button>
         </div>
-        <FilterAltIcon fontSize="large" onClick={() => setShowFilter(!showFilter)} />
+        <button
+          className={
+            _.isEqual(filter, emptyFilter)
+              ? "btn btn-circle btn-ghost"
+              : "btn btn-circle btn-primary"
+          }
+          onClick={() => setShowFilter(!showFilter)}
+        >
+          <FilterAltIcon fontSize="large" />
+        </button>
       </div>
 
       {/* Filter Panel UI */}
@@ -132,7 +156,7 @@ export default function JobList() {
             <button
               className="btn btn-sm"
               onClick={() => {
-                reset();
+                reset(emptyFilter);
               }}
             >
               Reset
@@ -141,7 +165,10 @@ export default function JobList() {
             <CloseIcon
               fontSize="large"
               style={{ color: "black" }}
-              onClick={() => setShowFilter(!showFilter)}
+              onClick={() => {
+                reset(filter);
+                setShowFilter(!showFilter);
+              }}
             />
           </div>
 
@@ -168,7 +195,7 @@ export default function JobList() {
                         type="radio"
                         name="radio-jobPosted"
                         className="radio radio-primary"
-                        value={item}
+                        value={index}
                         {...register("jobPosted")}
                       />
                     </label>
@@ -193,7 +220,7 @@ export default function JobList() {
                         type="checkbox"
                         name="checkbox-jobType"
                         className="checkbox checkbox-primary"
-                        value={item}
+                        value={index}
                         {...register("jobType")}
                       />
                     </label>
@@ -214,7 +241,7 @@ export default function JobList() {
                   return (
                     <label className="label cursor-pointer" key={index}>
                       <span className="label-text">
-                        {index === 0 ? "Any Wage" : `\$ ${minWage}+ / hour`}
+                        {index === 0 ? "Any Wage" : `$ ${minWage}+ / hour`}
                       </span>
                       <input
                         type="radio"
@@ -245,14 +272,14 @@ export default function JobList() {
                         type="checkbox"
                         name="checkbox-english"
                         className="checkbox checkbox-primary"
-                        value={englishLevel}
+                        value={index}
                         {...register("english")}
                       />
                     </label>
                   );
                 })}
               </div>
-              
+
               {/* Benefit Category */}
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
@@ -270,7 +297,7 @@ export default function JobList() {
                         type="checkbox"
                         name="checkbox-benefit"
                         className="checkbox checkbox-primary"
-                        value={benefitType}
+                        value={index}
                         {...register("benefit")}
                       />
                     </label>
