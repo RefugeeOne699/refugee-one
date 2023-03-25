@@ -1,7 +1,7 @@
 import { useRequest } from "ahooks";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
-import { auth as firebaseAuth } from "@/clients/firebase";
 import { useAuth } from "@/models";
 
 export default function Home() {
@@ -13,18 +13,15 @@ export default function Home() {
     {
       manual: true,
       onSuccess: () => {
-        console.log(`Verification Status ${firebaseAuth.currentUser.emailVerified}`);
-        // fixme: temp for demo
-        // if (!firebaseAuth.currentUser.emailVerified) {
-        //   auth.signOut();
-        //   alert(
-        //     "You haven't verified your email yet! Please log in again after you have verified your email."
-        //   );
-        // }
+        toast.success("Sign in succeeded");
       },
       onError: (error) => {
-        //todo: handle error
-        console.error(error);
+        if (
+          error.code === "auth/wrong-password" ||
+          error.code === "auth/user-not-found"
+        ) {
+          toast.error("Failed: Email and password does not match");
+        }
       },
     }
   );
@@ -36,21 +33,6 @@ export default function Home() {
       console.error(error);
     },
   });
-
-  //   const { run: signUp, loading: signUpLoading } = useRequest(
-  //     async (data) => auth.signUp(data),
-  //     {
-  //       manual: true,
-  //       onError: (error) => {
-  //         //todo: handle error
-  //         console.error(error);
-  //       },
-  //     }
-  //   );
-
-  if (auth.user) {
-    console.log(auth.user);
-  }
 
   return (
     <div className="flex flex-col justify-center items-center">
