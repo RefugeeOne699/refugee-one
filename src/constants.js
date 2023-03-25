@@ -3,7 +3,14 @@ export const ROLES = {
   EMPLOYER: "employer",
   CLIENT: "client",
 };
-export const ENGLISH_LEVEL = ["beginner", "intermediate", "fluent"];
+export const ENGLISH_LEVEL = {
+  NOT_REQUIRED: "Not required",
+  BASIC: "Basic",
+  INTERMEDIATE: "Intermediate",
+  ADVANCED: "Fluent/Advanced",
+  NATIVE: "Native",
+};
+
 export const JOB_STATUS = {
   REJECTED: "rejected",
   PENDING: "pending",
