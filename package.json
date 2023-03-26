@@ -19,6 +19,7 @@
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.13",
     "@reduxjs/toolkit": "^1.9.0",
+    "@themesberg/tailwind-datepicker": "^1.1.0",
     "ahooks": "^3.7.4",
     "axios": "^1.2.0",
     "daisyui": "^2.42.1",
@@ -27,7 +28,9 @@
     "react-datepicker": "^4.10.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.1",
-    "react-router-dom": "^6.4.3"
+    "react-router-dom": "^6.4.3",
+    "react-tailwindcss-datepicker": "^1.5.1",
+    "tw-elements": "^1.0.0-beta1"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",

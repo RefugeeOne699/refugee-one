@@ -3,13 +3,14 @@ export const ROLES = {
   EMPLOYER: "employer",
   CLIENT: "client",
 };
-export const ENGLISH_LEVEL = [
-  "Not required",
-  "Basic",
-  "Intermediate",
-  "Native",
-  "Fluent/Advance",
-];
+export const ENGLISH_LEVEL = {
+  NOT_REQUIRED: "Not required",
+  BASIC: "Basic",
+  INTERMEDIATE: "Intermediate",
+  ADVANCED: "Fluent/Advanced",
+  NATIVE: "Native",
+};
+
 export const JOB_STATUS = {
   REJECTED: "rejected",
   PENDING: "pending",
@@ -25,5 +26,14 @@ export const DAYS_OF_WEEK = [
   "Friday",
   "Saturday",
 ];
-export const JOB_TYPE = ["Part-time", "Full-time", "Shift based"];
-export const SALARY_TYPE = ["Hourly", "Yearly"];
+
+export const WAGE_TYPE = {
+  YEARLY: "Yearly",
+  HOURLY: "Hourly",
+};
+
+export const SHIFT_TYPE = {
+  FULL_TIME: "Full-time",
+  PART_TIME: "Part-time",
+  SHIFT_BASED: "Shift based",
+};

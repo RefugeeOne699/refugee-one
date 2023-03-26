@@ -3,9 +3,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useRequest } from "ahooks";
 import { doc } from "firebase/firestore";
 import { React } from "react";
-import DatePicker from "react-datepicker";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import * as te from "tw-elements";
 
 import database from "@/clients/firebase";
 import { ENGLISH_LEVEL, JOB_STATUS, JOB_TYPE, SALARY_TYPE } from "@/constants";
@@ -79,37 +79,26 @@ export default function AddJob() {
               Start Date
             </label>
             <div className="input-group input ml-2">
-              <div
-                className="relative max-w-sm"
-                style={{ zIndex: "9999", left: "16rem" }}
-              >
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg
-                    aria-hidden="true"
-                    className="w-8 h-8 text-gray-500 dark:text-gray-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
               <Controller
                 name="dateJobStart"
                 control={control}
                 render={({ field }) => (
-                  <DatePicker
-                    className="input w-full max-w-xs input-bordered"
-                    // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholderText="Select Start Date"
-                    onChange={(date) => field.onChange(date)}
-                    selected={field.value}
-                  />
+                  <div className="flex items-center justify-center">
+                    <div
+                      className="relative mb-3 xl:w-96"
+                      data-te-datepicker-init
+                      data-te-input-wrapper-init
+                    >
+                      <input
+                        type="text"
+                        className="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        placeholder="Select a date"
+                      />
+                      <label className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200">
+                        Select a date
+                      </label>
+                    </div>
+                  </div>
                 )}
               />
             </div>
