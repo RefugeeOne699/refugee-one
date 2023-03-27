@@ -27,6 +27,8 @@ const Profile = {
   Menu: lazy(async () => import("@/components/profile/ProfileMenu")),
   Help: lazy(async () => import("@/components/profile/ProfileHelp")),
   Account: lazy(async () => import("@/components/profile/ProfileAccount")),
+  SetProfile: lazy(async () => import("@/components/profile/ProfileSetProfile")),
+  SetPassword: lazy(async () => import("@/components/profile/ProfileSetPassword")),
 };
 
 const router = createBrowserRouter([
@@ -46,10 +48,6 @@ const router = createBrowserRouter([
       {
         path: "addJob",
         element: <AddJob />, //add job listing
-      },
-      {
-        path: "profile",
-        element: <Profile />,
       },
       // example: example for router and nested router
       {
@@ -90,6 +88,14 @@ const router = createBrowserRouter([
           {
             path: "help",
             element: <Profile.Help />,
+          },
+          {
+            path: "set_profile",
+            element: <Profile.SetProfile />,
+          },
+          {
+            path: "set_password",
+            element: <Profile.SetPassword />,
           },
         ],
       },

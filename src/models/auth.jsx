@@ -2,7 +2,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
-  updatePassword,
+  updatePassword as firebaseUpdatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
@@ -85,12 +87,12 @@ const AuthContextProvider = ({ children }) => {
       });
   };
 
-  const updatePassword = (newPassword) => {
-    return updatePassword(auth.currentUser, newPassword)
-      .then(() => {})
-      .catch((error) => {
-        throw new Error(error);
-      });
+  const updatePassword = async (payload) => {
+    const { oldPassword, newPassword } = payload;
+    const credential = EmailAuthProvider.credential(user.email, oldPassword);
+    return reauthenticateWithCredential(auth.currentUser, credential).then(() => {
+      return firebaseUpdatePassword(auth.currentUser, newPassword).then(() => {});
+    });
   };
 
   const updateProfile = (newProfile) => {

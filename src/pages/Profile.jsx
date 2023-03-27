@@ -1,16 +1,16 @@
 import { useAuth } from "@/models";
 import { Outlet } from "react-router-dom";
 
+const parseName = (name) => {
+  let nameArray = name.split(" ");
+  if (nameArray.length > 1) {
+    return nameArray[0][0] + " " + nameArray[1][0];
+  }
+  return nameArray[0].length > 1 ? nameArray[0][0] : "";
+};
+
 export default function Profile() {
   const auth = useAuth();
-
-  const parseName = (name) => {
-    let nameArray = name.split(" ");
-    if (nameArray.length > 1) {
-      return nameArray[0][0] + " " + nameArray[1][0];
-    }
-    return nameArray[0];
-  };
 
   return (
     <div className="flex flex-col items-center">
@@ -19,7 +19,7 @@ export default function Profile() {
           <div className="w-24 rounded-full bg-stone-700">
             <div className="w-full h-full flex flex-col justify-center">
               <p className="text-center font-black text-3xl italic">
-                {auth.user?.name ? parseName(auth.user?.name) : "NA"}
+                {auth.user?.name ? parseName(auth.user?.name) : ""}
               </p>
             </div>
           </div>
