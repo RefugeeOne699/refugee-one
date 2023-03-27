@@ -27,15 +27,6 @@ export default function ProfileAccount() {
           <li>
             <div className="flex justify-between">
               <div className="flex justify-start gap-4">
-                <KeyIcon />
-                Password
-              </div>
-              <div className="flex justify-end">********</div>
-            </div>
-          </li>
-          <li>
-            <div className="flex justify-between">
-              <div className="flex justify-start gap-4">
                 <PhoneIcon />
                 Phone Number
               </div>
@@ -57,7 +48,7 @@ export default function ProfileAccount() {
             navigate("../set_password", { replace: true });
           }}
         >
-          Edit Password
+          Reset Password
         </button>
       </div>
     </div>

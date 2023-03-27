@@ -45,6 +45,7 @@ export default function ProfileSetProfile() {
                     {...register("name", { required: true })}
                     type="text"
                     placeholder="name"
+                    value={auth.user?.name}
                     className="input w-full input-bordered"
                   />
                 </div>
@@ -60,6 +61,7 @@ export default function ProfileSetProfile() {
                     {...register("phone", { required: true })}
                     type="text"
                     placeholder="phone number"
+                    value={auth.user?.phone}
                     className="input w-full input-bordered"
                   />
                 </div>
