@@ -41,7 +41,7 @@ export default function Home() {
     <div className="h-screen w-screen flex flex-col justify-center items-center">
       <div className="card max-w-md">
         <div className="card-body">
-          <p className="text-3xl">Login To RefugeeOne Job Search Portal</p>
+          <p className="mb-5 text-3xl">Login To RefugeeOne Job Search Portal</p>
           <p className="text-sm">
             Register as {<span className="font-bold">Employer</span>}?{" "}
             {
