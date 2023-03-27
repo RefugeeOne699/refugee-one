@@ -1,5 +1,6 @@
 import { useRequest } from "ahooks";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 import { useAuth } from "@/models";
 
@@ -11,9 +12,16 @@ export default function Home() {
     async (data) => auth.signIn(data),
     {
       manual: true,
+      onSuccess: () => {
+        toast.success("Sign in succeeded");
+      },
       onError: (error) => {
-        //todo: handle error
-        console.error(error);
+        if (
+          error.code === "auth/wrong-password" ||
+          error.code === "auth/user-not-found"
+        ) {
+          toast.error("Failed: Email and password does not match");
+        }
       },
     }
   );
@@ -25,21 +33,6 @@ export default function Home() {
       console.error(error);
     },
   });
-
-  //   const { run: signUp, loading: signUpLoading } = useRequest(
-  //     async (data) => auth.signUp(data),
-  //     {
-  //       manual: true,
-  //       onError: (error) => {
-  //         //todo: handle error
-  //         console.error(error);
-  //       },
-  //     }
-  //   );
-
-  if (auth.user) {
-    console.log(auth.user);
-  }
 
   return (
     <div className="flex flex-col justify-center items-center">

@@ -7,12 +7,20 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
 
 import database, { auth } from "@/clients/firebase";
+
 /**
- * User field (todo)
- *
+ * User interface
+ * @param {DocumentReference} company - reference to a company doc
+ * @param {string} email - user's email
+ * @param {string} name - user's name
+ * @param {number} phone - user's phone
+ * @param {string} role - user's role
+ * @param {string} uid - user's uid
  */
+
 const AuthContext = createContext({
   user: undefined,
+  userRef: undefined,
   pullUser: () => {},
   signIn: () => {},
   signOut: () => {},
@@ -21,12 +29,17 @@ const AuthContext = createContext({
 
 const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const [userRef, setUserRef] = useState();
 
   const pullUser = async (authUser) => {
     if (authUser) {
       const docRef = doc(database, "Users", authUser.uid);
       const docSnap = await getDoc(docRef);
-      setUser(docSnap.data());
+      setUserRef(docRef);
+      setUser({
+        ...docSnap.data(),
+        uid: authUser.uid,
+      });
     } else {
       setUser(undefined);
     }
@@ -34,17 +47,12 @@ const AuthContextProvider = ({ children }) => {
 
   const signIn = (payload) => {
     const { email, password } = payload;
-    return signInWithEmailAndPassword(auth, email, password)
-      .then(() => {})
-      .catch((error) => {
-        // todo: store error info
-        throw new Error(error);
-      });
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const signUp = (payload) => {
     console.log(payload);
-    const { email, password, name, phone, role } = payload;
+    const { email, password, name, phone, role, company } = payload;
     return createUserWithEmailAndPassword(auth, email, password)
       .then(async (credential) => {
         await setDoc(doc(database, "Users", credential.user.uid), {
@@ -52,6 +60,7 @@ const AuthContextProvider = ({ children }) => {
           email,
           role,
           phone,
+          company,
         });
       })
       .catch((error) => {
@@ -71,6 +80,7 @@ const AuthContextProvider = ({ children }) => {
   const contextValue = useMemo(
     () => ({
       user,
+      userRef,
       pullUser,
       signIn,
       signOut,

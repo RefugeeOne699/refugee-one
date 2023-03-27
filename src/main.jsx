@@ -1,23 +1,30 @@
 import "./index.css";
 
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+
+import JobRoot from "@/pages/Job";
 
 import AppRoot from "./App";
+import TailWindToaster from "./components/TailwindToaster";
+import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider } from "./models/auth";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-// import Demo from "./pages/Demo";
-// import Detail from "./pages/Detail";
-// import DrinkList from "./pages/DrinkList";
-// import ErrorBoundary from "./pages/ErrorBoundary";
-import Home from "./pages/Home";
-import SignUp from "./pages/SignUp";
-// import Login from "./pages/Login";
-// import Popular from "./pages/Popular";
-// import Random from "./pages/Random";
-// import Register from "./pages/Register";
-// import Search from "./pages/Search";
+import { JobContextProvider } from "./models/job";
+import { JobSaveContextProvider } from "./models/jobSave";
+
+const AddJob = lazy(async () => import("@/pages/AddJob"));
+const Admin = {
+  Dashboard: lazy(async () => import("@/pages/admin/AdminDashboard")),
+};
+
+const SignUp = lazy(async () => import("@/pages/SignUp"));
+const Home = lazy(async () => import("@/pages/Home"));
+const Profile = lazy(async () => import("@/pages/Profile"));
+const Blank = lazy(async () => import("@/components/Blank"));
+const Job = {
+  View: lazy(async () => import("@/components/job/JobView")),
+};
 
 const router = createBrowserRouter([
   {
@@ -34,49 +41,55 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path: "adminDash",
-        element: <AdminDashboard />,
+        path: "addJob",
+        element: <AddJob />, //add job listing
       },
-      // {
-      //   path: "login",
-      //   element: <Login />,
-      // },
-      // {
-      //   path: "register",
-      //   element: <Register />,
-      // },
-      // {
-      //   path: "profile",
-      //   element: <div>Profile</div>, // TODO: note we need route guard
-      // },
-      // {
-      //   path: "random",
-      //   element: <Random />, // TODO: get a random cocktail when loading, click to get another
-      // },
-      // {
-      //   path: "search",
-      //   element: <Search />, // TODO: search results page; read query from url param; multiple filters
-      // },
-      // {
-      //   path: "detail/:cocktailId",
-      //   element: <Detail />,
-      // },
-      // {
-      //   path: "popular",
-      //   element: <Popular />,
-      // },
-      // {
-      //   path: "my-list",
-      //   element: <DrinkList />,
-      // },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      // example: example for router and nested router
+      {
+        path: "admin",
+        element: (
+          <AdminContextProvider>
+            <Outlet />
+          </AdminContextProvider>
+        ),
+        // element: <AdminContextProvider />,
+        children: [
+          {
+            index: true,
+            element: <Admin.Dashboard />,
+          },
+        ],
+      },
+      {
+        path: "jobs",
+        element: <JobRoot />,
+        children: [
+          { index: true, element: <Blank /> },
+          {
+            path: ":jobId",
+            element: <Job.View />,
+          },
+        ],
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthContextProvider>
-      <RouterProvider router={router} />
-    </AuthContextProvider>
+    <Suspense>
+      <AuthContextProvider>
+        <JobContextProvider>
+          <JobSaveContextProvider>
+            <RouterProvider router={router} />
+            <TailWindToaster />
+          </JobSaveContextProvider>
+        </JobContextProvider>
+      </AuthContextProvider>
+    </Suspense>
   </React.StrictMode>
 );

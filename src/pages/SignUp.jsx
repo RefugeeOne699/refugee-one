@@ -1,9 +1,14 @@
 import { useRequest } from "ahooks";
+// import { sendEmailVerification } from "firebase/auth";
+import { doc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+// import { auth as firebaseAuth } from "@/clients/firebase";
+// fixme: temp hard code company
+import database from "@/clients/firebase";
+import { ROLES } from "@/constants";
 import { useAuth } from "@/models";
-import { userTypes } from "@/utils/constants";
 
 export default function SignUp() {
   const auth = useAuth();
@@ -12,10 +17,26 @@ export default function SignUp() {
   // follow this function for a better practice with interactive button
 
   const { run: signUp, loading: signUpLoading } = useRequest(
-    async (data) => auth.signUp(data),
+    // fixme: temp hard code company
+
+    async (data) =>
+      auth.signUp({
+        ...data,
+        // fixme: temp hard code company
+        company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
+      }),
     {
       manual: true,
-      onSuccess: () => {
+      onSuccess: async () => {
+        // fixme: temp for demo
+        // if (!firebaseAuth.currentUser.emailVerified) {
+        //   await sendEmailVerification(firebaseAuth.currentUser).then(() => {
+        //     auth.signOut();
+        //     alert(
+        //       "We have sent you a verification email! \n Please verfiy your email before logging in!"
+        //     );
+        //   });
+        // }
         navigate("/");
       },
       onError: (error) => {
@@ -40,6 +61,16 @@ export default function SignUp() {
           {...register("name", { required: true })}
           type="text"
           className="input w-full max-w-xs input-bordered mb-4"
+        />
+        <label className="label" htmlFor="compnay">
+          <span className="label-text">Company</span>
+        </label>
+        {/* fixme: a selector for companies, currently not required and has a default value */}
+        <input
+          {...register("company")}
+          type="text"
+          className="input w-full max-w-xs input-bordered mb-4"
+          disabled
         />
         <label className="label" htmlFor="email">
           <span className="label-text">Email</span>
@@ -72,7 +103,7 @@ export default function SignUp() {
           className="input w-full max-w-xs input-bordered mb-4"
           {...register("role", { required: true })}
         >
-          {userTypes.map((type, index) => {
+          {Object.values(ROLES).map((type, index) => {
             return (
               <option value={type} key={index}>
                 {type}
