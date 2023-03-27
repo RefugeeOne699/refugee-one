@@ -96,60 +96,9 @@ export default function Home() {
               {signInLoading ? "Loading" : "Login"}
             </button>
           </form>
+          {/* todo */}
           <p className="text-sm mt-5">Don&apos;t have email registered yet?</p>
           <p className="text-sm font-bold">Connect with RefugeeOne team to get started</p>
-          {/*
-          {auth.user ? (
-            <>
-              <p>Welcome {auth.user.email}</p>
-              <button className="btn" onClick={signOut}>
-                Sign out
-              </button>
-            </>
-          ) : null}
-          */}
-          {/* <p className="text-xl">Note: this is a temporary sign up place</p>
-          <form onSubmit={handleSubmit(signUp)}>
-            <label className="label" htmlFor="name">
-              <span className="label-text">Full Name</span>
-            </label>
-            <input
-              {...register("name", { required: true })}
-              type="text"
-              className="input w-full max-w-xs input-bordered mb-4"
-            />
-            <label className="label" htmlFor="email">
-              <span className="label-text">Email</span>
-            </label>
-            <input
-              {...register("email", { required: true })}
-              type="email"
-              className="input w-full max-w-xs input-bordered mb-4"
-            />
-            <label className="label" htmlFor="password">
-              <span className="label-text">Password</span>
-            </label>
-            <input
-              {...register("password", { required: true })}
-              type="password"
-              className="input w-full max-w-xs input-bordered mb-4"
-            />
-            <label className="label" htmlFor="phone">
-              <span className="label-text">Phone</span>
-            </label>
-            <input
-              {...register("phone", { required: true })}
-              type="number"
-              className="input w-full max-w-xs input-bordered mb-4"
-            />
-            <button
-              type="submit"
-              className={`btn btn-primary ${signUpLoading ? "loading" : ""}`}
-              disabled={signUpLoading}
-            >
-              {signUpLoading ? "Loading" : "Sign Up"}
-            </button>
-          </form> */}
         </div>
       </div>
     </div>
