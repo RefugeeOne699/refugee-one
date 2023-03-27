@@ -3,12 +3,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useRequest } from "ahooks";
 import { doc } from "firebase/firestore";
 import { React } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import * as te from "tw-elements";
 
 import database from "@/clients/firebase";
-import { ENGLISH_LEVEL, JOB_STATUS, JOB_TYPE, SALARY_TYPE } from "@/constants";
+import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
 export default function AddJob() {
@@ -17,7 +16,6 @@ export default function AddJob() {
 
   const navigate = useNavigate();
   const {
-    control,
     register,
     handleSubmit,
     // formState: { errors }
@@ -32,7 +30,7 @@ export default function AddJob() {
         // company: auth.user.company,
         owner: auth.userRef,
         status: JOB_STATUS.PENDING,
-        postDate: new Date(),
+        datePost: new Date(),
         location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
         // fixme: temp solution: we need an admin to approve the job
       }),
@@ -75,32 +73,22 @@ export default function AddJob() {
 
         <div className="flex flex-row justify-between">
           <div className="flex flex-row mb-4 items-center w-1/2">
-            <label className="label flex basis-44" htmlFor="dateJobStart">
-              Start Date
-            </label>
-            <div className="input-group input ml-2">
-              <Controller
-                name="dateJobStart"
-                control={control}
-                render={({ field }) => (
-                  <div className="flex items-center justify-center">
-                    <div
-                      className="relative mb-3 xl:w-96"
-                      data-te-datepicker-init
-                      data-te-input-wrapper-init
-                    >
-                      <input
-                        type="text"
-                        className="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                        placeholder="Select a date"
-                      />
-                      <label className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200">
-                        Select a date
-                      </label>
-                    </div>
-                  </div>
-                )}
-              />
+            <label className="label flex basis-44">Start Date</label>
+            <div className="input ml-2 w-full">
+              <div className="flex items-center justify-center">
+                <div className="flex w-full ">
+                  <input
+                    type="date"
+                    className="input input-bordered w-full bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    placeholder="Select a date"
+                    {...register("dateJobStart", { setValueAs: (v) => new Date(v) })}
+                  />
+                  <label
+                    htmlFor="dateJobStart"
+                    className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200"
+                  ></label>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -112,7 +100,7 @@ export default function AddJob() {
               className="input input-bordered w-full"
               {...register("jobType", { required: true })}
             >
-              {JOB_TYPE.map((type, index) => {
+              {Object.values(SHIFT_TYPE).map((type, index) => {
                 return (
                   <option value={type} key={index}>
                     {type}
@@ -147,7 +135,7 @@ export default function AddJob() {
               className="input input-bordered w-4/5"
               {...register("wage.type", { required: true })}
             >
-              {SALARY_TYPE.map((type, index) => {
+              {Object.values(WAGE_TYPE).map((type, index) => {
                 return (
                   <option value={type} key={index}>
                     {type}
@@ -224,9 +212,9 @@ export default function AddJob() {
             </label>
             <select
               className="input input-bordered w-4/5"
-              {...register("englishLevel", { required: true })}
+              {...register("langEnglishLevel", { required: true })}
             >
-              {ENGLISH_LEVEL.map((type, index) => {
+              {Object.values(ENGLISH_LEVEL).map((type, index) => {
                 return (
                   <option value={type} key={index}>
                     {type}
@@ -293,7 +281,9 @@ export default function AddJob() {
             <button type="submit" className="btn btn-primary w-1/3">
               Submit
             </button>
-            <button className="btn btn-outline btn-primary w-1/3">Save as draft</button>
+            <button type="button" className="btn btn-outline btn-primary w-1/3">
+              Save as draft
+            </button>
           </div>
         </div>
       </form>
