@@ -3,13 +3,11 @@ import KeyIcon from "@mui/icons-material/Key";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/models";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 export default function ProfileSetPassword() {
   const auth = useAuth();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const { errorMessage, setErrorMessage } = useState("");
 
   const GetErrorMessage = (error) => {
     if (error.code === "password_not_match") {
@@ -30,7 +28,9 @@ export default function ProfileSetPassword() {
   } = useRequest(
     async (data) => {
       if (data.newPassword !== data.checkPassword) {
-        throw new Error("password_not_match", { code: "password_not_match" });
+        let error = new Error("password_not_match");
+        error.code = "password_not_match";
+        throw error;
       } else {
         return auth.updatePassword(data);
       }
