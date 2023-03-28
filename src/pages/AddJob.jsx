@@ -27,12 +27,14 @@ export default function AddJob() {
       job.createJob({
         ...data,
         // fixme: temp demo solution
-        company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
-        // company: auth.user.company,
+        // company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
+        company: auth.user.company,
         owner: auth.userRef,
         status: JOB_STATUS.PENDING,
         datePost: new Date(),
         location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
+        adminMessage: "",
+        dateCreated: new Date(),
         // fixme: temp solution: we need an admin to approve the job
       }),
     {
