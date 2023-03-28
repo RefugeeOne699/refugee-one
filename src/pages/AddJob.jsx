@@ -1,9 +1,8 @@
-import "react-datepicker/dist/react-datepicker.css";
-
 import { useRequest } from "ahooks";
 import { doc } from "firebase/firestore";
-import { React } from "react";
+import { React, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import database from "@/clients/firebase";
@@ -18,6 +17,8 @@ export default function AddJob() {
   const {
     register,
     handleSubmit,
+    getValues,
+    setValue,
     // formState: { errors }
   } = useForm();
   console.log(job);
@@ -45,6 +46,54 @@ export default function AddJob() {
       },
     }
   );
+
+  useEffect(() => {
+    let hasdraft = window.localStorage.getItem("draft");
+    if (hasdraft !== null) {
+      toast(
+        (t) => (
+          <div className="flex flex-row justify-between w-[400px]">
+            <div className="w-1/2">
+              <p>Load draft?</p>
+            </div>
+            <div className="flex flex-row w-1/2 justify-between">
+              <button onClick={loadDraft}>Load</button>
+              <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+            </div>
+          </div>
+        ),
+        { duration: 1000000 }
+      );
+    }
+  }, [auth]);
+
+  const saveDraft = () => {
+    window.localStorage.setItem("draft", JSON.stringify(getValues()));
+    toast.success("Draft saved!");
+    navigate("/");
+  };
+
+  const loadDraft = () => {
+    const draft = JSON.parse(window.localStorage.getItem("draft"));
+    //console.log(typeof draft);
+    setValue("title", draft.title);
+    setValue("jobType", draft.jobType);
+    setValue("dateJobStart", draft.dateJobStart);
+    setValue("shift", draft.shift);
+    setValue("wage.type", draft.wage.type);
+    setValue("wage.min", draft.wage.min);
+    setValue("wage.max", draft.wage.max);
+    setValue("benefit.hasMedical", draft.benefit.hasMedical);
+    setValue("benefit.hasOthers", draft.benefit.hasOthers);
+    setValue("benefit.others", draft.benefit.others);
+    setValue("langEnglishLevel", draft.langEnglishLevel);
+    setValue("langNote", draft.langNote);
+    setValue("address.street", draft.address.street);
+    setValue("address.city", draft.address.city);
+    setValue("address.state", draft.address.state);
+    setValue("address.zipcode", draft.address.zipcode);
+    setValue("description", draft.description);
+  };
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -282,7 +331,11 @@ export default function AddJob() {
             <button type="submit" className="btn btn-primary w-1/3">
               Submit
             </button>
-            <button type="button" className="btn btn-outline btn-primary w-1/3">
+            <button
+              type="button"
+              className="btn btn-outline btn-primary w-1/3"
+              onClick={saveDraft}
+            >
               Save as draft
             </button>
           </div>

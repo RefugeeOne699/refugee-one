@@ -7,7 +7,7 @@ export default function TailWindToaster() {
           padding: "1rem",
           boxShadow: "none",
           lineHeight: "normal",
-          maxWidth: "400px",
+          maxWidth: "500px",
         },
         iconTheme: {
           secondary: "#fff",
