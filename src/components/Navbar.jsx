@@ -1,143 +1,156 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { slide as Menu } from "react-burger-menu";
 import { useNavigate } from "react-router-dom";
 
-import { ROLES, SCREEN_SIZE } from "@/constants";
+import { ROLES } from "@/constants";
 import { useAuth } from "@/models";
+
+import AddIcon from "@mui/icons-material/Add";
+
+const buttonMap = {
+  [ROLES.ADMIN]: {
+    buttons: {
+      "Create Account": {
+        icon: <AddIcon />,
+        path: "",
+      },
+      "Post a Job": {
+        icon: <AddIcon />,
+        path: "",
+      },
+    },
+    navs: {
+      "Manage Jobs": {
+        icon: <AddIcon />,
+        path: "",
+      },
+      "Manage Accounts": {
+        icon: <AddIcon />,
+        path: "",
+      },
+      Setting: {
+        icon: <AddIcon />,
+        path: "",
+      },
+    },
+  },
+  [ROLES.EMPLOYER]: {
+    buttons: {
+      "Post a Job": {
+        icon: <AddIcon />,
+        path: "",
+      },
+    },
+    navs: {
+      "Manage Jobs": {
+        icon: <AddIcon />,
+        path: "",
+      },
+      Setting: {
+        icon: <AddIcon />,
+        path: "",
+      },
+    },
+  },
+  [ROLES.CLIENT]: {
+    buttons: {
+      "Create Account": {
+        icon: <AddIcon />,
+        path: "",
+      },
+      "Post a Job": {
+        icon: <AddIcon />,
+        path: "",
+      },
+    },
+    navs: {
+      "Find Jobs": {
+        icon: <AddIcon />,
+        path: "",
+      },
+      "Saved Jobs": {
+        icon: <AddIcon />,
+        path: "",
+      },
+      Setting: {
+        icon: <AddIcon />,
+        path: "",
+      },
+    },
+  },
+};
 
 function NavbarList(props) {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  const userMap = {
-    Home: "/",
-    Profile: "/profile",
-    SignUp: "/signUp",
-    "Add Job": "/addJob",
-  };
-
-  const adminMap = {
-    Home: "/",
-    Profile: "/profile",
-    SignUp: "/signUp",
-    "Add Job": "/addJob",
-    Dashboard: "/admin",
-    "View Jobs (admin)": "/admin/pendingJobs",
-  };
-
-  const employerMap = {
-    Home: "/",
-    Profile: "/profile",
-    SignUp: "/signUp",
-    "Add Job": "/addJob",
-    "View Jobs (employer)": "/employer/jobs",
-  };
-
   return (
-    <ul className="menu w-full p-2 gap-5 text-black">
-      {auth.user?.role === ROLES.ADMIN
-        ? // admin
-          Object.keys(adminMap).map((key) => (
-            <li key={key} className="border-b-2 border-grey">
-              <button
-                className=""
-                onClick={() => {
-                  navigate(adminMap[key]);
-                  props.setOpen(false);
-                }}
+    <div className="w-full p-2 flex flex-col gap-8">
+      {auth.user ? (
+        <>
+          <ul className="menu w-full p-2 gap-5 text-black">
+            {Object.keys(buttonMap[auth.user.role].buttons).map((key) => (
+              <li
+                key={key}
+                className="border-2 border-yellow-600 rounded-2xl text-yellow-600"
               >
-                {key}
-              </button>
-            </li>
-          ))
-        : auth.user?.role === ROLES.EMPLOYER
-        ? // employer
-          Object.keys(employerMap).map((key) => (
-            <li key={key} className="border-b-2 border-grey">
-              <button
-                className=""
-                onClick={() => {
-                  navigate(employerMap[key]);
-                  props.setOpen(false);
-                }}
-              >
-                {key}
-              </button>
-            </li>
-          ))
-        : // user
-          Object.keys(userMap).map((key) => (
-            <li key={key} className="border-b-2 border-grey">
-              <button
-                className=""
-                onClick={() => {
-                  navigate(userMap[key]);
-                  props.setOpen(false);
-                }}
-              >
-                {key}
-              </button>
-            </li>
-          ))}
-    </ul>
+                {buttonMap[auth.user.role].buttons[key].path.icon}
+                <button
+                  onClick={() => {
+                    navigate(buttonMap[auth.user.role].buttons[key].path);
+                    props.setOpen(false);
+                  }}
+                >
+                  {key}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <ul className="menu w-full p-2 gap-5 text-black">
+            {Object.keys(buttonMap[auth.user.role].navs).map((key) => (
+              <li key={key} className="border-b-2 border-grey">
+                {buttonMap[auth.user.role].buttons[key].path.icon}
+                <button
+                  onClick={() => {
+                    navigate(buttonMap[auth.user.role].buttons[key].path);
+                    props.setOpen(false);
+                  }}
+                >
+                  {key}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+    </div>
   );
 }
 
 export default function Navbar() {
-  const [width, setWidth] = useState(window.innerWidth);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-  });
-
-  var styles = {
-    bmBurgerButton: {
-      position: "fixed",
-      width: "36px",
-      height: "30px",
-      left: "36px",
-      top: "36px",
-    },
-    bmBurgerBars: {
-      background: "black",
-    },
-    bmBurgerBarsHover: {
-      background: "#a90000",
-    },
-    bmCrossButton: {
-      height: "24px",
-      width: "24px",
-    },
-    bmCross: {
-      background: "black",
-    },
-    bmMenu: {
-      background: "white",
-      padding: "2.5em 1.5em 0",
-      fontSize: "1.15em",
-    },
-    bmOverlay: {
-      background: "rgba(0, 0, 0, 0.3)",
-    },
-  };
 
   return (
     <>
-      {width < SCREEN_SIZE.MOBILE ? (
+      <div className="md:hidden max-md:block">
         <Menu
-          styles={styles}
           isOpen={open}
           onStateChange={(state) => setOpen(state.isOpen)}
+          crossClassName={"bg-black"}
+          // crossButtonClassName={""}
+          overlayClassName={"opacity-25"}
+          menuClassName={"bg-white px-4 pt-16 text-xl font-semibold"}
+          // crossButtonClassName={"w-12 h-12"}
+          burgerBarClassName={"bg-black"}
+          burgerButtonClassName={"fixed top-12 left-12 z-50 w-12 h-8"}
         >
           <NavbarList setOpen={setOpen} />
         </Menu>
-      ) : (
-        <div className="w-48 m-3 h-screen border-r-4 border-grey">
-          <NavbarList setOpen={setOpen} />
-        </div>
-      )}
+      </div>
+
+      <div className="w-48 m-3 h-screen border-r-4 border-grey max-md:hidden">
+        <NavbarList setOpen={setOpen} />
+      </div>
     </>
   );
 }
