@@ -1,11 +1,9 @@
 import { useRequest } from "ahooks";
-import { doc } from "firebase/firestore";
 import { React, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import database from "@/clients/firebase";
 import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
