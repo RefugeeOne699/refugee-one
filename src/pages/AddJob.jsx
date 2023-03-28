@@ -57,7 +57,14 @@ export default function AddJob() {
               <p>Load draft?</p>
             </div>
             <div className="flex flex-row w-1/2 justify-between">
-              <button onClick={loadDraft}>Load</button>
+              <button
+                onClick={() => {
+                  loadDraft();
+                  toast.dismiss(t.id);
+                }}
+              >
+                Load
+              </button>
               <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
             </div>
           </div>
@@ -328,7 +335,13 @@ export default function AddJob() {
         </div>
         <div className="flex w-full justify-end mb-4">
           <div className="flex flex-row justify-around w-1/2">
-            <button type="submit" className="btn btn-primary w-1/3">
+            <button
+              type="submit"
+              className="btn btn-primary w-1/3"
+              onClick={() => {
+                window.localStorage.clear();
+              }}
+            >
               Submit
             </button>
             <button
