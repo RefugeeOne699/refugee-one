@@ -12,17 +12,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 
-import {
-  BENEFIT,
-  ENGLISH_LEVEL,
-  JOB_POSTED_FILTER,
-  JOB_TYPE,
-  WAGE_FILTER,
-} from "@/constants";
+import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
-import { getSearchAndFilterResult } from "@/utils";
 
-import JobSave from "./JobSave";
+import JobSave from "../JobSave";
+import { getSearchAndFilterResult, JOB_POSTED_FILTER, WAGE_FILTER } from "./jobFilter";
 
 export default function JobList() {
   const { listJobs } = useJob();
@@ -54,7 +48,6 @@ export default function JobList() {
 
   // submit Filter
   const onSubmit = (data) => {
-    console.log(data);
     setFilter(data);
     setShowFilter(!showFilter);
   };
@@ -212,20 +205,22 @@ export default function JobList() {
                   </label>
                 </div>
 
-                {JOB_TYPE.map((item, index) => {
-                  return (
-                    <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">{item}</span>
-                      <input
-                        type="checkbox"
-                        name="checkbox-jobType"
-                        className="checkbox checkbox-primary"
-                        value={index}
-                        {...register("jobType")}
-                      />
-                    </label>
-                  );
-                })}
+                {[SHIFT_TYPE.FULL_TIME, SHIFT_TYPE.PART_TIME, SHIFT_TYPE.SHIFT_BASED].map(
+                  (item, index) => {
+                    return (
+                      <label className="label cursor-pointer" key={index}>
+                        <span className="label-text">{item}</span>
+                        <input
+                          type="checkbox"
+                          name="checkbox-jobType"
+                          className="checkbox checkbox-primary"
+                          value={item}
+                          {...register("jobType")}
+                        />
+                      </label>
+                    );
+                  }
+                )}
               </div>
 
               {/* Wage Category */}
@@ -264,7 +259,13 @@ export default function JobList() {
                   </label>
                 </div>
 
-                {ENGLISH_LEVEL.map((englishLevel, index) => {
+                {[
+                  ENGLISH_LEVEL.NOT_REQUIRED,
+                  ENGLISH_LEVEL.BASIC,
+                  ENGLISH_LEVEL.INTERMEDIATE,
+                  ENGLISH_LEVEL.ADVANCED,
+                  ENGLISH_LEVEL.NATIVE,
+                ].map((englishLevel, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
                       <span className="label-text">{englishLevel}</span>
@@ -272,7 +273,7 @@ export default function JobList() {
                         type="checkbox"
                         name="checkbox-english"
                         className="checkbox checkbox-primary"
-                        value={index}
+                        value={englishLevel}
                         {...register("english")}
                       />
                     </label>
@@ -289,7 +290,7 @@ export default function JobList() {
                   </label>
                 </div>
 
-                {BENEFIT.map((benefitType, index) => {
+                {[BENEFIT_TYPE.MEDICAL, BENEFIT_TYPE.OTHERS].map((benefitType, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
                       <span className="label-text">{benefitType}</span>
@@ -297,7 +298,7 @@ export default function JobList() {
                         type="checkbox"
                         name="checkbox-benefit"
                         className="checkbox checkbox-primary"
-                        value={index}
+                        value={benefitType}
                         {...register("benefit")}
                       />
                     </label>

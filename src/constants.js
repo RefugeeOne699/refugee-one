@@ -20,16 +20,26 @@ export const DAYS_OF_WEEK = [
   "Saturday",
 ];
 
-export const ENGLISH_LEVEL = [
-  "Not required",
-  "Basic",
-  "Intermediate",
-  "Native",
-  "Fluent/Advance",
-];
-export const JOB_TYPE = ["Part-time", "Full-time", "Shift based"];
-export const SALARY_TYPE = ["Hourly", "Yearly"];
+export const ENGLISH_LEVEL = {
+  NOT_REQUIRED: "Not required",
+  BASIC: "Basic",
+  INTERMEDIATE: "Intermediate",
+  ADVANCED: "Fluent/Advanced",
+  NATIVE: "Native",
+};
 
-export const WAGE_FILTER = [0, 5, 10, 18, 25, 32];
-export const JOB_POSTED_FILTER = ["Anytime", "Past 3 days", "Past week", "Past month"];
-export const BENEFIT = ["Medical", "Others"];
+export const WAGE_TYPE = {
+  YEARLY: "Yearly",
+  HOURLY: "Hourly",
+};
+
+export const SHIFT_TYPE = {
+  FULL_TIME: "Full-time",
+  PART_TIME: "Part-time",
+  SHIFT_BASED: "Shift based",
+};
+
+export const BENEFIT_TYPE = {
+  MEDICAL: "Medical",
+  OTHERS: "Others",
+};
