@@ -48,7 +48,7 @@ export default function ProfileAccount() {
             navigate("../set_password", { replace: true });
           }}
         >
-          Reset Password
+          Change Password
         </button>
       </div>
     </div>
