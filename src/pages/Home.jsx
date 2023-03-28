@@ -29,14 +29,6 @@ export default function Home() {
     }
   );
 
-  const { run: signOut } = useRequest(async () => auth.signOut(), {
-    manual: true,
-    onError: (error) => {
-      //todo: handle error
-      console.error(error);
-    },
-  });
-
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center">
       <div className="card max-w-md">
