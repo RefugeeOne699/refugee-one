@@ -72,7 +72,7 @@ export default function AddJob() {
         { duration: 1000000 }
       );
     }
-  }, [auth]);
+  }, []);
 
   const saveDraft = () => {
     window.localStorage.setItem("draft", JSON.stringify(getValues()));
@@ -86,10 +86,11 @@ export default function AddJob() {
     setValue("title", draft.title);
     setValue("jobType", draft.jobType);
     setValue("dateJobStart", draft.dateJobStart);
+    console.log(draft.dateJobStart.split("T")[0]);
     setValue("shift", draft.shift);
     setValue("wage.type", draft.wage.type);
-    setValue("wage.min", draft.wage.min);
-    setValue("wage.max", draft.wage.max);
+    setValue("wage.min", parseInt(draft.wage.min));
+    setValue("wage.max", parseInt(draft.wage.max));
     setValue("benefit.hasMedical", draft.benefit.hasMedical);
     setValue("benefit.hasOthers", draft.benefit.hasOthers);
     setValue("benefit.others", draft.benefit.others);
