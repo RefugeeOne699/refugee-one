@@ -4,6 +4,15 @@ export const ROLES = {
   CLIENT: "client",
 };
 
+export const ENGLISH_LEVEL = {
+  NOT_REQUIRED: "Not required",
+  BASIC: "Basic",
+  INTERMEDIATE: "Intermediate",
+  ADVANCED: "Fluent/Advanced",
+  NATIVE: "Native",
+};
+
+
 export const JOB_STATUS = {
   REJECTED: "rejected",
   PENDING: "pending",
@@ -20,13 +29,6 @@ export const DAYS_OF_WEEK = [
   "Saturday",
 ];
 
-export const ENGLISH_LEVEL = {
-  NOT_REQUIRED: "Not required",
-  BASIC: "Basic",
-  INTERMEDIATE: "Intermediate",
-  ADVANCED: "Fluent/Advanced",
-  NATIVE: "Native",
-};
 
 export const WAGE_TYPE = {
   YEARLY: "Yearly",
@@ -39,7 +41,9 @@ export const SHIFT_TYPE = {
   SHIFT_BASED: "Shift based",
 };
 
+
 export const BENEFIT_TYPE = {
   MEDICAL: "Medical",
   OTHERS: "Others",
 };
+

@@ -7,6 +7,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import JobRoot from "@/pages/Job";
 
 import AppRoot from "./App";
+import TailWindToaster from "./components/TailwindToaster";
 import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
@@ -85,6 +86,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <JobContextProvider>
           <JobSaveContextProvider>
             <RouterProvider router={router} />
+            <TailWindToaster />
           </JobSaveContextProvider>
         </JobContextProvider>
       </AuthContextProvider>
