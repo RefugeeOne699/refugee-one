@@ -152,7 +152,7 @@ export default function AddJob() {
                 type="number"
                 className="input input-bordered w-1/3"
                 placeholder="Min $"
-                {...register("wage.min", { required: true })}
+                {...register("wage.min", { required: true, valueAsNumber: true })}
               />
               <div>
                 <span className="ml-4 mr-4 text-center self-center text-4xl"> - </span>
@@ -162,7 +162,10 @@ export default function AddJob() {
                 type="number"
                 className="input input-bordered w-1/3"
                 placeholder="Max $"
-                {...register("wage.max", { required: true })}
+                {...register("wage.max", {
+                  required: true,
+                  valueAsNumber: true,
+                })}
               />
             </div>
           </div>
@@ -175,22 +178,21 @@ export default function AddJob() {
               <div className="self-center items-center w-1/3">
                 <input
                   type="checkbox"
-                  name="medical"
-                  value="medical"
+                  name="Medical"
+                  value={true}
                   className="scale-125"
                   {...register("benefit.hasMedical")}
                 />
-                <label className="pl-2" htmlFor="hasMedical">
-                  Medical
-                </label>
+                <label className="pl-2">Medical</label>
               </div>
+
               <div className="self-center items-center w-1/3">
                 <input
                   type="checkbox"
                   name="other"
-                  value="other"
+                  value={true}
                   className="scale-125"
-                  {...register("benefit.hasOthers")}
+                  {...register("benefit.hasOthers", { setValueAs: (v) => v === "true" })}
                 />
                 <label className="pl-2">Others</label>
               </div>
@@ -199,7 +201,7 @@ export default function AddJob() {
                 rows="2"
                 className="textarea textarea-bordered w-full"
                 placeholder="Add other benefits provided"
-                {...register("benefit.others")}
+                {...register("benefit.others", { setValueAs: (v) => v === "true" })}
               ></textarea>
             </div>
           </div>
