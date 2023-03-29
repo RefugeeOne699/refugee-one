@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 export const ROLES = {
   ADMIN: "admin",
   EMPLOYER: "employer",
