@@ -181,7 +181,7 @@ export default function AddJob() {
                   name="Medical"
                   value={true}
                   className="scale-125"
-                  {...register("benefit.hasMedical")}
+                  {...register("benefit.hasMedical", { setValueAs: (v) => v === "true" })}
                 />
                 <label className="pl-2">Medical</label>
               </div>
@@ -201,7 +201,7 @@ export default function AddJob() {
                 rows="2"
                 className="textarea textarea-bordered w-full"
                 placeholder="Add other benefits provided"
-                {...register("benefit.others", { setValueAs: (v) => v === "true" })}
+                {...register("benefit.others")}
               ></textarea>
             </div>
           </div>
