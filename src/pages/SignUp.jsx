@@ -1,11 +1,12 @@
 import { useRequest } from "ahooks";
 // import { sendEmailVerification } from "firebase/auth";
-// import { doc } from "firebase/firestore";
+import { doc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 // import { auth as firebaseAuth } from "@/clients/firebase";
-// import database from "@/clients/firebase";
+import database from "@/clients/firebase";
 import { useAuth } from "@/models";
 
 export default function SignUp() {
@@ -20,6 +21,8 @@ export default function SignUp() {
     async (data) =>
       auth.signUp({
         ...data,
+        // fixme: temp hard code company
+        company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
       }),
     {
       manual: true,
@@ -33,10 +36,12 @@ export default function SignUp() {
         //     );
         //   });
         // }
+        toast.success("Registration Successful");
         navigate("/");
       },
       onError: (error) => {
         //todo: handle error
+        toast.error("Registration Failed");
         console.error(error);
       },
     }
@@ -47,7 +52,7 @@ export default function SignUp() {
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
       <div className="card max-w-md">
         <div className="card-body">
           <p className="mb-5 text-2xl">Register With RefugeeOne Job Search Portal</p>
@@ -75,6 +80,7 @@ export default function SignUp() {
               {...register("company")}
               type="text"
               className="input w-full max-w-xs input-bordered mb-4"
+              disabled
             />
             <label className="label" htmlFor="phone">
               <span className="label-text">Phone Number</span>
