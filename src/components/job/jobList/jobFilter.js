@@ -13,8 +13,27 @@ function searchCheck(job, search) {
 
 function jobPostedCheck(job, jobPosted) {
   if (!job) return false;
-  //todo: write the function
-  return true;
+  switch (jobPosted) {
+    case "0":
+      return true;
+    case "1":
+      return (
+        new Date().getTime() - new Date(job.datePost.seconds * 1000).getTime() <=
+        3 * 24 * 60 * 60 * 1000
+      );
+    case "2":
+      return (
+        new Date().getTime() - new Date(job.datePost.seconds * 1000).getTime() <=
+        7 * 24 * 60 * 60 * 1000
+      );
+    case "3":
+      return (
+        new Date().getTime() - new Date(job.datePost.seconds * 1000).getTime() <=
+        30 * 24 * 60 * 60 * 1000
+      );
+    default:
+      return false;
+  }
 }
 
 function jobTypeCheck(job, jobType) {
