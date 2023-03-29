@@ -1,18 +1,16 @@
-import { useState } from "react";
+import { cloneElement, useState } from "react";
 import { slide as Menu } from "react-burger-menu";
 import { useNavigate } from "react-router-dom";
 
 import { ROLES } from "@/constants";
 import { useAuth } from "@/models";
 
-import React from "react";
-
 import AddIcon from "@mui/icons-material/Add";
-import SettingsIcon from '@mui/icons-material/Settings';
-import WorkIcon from '@mui/icons-material/Work';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import GradeIcon from '@mui/icons-material/Grade';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import GradeIcon from "@mui/icons-material/Grade";
+import SettingsIcon from "@mui/icons-material/Settings";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import WorkIcon from "@mui/icons-material/Work";
 
 const buttonMap = {
   [ROLES.ADMIN]: {
@@ -64,8 +62,7 @@ const buttonMap = {
     },
   },
   [ROLES.CLIENT]: {
-    buttons: {
-    },
+    buttons: {},
     navs: {
       "Find Jobs": {
         icon: <WorkIcon />,
@@ -102,13 +99,11 @@ function NavbarList(props) {
                 }}
               >
                 <div className="h-full flex flex-col justify-center px-2">
-                  {React.cloneElement(buttonMap[auth.user.role].buttons[key].icon, {
+                  {cloneElement(buttonMap[auth.user.role].buttons[key].icon, {
                     className: "text-2xl",
                   })}
                 </div>
-                <div
-                  className="h-full flex flex-col justify-center font-semibold"
-                >
+                <div className="h-full flex flex-col justify-center font-semibold">
                   {key}
                 </div>
               </div>
@@ -125,13 +120,11 @@ function NavbarList(props) {
                 }}
               >
                 <div className="h-full flex flex-col justify-center px-2">
-                  {React.cloneElement(buttonMap[auth.user.role].navs[key].icon, {
+                  {cloneElement(buttonMap[auth.user.role].navs[key].icon, {
                     className: "text-2xl",
                   })}
                 </div>
-                <div
-                  className="h-full flex flex-col justify-center font-semibold"
-                >
+                <div className="h-full flex flex-col justify-center font-semibold">
                   {key}
                 </div>
               </div>
