@@ -4,6 +4,8 @@ import { Link, useParams } from "react-router-dom";
 
 import { useAuth, useJob } from "@/models";
 
+import JobSave from "./JobSave";
+
 export default function JobList() {
   const { listJobs } = useJob();
   const { jobId } = useParams();
@@ -24,16 +26,35 @@ export default function JobList() {
     return data
       ? data.map((job) => {
           return (
-            <li key={job.id}>
-              <Link to={job.id} className={job.id && job.id == jobId ? "active" : null}>
-                <div className="card card-side w-full">
-                  <figure>LOGO</figure>
-                  <div className="card-body">
-                    <p className="card-title text-xl">{job.title}</p>
-                    <p>{job.company.name}</p>
+            <li className="flex flex-row w-full mt-5 " key={job.id}>
+              <div
+                className={`card card-compact w-full rounded-xl border-slate-400 border-4 ${
+                  job.id && job.id == jobId ? "active" : ""
+                }`}
+              >
+                <Link to={job.id} className="w-full flex flex-row justify-between">
+                  <div className="card-body basis-9/12 flex-none">
+                    <div className="card-title text-xl">{job.title}</div>
+                    <div className="flex flex-row flex-none">
+                      <div className="flex flex-row flex-wrap flex-auto">
+                        <p className="truncate w-1/2">{job.company.name}</p>
+                        <p className="truncate w-1/2">{`${job.location}`}</p>
+                        <p className="truncate w-1/2">
+                          {job.benefits.hasMedical
+                            ? "Medical Benefits"
+                            : "No Medical Benefits"}
+                        </p>
+                        <p className="truncate w-1/2">
+                          Minimum Pay: {job.wage.min} {job.wage.type}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                  <div className="card-actions basis-1/12 items-center justify-center">
+                    <JobSave jobId={job.id} mode={"list"} />
+                  </div>
+                </Link>
+              </div>
             </li>
           );
         })
@@ -41,7 +62,7 @@ export default function JobList() {
   }, [data, jobId]);
 
   return (
-    <div className="flex flex-row">
+    <div className="w-full">
       <ul className="menu w-full">{jobs}</ul>
     </div>
   );
