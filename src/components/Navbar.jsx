@@ -12,6 +12,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import WorkIcon from '@mui/icons-material/Work';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import GradeIcon from '@mui/icons-material/Grade';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
 const buttonMap = {
   [ROLES.ADMIN]: {
@@ -22,13 +23,17 @@ const buttonMap = {
       },
       "Post a Job": {
         icon: <AddIcon />,
-        path: "",
+        path: "addJob",
       },
     },
     navs: {
-      "Manage Jobs": {
+      "Find Jobs": {
         icon: <WorkIcon />,
-        path: "",
+        path: "jobs",
+      },
+      "Manage Jobs": {
+        icon: <BusinessCenterIcon />,
+        path: "admin",
       },
       "Manage Accounts": {
         icon: <SupervisorAccountIcon />,
@@ -36,7 +41,7 @@ const buttonMap = {
       },
       Setting: {
         icon: <SettingsIcon />,
-        path: "",
+        path: "profile",
       },
     },
   },
@@ -44,7 +49,7 @@ const buttonMap = {
     buttons: {
       "Post a Job": {
         icon: <AddIcon />,
-        path: "",
+        path: "addJob",
       },
     },
     navs: {
@@ -54,25 +59,17 @@ const buttonMap = {
       },
       Setting: {
         icon: <SettingsIcon />,
-        path: "",
+        path: "profile",
       },
     },
   },
   [ROLES.CLIENT]: {
     buttons: {
-      "Create Account": {
-        icon: <AddIcon />,
-        path: "",
-      },
-      "Post a Job": {
-        icon: <AddIcon />,
-        path: "",
-      },
     },
     navs: {
       "Find Jobs": {
         icon: <WorkIcon />,
-        path: "",
+        path: "jobs",
       },
       "Saved Jobs": {
         icon: <GradeIcon />,
@@ -80,7 +77,7 @@ const buttonMap = {
       },
       Setting: {
         icon: <SettingsIcon />,
-        path: "",
+        path: "profile",
       },
     },
   },
@@ -99,6 +96,10 @@ function NavbarList(props) {
               <div
                 key={key}
                 className="border-2 border-yellow-600 rounded-2xl text-yellow-600 flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
+                onClick={() => {
+                  navigate(buttonMap[auth.user.role].buttons[key].path);
+                  props.setOpen(false);
+                }}
               >
                 <div className="h-full flex flex-col justify-center px-2">
                   {React.cloneElement(buttonMap[auth.user.role].buttons[key].icon, {
@@ -106,10 +107,6 @@ function NavbarList(props) {
                   })}
                 </div>
                 <div
-                  onClick={() => {
-                    navigate(buttonMap[auth.user.role].buttons[key].path);
-                    props.setOpen(false);
-                  }}
                   className="h-full flex flex-col justify-center font-semibold"
                 >
                   {key}
@@ -122,6 +119,10 @@ function NavbarList(props) {
               <div
                 key={key}
                 className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
+                onClick={() => {
+                  navigate(buttonMap[auth.user.role].navs[key].path);
+                  props.setOpen(false);
+                }}
               >
                 <div className="h-full flex flex-col justify-center px-2">
                   {React.cloneElement(buttonMap[auth.user.role].navs[key].icon, {
@@ -129,10 +130,6 @@ function NavbarList(props) {
                   })}
                 </div>
                 <div
-                  onClick={() => {
-                    navigate(buttonMap[auth.user.role].navs[key].path);
-                    props.setOpen(false);
-                  }}
                   className="h-full flex flex-col justify-center font-semibold"
                 >
                   {key}
