@@ -27,7 +27,7 @@ export default function AdminDashboard() {
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="">
-        <p className="text-4xl">Hello, {auth.user.name}</p>
+        <p className="text-4xl">Hello, {auth.user?.name}</p>
       </div>
       <p className="pt-4">Below are the admin privileges in order to manage the portal</p>
       <div className="flex flex-col mt-[20px] w-full h-full pl-[100px]">

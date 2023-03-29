@@ -126,7 +126,10 @@ const JobContextProvider = ({ children }) => {
         status: job.status,
         location: job.location,
         wage: job.wage,
-        benefits: job.benefit,
+        benefit: job.benefit,
+        jobType: job.jobType,
+        langEnglishLevel: job.langEnglishLevel,
+        datePost: job.datePost,
       };
     });
     return await Promise.all(jobList);
