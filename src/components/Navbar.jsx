@@ -5,7 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { ROLES } from "@/constants";
 import { useAuth } from "@/models";
 
+import React from "react";
+
 import AddIcon from "@mui/icons-material/Add";
+import SettingsIcon from '@mui/icons-material/Settings';
+import WorkIcon from '@mui/icons-material/Work';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import GradeIcon from '@mui/icons-material/Grade';
 
 const buttonMap = {
   [ROLES.ADMIN]: {
@@ -21,15 +27,15 @@ const buttonMap = {
     },
     navs: {
       "Manage Jobs": {
-        icon: <AddIcon />,
+        icon: <WorkIcon />,
         path: "",
       },
       "Manage Accounts": {
-        icon: <AddIcon />,
+        icon: <SupervisorAccountIcon />,
         path: "",
       },
       Setting: {
-        icon: <AddIcon />,
+        icon: <SettingsIcon />,
         path: "",
       },
     },
@@ -43,11 +49,11 @@ const buttonMap = {
     },
     navs: {
       "Manage Jobs": {
-        icon: <AddIcon />,
+        icon: <WorkIcon />,
         path: "",
       },
       Setting: {
-        icon: <AddIcon />,
+        icon: <SettingsIcon />,
         path: "",
       },
     },
@@ -65,15 +71,15 @@ const buttonMap = {
     },
     navs: {
       "Find Jobs": {
-        icon: <AddIcon />,
+        icon: <WorkIcon />,
         path: "",
       },
       "Saved Jobs": {
-        icon: <AddIcon />,
+        icon: <GradeIcon />,
         path: "",
       },
       Setting: {
-        icon: <AddIcon />,
+        icon: <SettingsIcon />,
         path: "",
       },
     },
@@ -88,39 +94,52 @@ function NavbarList(props) {
     <div className="w-full p-2 flex flex-col gap-8">
       {auth.user ? (
         <>
-          <ul className="menu w-full p-2 gap-5 text-black">
+          <div className="w-full p-2 gap-4 text-black flex flex-col">
             {Object.keys(buttonMap[auth.user.role].buttons).map((key) => (
-              <li
+              <div
                 key={key}
-                className="border-2 border-yellow-600 rounded-2xl text-yellow-600"
+                className="border-2 border-yellow-600 rounded-2xl text-yellow-600 flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
               >
-                {buttonMap[auth.user.role].buttons[key].path.icon}
-                <button
+                <div className="h-full flex flex-col justify-center px-2">
+                  {React.cloneElement(buttonMap[auth.user.role].buttons[key].icon, {
+                    className: "text-2xl",
+                  })}
+                </div>
+                <div
                   onClick={() => {
                     navigate(buttonMap[auth.user.role].buttons[key].path);
                     props.setOpen(false);
                   }}
+                  className="h-full flex flex-col justify-center font-semibold"
                 >
                   {key}
-                </button>
-              </li>
+                </div>
+              </div>
             ))}
-          </ul>
-          <ul className="menu w-full p-2 gap-5 text-black">
+          </div>
+          <div className="w-full p-2 gap-4 text-black flex flex-col">
             {Object.keys(buttonMap[auth.user.role].navs).map((key) => (
-              <li key={key} className="border-b-2 border-grey">
-                {buttonMap[auth.user.role].buttons[key].path.icon}
-                <button
+              <div
+                key={key}
+                className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
+              >
+                <div className="h-full flex flex-col justify-center px-2">
+                  {React.cloneElement(buttonMap[auth.user.role].navs[key].icon, {
+                    className: "text-2xl",
+                  })}
+                </div>
+                <div
                   onClick={() => {
-                    navigate(buttonMap[auth.user.role].buttons[key].path);
+                    navigate(buttonMap[auth.user.role].navs[key].path);
                     props.setOpen(false);
                   }}
+                  className="h-full flex flex-col justify-center font-semibold"
                 >
                   {key}
-                </button>
-              </li>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         </>
       ) : null}
     </div>
@@ -148,7 +167,7 @@ export default function Navbar() {
         </Menu>
       </div>
 
-      <div className="w-48 m-3 h-screen border-r-4 border-grey max-md:hidden">
+      <div className="w-60 m-3 h-screen border-r-4 border-grey max-md:hidden">
         <NavbarList setOpen={setOpen} />
       </div>
     </>
