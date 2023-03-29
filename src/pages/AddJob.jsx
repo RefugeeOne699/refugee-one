@@ -81,7 +81,7 @@ export default function AddJob() {
                     type="date"
                     className="input input-bordered w-full bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                     placeholder="Select a date"
-                    {...register("dateJobStart", { setValueAs: (v) => new Date(v) })}
+                    {...register("dateJobStart", { required: true })}
                   />
                   <label
                     htmlFor="dateJobStart"
@@ -181,7 +181,9 @@ export default function AddJob() {
                   name="Medical"
                   value={true}
                   className="scale-125"
-                  {...register("benefit.hasMedical", { setValueAs: (v) => v === "true" })}
+                  {...register("benefit.hasMedical", {
+                    value: (v) => (v === "true" ? true : false),
+                  })}
                 />
                 <label className="pl-2">Medical</label>
               </div>
@@ -192,7 +194,9 @@ export default function AddJob() {
                   name="other"
                   value={true}
                   className="scale-125"
-                  {...register("benefit.hasOthers", { setValueAs: (v) => v === "true" })}
+                  {...register("benefit.hasOthers", {
+                    value: (v) => (v === "true" ? true : false),
+                  })}
                 />
                 <label className="pl-2">Others</label>
               </div>
