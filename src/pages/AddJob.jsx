@@ -1,12 +1,10 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { useRequest } from "ahooks";
-import { doc } from "firebase/firestore";
 import { React } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import database from "@/clients/firebase";
 import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
@@ -26,12 +24,14 @@ export default function AddJob() {
       job.createJob({
         ...data,
         // fixme: temp demo solution
-        company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
-        // company: auth.user.company,
+        //company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
+        adminMessage: "",
+        company: auth.user.company,
         owner: auth.userRef,
         status: JOB_STATUS.PENDING,
         datePost: new Date(),
         location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
+        dateCreated: new Date(),
         // fixme: temp solution: we need an admin to approve the job
       }),
     {
@@ -273,6 +273,7 @@ export default function AddJob() {
             type="text"
             rows="10"
             className="textarea textarea-bordered w-full"
+            placeholder="Please specify other requirements or/and skills required for job such as driver license, or other certifications needed."
             {...register("description", { required: true })}
           />
         </div>
