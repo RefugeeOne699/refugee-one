@@ -7,7 +7,7 @@ export default function Job() {
   const sideMenuMobile = jobId ? "hidden" : "basis-full";
   const contentMobile = jobId ? "basis-full" : "hidden";
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row h-full">
       <div className={`${sideMenuMobile} md:block md:basis-1/2 lg:basis-1/3 flex-none`}>
         <JobList />
       </div>
