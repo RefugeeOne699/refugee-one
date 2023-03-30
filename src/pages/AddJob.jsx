@@ -38,11 +38,11 @@ export default function AddJob() {
     {
       manual: true,
       onSuccess: () => {
-        toast.success("Post succeeded!");
+        toast.success("Create Job succeeded");
         navigate("/");
       },
       onError: (e) => {
-        toast.error(`Failed. Please check again.`);
+        toast.error("Create Job failed.");
         console.log(e);
       },
     }
