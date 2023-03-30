@@ -90,6 +90,7 @@ function NavbarList(props) {
   return (
     <div className="w-full p-2 flex flex-col gap-8">
       <div className="w-full p-2 gap-4 text-black flex flex-col">
+        {/* todo: fix dark mode compatibility */}
         {Object.keys(buttonMap[auth.user.role].buttons).map((key) => (
           <div
             key={key}
@@ -109,6 +110,7 @@ function NavbarList(props) {
         ))}
       </div>
       <div className="w-full p-2 gap-4 text-black flex flex-col">
+        {/* todo: fix dark mode compatibility */}
         {Object.keys(buttonMap[auth.user.role].navs).map((key) => (
           <div
             key={key}
@@ -141,15 +143,19 @@ export default function Navbar() {
         <>
           <div className="md:hidden max-md:block h-24">
             <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-grey h-24 bg-white"></div>
+            {/* todo: fix dark mode compatibility */}
             <Menu
               isOpen={open}
               onStateChange={(state) => setOpen(state.isOpen)}
               crossClassName={"bg-black"}
+              // todo: fix dark mode compatibility
               overlayClassName={"opacity-25"}
               menuClassName={
                 "fixed top-0 left-0 bg-white px-4 pt-16 text-xl font-semibold"
               }
+              // todo: fix dark mode compatibility
               burgerBarClassName={"bg-black"}
+              // todo: fix dark mode compatibility
               burgerButtonClassName={"fixed top-8 left-8 z-50 w-10 h-8"}
               className={"fixed top-0 left-0 w-full h-full"}
             >
@@ -158,6 +164,7 @@ export default function Navbar() {
           </div>
 
           <div className="w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
+            {/* todo: fix dark mode compatibility */}
             <NavbarList setOpen={setOpen} />
           </div>
         </>
