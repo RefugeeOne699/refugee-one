@@ -13,13 +13,13 @@ export const ENGLISH_LEVEL = {
   NATIVE: "Native",
 };
 
-
 export const JOB_STATUS = {
   REJECTED: "rejected",
   PENDING: "pending",
   APPROVED: "approved",
   CLOSED: "closed",
 };
+
 export const DAYS_OF_WEEK = [
   "Sunday",
   "Monday",
@@ -29,7 +29,6 @@ export const DAYS_OF_WEEK = [
   "Friday",
   "Saturday",
 ];
-
 
 export const WAGE_TYPE = {
   YEARLY: "Yearly",
@@ -42,9 +41,7 @@ export const SHIFT_TYPE = {
   SHIFT_BASED: "Shift based",
 };
 
-
 export const BENEFIT_TYPE = {
   MEDICAL: "Medical",
   OTHERS: "Others",
 };
-
