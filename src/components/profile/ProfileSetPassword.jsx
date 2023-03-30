@@ -1,47 +1,39 @@
-import { useRequest } from "ahooks";
 import KeyIcon from "@mui/icons-material/Key";
+import { useRequest } from "ahooks";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "@/models";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "@/models";
 
 export default function ProfileSetPassword() {
   const auth = useAuth();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const [matchState, setMatchState] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const GetErrorMessage = (error) => {
-    if (error.code === "password_not_match") {
-      return "Passwords do not match";
-    } else if (error.code === "auth/too-many-requests") {
-      return "Too many trails, try again later";
-    } else if (error.code === "auth/wrong-password") {
-      return "Wrong password";
-    } else {
-      return "Unknown error";
-    }
-  };
-
-  const {
-    run: modifiedContent,
-    error: modificationError,
-    loading: modificationLoading,
-  } = useRequest(
+  const { run: modifiedContent, loading: modificationLoading } = useRequest(
     async (data) => {
-      if (data.newPassword !== data.checkPassword) {
-        let error = new Error("password_not_match");
-        error.code = "password_not_match";
-        throw error;
-      } else {
-        return auth.updatePassword(data);
-      }
+      return auth.updatePassword(data);
     },
     {
       manual: true,
       onSuccess: async () => {
+        toast.success("Password updated");
         navigate("../account", { replace: true });
       },
       onError: (error) => {
-        console.log(error);
+        if (error.code === "auth/too-many-requests") {
+          toast.error("Try again later");
+        } else if (error.code === "auth/wrong-password") {
+          toast.error("Wrong password");
+        } else {
+          toast.error("Unknown error");
+          console.log(error);
+        }
       },
     }
   );
@@ -49,6 +41,21 @@ export default function ProfileSetPassword() {
   const handleCancel = () => {
     navigate("../account", { replace: true });
   };
+
+  const handleMatch = () => {
+    if (newPassword === "") {
+      setMatchState(false);
+    } else if (newPassword === confirmPassword) {
+      setMatchState(false);
+    } else {
+      console.log(newPassword + " " + confirmPassword);
+      setMatchState(true);
+    }
+  };
+
+  useEffect(() => {
+    handleMatch();
+  }, [newPassword, confirmPassword]);
 
   return (
     <div className="w-full">
@@ -65,10 +72,7 @@ export default function ProfileSetPassword() {
                     {...register("oldPassword", { required: true })}
                     type="text"
                     placeholder="old password"
-                    className={
-                      "input w-full input-bordered" +
-                      (modificationError ? " input-error" : "")
-                    }
+                    className="input w-full input-bordered"
                   />
                 </div>
               </div>
@@ -84,9 +88,11 @@ export default function ProfileSetPassword() {
                     type="text"
                     placeholder="new password"
                     className={
-                      "input w-full input-bordered" +
-                      (modificationError ? " input-error" : "")
+                      "input w-full input-bordered" + (matchState ? " input-error" : "")
                     }
+                    onChange={(e) => {
+                      setNewPassword(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -98,22 +104,20 @@ export default function ProfileSetPassword() {
                 </div>
                 <div className="flex w-full justify-end">
                   <input
-                    {...register("checkPassword", { required: true })}
                     type="text"
                     placeholder="confirm password"
                     className={
-                      "input w-full input-bordered" +
-                      (modificationError ? " input-error" : "")
+                      "input w-full input-bordered" + (matchState ? " input-error" : "")
                     }
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                    }}
                   />
                 </div>
               </div>
             </li>
           </ul>
           <>
-            {modificationError ? (
-              <p className="text-error">{GetErrorMessage(modificationError)}</p>
-            ) : null}
             <button type="submit" className="btn btn-xs btn-md lg:btn-lg m-2">
               {modificationLoading ? "loading" : "Save Password"}
             </button>

@@ -1,10 +1,11 @@
-import { useRequest } from "ahooks";
-import KeyIcon from "@mui/icons-material/Key";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
+import { useRequest } from "ahooks";
 import { useForm } from "react-hook-form";
-import { useAuth } from "@/models";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "@/models";
 
 export default function ProfileSetProfile() {
   const auth = useAuth();
@@ -18,9 +19,11 @@ export default function ProfileSetProfile() {
     {
       manual: true,
       onSuccess: async () => {
+        toast.success("Profile updated");
         navigate("../account", { replace: true });
       },
       onError: (error) => {
+        toast.error("Profile update failed");
         console.error(error);
       },
     }

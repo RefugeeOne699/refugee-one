@@ -2,17 +2,24 @@ import InfoIcon from "@mui/icons-material/Info";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
-import { Link } from "react-router-dom";
-import { useAuth } from "@/models";
 import { useRequest } from "ahooks";
+import { toast } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+
+import { useAuth } from "@/models";
 
 export default function ProfileMenu() {
   const auth = useAuth();
+  const navigate = useNavigate();
 
   const { run: signOut } = useRequest(async () => auth.signOut(), {
     manual: true,
+    onSuccess: () => {
+      toast.success("Logout successful");
+      navigate("/", { replace: true });
+    },
     onError: (error) => {
-      //todo: handle error
+      toast.error("Logout failed");
       console.error(error);
     },
   });

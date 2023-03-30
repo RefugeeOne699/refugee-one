@@ -1,10 +1,10 @@
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   updatePassword as firebaseUpdatePassword,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
@@ -75,11 +75,7 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const signOut = () => {
-    return firebaseSignOut(auth)
-      .then(() => {})
-      .catch((error) => {
-        throw new Error(error);
-      });
+    return firebaseSignOut(auth);
   };
 
   const updatePassword = async (payload) => {
@@ -95,11 +91,7 @@ const AuthContextProvider = ({ children }) => {
     return updateDoc(docRef, {
       name: newProfile.name,
       phone: newProfile.phone,
-    })
-      .then(() => {})
-      .catch((error) => {
-        throw new Error(error);
-      });
+    });
   };
 
   const contextValue = useMemo(

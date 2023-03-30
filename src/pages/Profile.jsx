@@ -1,5 +1,6 @@
-import { useAuth } from "@/models";
 import { Outlet } from "react-router-dom";
+
+import { useAuth } from "@/models";
 
 const parseName = (name) => {
   let nameArray = name.split(" ");
