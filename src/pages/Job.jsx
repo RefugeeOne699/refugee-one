@@ -1,6 +1,6 @@
 import { Outlet, useParams } from "react-router-dom";
 
-import JobList from "@/components/job/JobList";
+import JobList from "@/components/job/jobList/JobList";
 
 export default function Job() {
   const { jobId } = useParams();
