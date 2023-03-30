@@ -9,10 +9,10 @@ import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 
-import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
+import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
 import JobSave from "../JobSave";
