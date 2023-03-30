@@ -89,48 +89,44 @@ function NavbarList(props) {
 
   return (
     <div className="w-full p-2 flex flex-col gap-8">
-          <div className="w-full p-2 gap-4 text-black flex flex-col">
-            {Object.keys(buttonMap[auth.user.role].buttons).map((key) => (
-              <div
-                key={key}
-                className="border-2 border-yellow-600 rounded-2xl text-yellow-600 flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
-                onClick={() => {
-                  navigate(buttonMap[auth.user.role].buttons[key].path);
-                  props.setOpen(false);
-                }}
-              >
-                <div className="h-full flex flex-col justify-center px-2">
-                  {cloneElement(buttonMap[auth.user.role].buttons[key].icon, {
-                    className: "text-2xl",
-                  })}
-                </div>
-                <div className="h-full flex flex-col justify-center font-semibold">
-                  {key}
-                </div>
-              </div>
-            ))}
+      <div className="w-full p-2 gap-4 text-black flex flex-col">
+        {Object.keys(buttonMap[auth.user.role].buttons).map((key) => (
+          <div
+            key={key}
+            className="border-2 border-yellow-600 rounded-2xl text-yellow-600 flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
+            onClick={() => {
+              navigate(buttonMap[auth.user.role].buttons[key].path);
+              props.setOpen(false);
+            }}
+          >
+            <div className="h-full flex flex-col justify-center px-2">
+              {cloneElement(buttonMap[auth.user.role].buttons[key].icon, {
+                className: "text-2xl",
+              })}
+            </div>
+            <div className="h-full flex flex-col justify-center font-semibold">{key}</div>
           </div>
-          <div className="w-full p-2 gap-4 text-black flex flex-col">
-            {Object.keys(buttonMap[auth.user.role].navs).map((key) => (
-              <div
-                key={key}
-                className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
-                onClick={() => {
-                  navigate(buttonMap[auth.user.role].navs[key].path);
-                  props.setOpen(false);
-                }}
-              >
-                <div className="h-full flex flex-col justify-center px-2">
-                  {cloneElement(buttonMap[auth.user.role].navs[key].icon, {
-                    className: "text-2xl",
-                  })}
-                </div>
-                <div className="h-full flex flex-col justify-center font-semibold">
-                  {key}
-                </div>
-              </div>
-            ))}
+        ))}
+      </div>
+      <div className="w-full p-2 gap-4 text-black flex flex-col">
+        {Object.keys(buttonMap[auth.user.role].navs).map((key) => (
+          <div
+            key={key}
+            className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
+            onClick={() => {
+              navigate(buttonMap[auth.user.role].navs[key].path);
+              props.setOpen(false);
+            }}
+          >
+            <div className="h-full flex flex-col justify-center px-2">
+              {cloneElement(buttonMap[auth.user.role].navs[key].icon, {
+                className: "text-2xl",
+              })}
+            </div>
+            <div className="h-full flex flex-col justify-center font-semibold">{key}</div>
           </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -141,30 +137,31 @@ export default function Navbar() {
 
   return (
     <>
-    {auth.user ? (
-      <>
-        <div className="md:hidden max-md:block">
-          <div className="z-50 w-full border-b-4 border-grey h-24 bg-white">
+      {auth.user ? (
+        <>
+          <div className="md:hidden max-md:block">
+            <div className="z-50 w-full border-b-4 border-grey h-24 bg-white"></div>
+            <Menu
+              isOpen={open}
+              onStateChange={(state) => setOpen(state.isOpen)}
+              crossClassName={"bg-black"}
+              overlayClassName={"opacity-25"}
+              menuClassName={
+                "fixed top-0 left-0 bg-white px-4 pt-16 text-xl font-semibold"
+              }
+              burgerBarClassName={"bg-black"}
+              burgerButtonClassName={"fixed top-8 left-8 z-50 w-10 h-8"}
+              className={"fixed top-0 left-0 w-full h-full"}
+            >
+              <NavbarList setOpen={setOpen} />
+            </Menu>
           </div>
-          <Menu
-            isOpen={open}
-            onStateChange={(state) => setOpen(state.isOpen)}
-            crossClassName={"bg-black"}
-            overlayClassName={"opacity-25"}
-            menuClassName={"fixed top-0 left-0 bg-white px-4 pt-16 text-xl font-semibold"}
-            burgerBarClassName={"bg-black"}
-            burgerButtonClassName={"fixed top-8 left-8 z-50 w-10 h-8"}
-            className={"fixed top-0 left-0 w-full h-full"}
-          >
-            <NavbarList setOpen={setOpen} />
-          </Menu>
-        </div>
 
-        <div className="w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
-          <NavbarList setOpen={setOpen} />
-        </div>
-      </>
-    ) : null}
+          <div className="w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
+            <NavbarList setOpen={setOpen} />
+          </div>
+        </>
+      ) : null}
     </>
   );
 }
