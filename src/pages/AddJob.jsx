@@ -39,7 +39,6 @@ export default function AddJob() {
       manual: true,
       onSuccess: () => {
         toast.success("Post succeeded!");
-        toast("hi toast");
         navigate("/");
       },
       onError: (e) => {
