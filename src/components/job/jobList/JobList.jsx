@@ -9,10 +9,10 @@ import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 
-import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
+import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
 import JobSave from "../JobSave";
@@ -287,7 +287,7 @@ export default function JobList() {
   }, [filteredJobs, jobId]);
 
   return (
-    <div className="relative flex flex-col h-screen  bg-yellow-100">
+    <div className="relative flex flex-col bg-yellow-100">
       {/* Search bar and filter icon */}
       <div className="flex flex-row items-center justify-between h-16 p-3 bg-blue-100">
         <div className="relative text-gray-600">

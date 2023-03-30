@@ -41,14 +41,14 @@ export default function App() {
         // todo: add a loading spin
         "Loading"
       ) : (
-        <>
+        <div className="flex md:flex-row max-md:flex-col">
           <div className="flex-none">
             <Navbar />
           </div>
           <div className="flex-auto flex flex-col">
             <Outlet />
           </div>
-        </>
+        </div>
       ),
     [loading, auth.user]
   );
