@@ -11,11 +11,12 @@ function searchCheck(job, search) {
   );
 }
 
-// function jobPostedCheck(job, jobPosted) {
-//   if (!job) return false;
-//   //todo: write the function
-//   return true;
-// }
+function jobPostedCheck(job, jobPosted) {
+  if (!job) return false;
+  if (jobPosted === "Anytime") return true;
+  //todo: write the function
+  return true;
+}
 
 function jobTypeCheck(job, jobType) {
   if (!job) return false;
