@@ -39,9 +39,10 @@ export default function AddJob() {
       onSuccess: () => {
         navigate("/");
       },
-      onError: () => {
+      onError: (e) => {
         //todo: handle error
         //   console.error(error);
+        console.log(e);
       },
     }
   );
@@ -179,11 +180,8 @@ export default function AddJob() {
                 <input
                   type="checkbox"
                   name="Medical"
-                  value={true}
                   className="scale-125"
-                  {...register("benefit.hasMedical", {
-                    value: (v) => (v === "true" ? true : false),
-                  })}
+                  {...register("benefit.hasMedical")}
                 />
                 <label className="pl-2">Medical</label>
               </div>
@@ -192,11 +190,8 @@ export default function AddJob() {
                 <input
                   type="checkbox"
                   name="other"
-                  value={true}
                   className="scale-125"
-                  {...register("benefit.hasOthers", {
-                    value: (v) => (v === "true" ? true : false),
-                  })}
+                  {...register("benefit.hasOthers")}
                 />
                 <label className="pl-2">Others</label>
               </div>
