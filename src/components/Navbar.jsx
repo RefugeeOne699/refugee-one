@@ -139,8 +139,8 @@ export default function Navbar() {
     <>
       {auth.user ? (
         <>
-          <div className="md:hidden max-md:block">
-            <div className="z-50 w-full border-b-4 border-grey h-24 bg-white"></div>
+          <div className="md:hidden max-md:block h-24">
+            <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-grey h-24 bg-white"></div>
             <Menu
               isOpen={open}
               onStateChange={(state) => setOpen(state.isOpen)}
