@@ -14,10 +14,10 @@ export default function Profile() {
   const auth = useAuth();
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-8">
       <div className="flex flex-col justify-center items-center">
         <div className="avatar">
-          <div className="w-24 rounded-full bg-stone-700">
+          <div className="w-24 rounded-full bg-slate-300 dark:bg-stone-700">
             <div className="w-full h-full flex flex-col justify-center">
               <p className="text-center font-black text-3xl italic">
                 {auth.user?.name ? parseName(auth.user?.name) : ""}
