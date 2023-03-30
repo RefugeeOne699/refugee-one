@@ -3,6 +3,7 @@ export const ROLES = {
   EMPLOYER: "employer",
   CLIENT: "client",
 };
+
 export const ENGLISH_LEVEL = {
   NOT_REQUIRED: "Not required",
   BASIC: "Basic",
@@ -37,4 +38,9 @@ export const SHIFT_TYPE = {
   FULL_TIME: "Full-time",
   PART_TIME: "Part-time",
   SHIFT_BASED: "Shift based",
+};
+
+export const BENEFIT_TYPE = {
+  MEDICAL: "Medical",
+  OTHERS: "Others",
 };
