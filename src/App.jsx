@@ -41,7 +41,7 @@ export default function App() {
         // todo: add a loading spin
         "Loading"
       ) : (
-        <div className="flex flex-row">
+        <div className="flex md:flex-row max-md:flex-col">
           <div className="flex-none">
             <Navbar />
           </div>
