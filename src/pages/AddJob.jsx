@@ -42,7 +42,8 @@ export default function AddJob() {
         navigate("/");
       },
       onError: (e) => {
-        toast.error(`Failed. ${e}`);
+        toast.error(`Failed. Please check again.`);
+        console.log(e);
       },
     }
   );
