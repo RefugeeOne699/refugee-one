@@ -3,6 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useRequest } from "ahooks";
 import { React } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
@@ -37,12 +38,12 @@ export default function AddJob() {
     {
       manual: true,
       onSuccess: () => {
+        toast.success("Post succeeded!");
+        toast("hi toast");
         navigate("/");
       },
       onError: (e) => {
-        //todo: handle error
-        //   console.error(error);
-        console.log(e);
+        toast.error(`Failed. ${e}`);
       },
     }
   );
