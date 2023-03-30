@@ -52,12 +52,7 @@ const AuthContextProvider = ({ children }) => {
 
   const signIn = (payload) => {
     const { email, password } = payload;
-    return signInWithEmailAndPassword(auth, email, password)
-      .then(() => {})
-      .catch((error) => {
-        // todo: store error info
-        throw new Error(error);
-      });
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const signUp = (payload) => {
