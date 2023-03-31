@@ -263,7 +263,7 @@ export default function JobList() {
                     <div className="card-title text-xl">{job.title}</div>
                     <div className="flex flex-row flex-none">
                       <div className="flex flex-row flex-wrap flex-auto">
-                        <p className="truncate w-1/2">{job.company.name}</p>
+                        <p className="truncate w-1/2">{job.company}</p>
                         <p className="truncate w-1/2">{`${job.location}`}</p>
                         <p className="truncate w-1/2">
                           {job.benefit.hasMedical

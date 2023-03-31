@@ -1,55 +1,28 @@
 import { useRequest } from "ahooks";
-// import { sendEmailVerification } from "firebase/auth";
-import { doc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-// import { auth as firebaseAuth } from "@/clients/firebase";
-import database from "@/clients/firebase";
 import { useAuth } from "@/models";
 
 export default function SignUp() {
   const auth = useAuth();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  // follow this function for a better practice with interactive button
 
   const { run: signUp, loading: signUpLoading } = useRequest(
-    // No harding for company required as it will be entered by user when registering for first time
-
-    async (data) =>
-      auth.signUp({
-        ...data,
-        // fixme: temp hard code company
-        company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
-      }),
+    async (data) => auth.signUp(data),
     {
       manual: true,
       onSuccess: async () => {
-        // fixme: temp for demo
-        // if (!firebaseAuth.currentUser.emailVerified) {
-        //   await sendEmailVerification(firebaseAuth.currentUser).then(() => {
-        //     auth.signOut();
-        //     alert(
-        //       "We have sent you a verification email! \n Please verfiy your email before logging in!"
-        //     );
-        //   });
-        // }
         toast.success("Registration Successful");
         navigate("/");
       },
-      onError: (error) => {
-        //todo: handle error
+      onError: () => {
         toast.error("Registration Failed");
-        console.error(error);
       },
     }
   );
-
-  if (auth.user) {
-    console.log(auth.user);
-  }
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -80,7 +53,6 @@ export default function SignUp() {
               {...register("company")}
               type="text"
               className="input w-full max-w-xs input-bordered mb-4"
-              disabled
             />
             <label className="label" htmlFor="phone">
               <span className="label-text">Phone Number</span>
@@ -105,7 +77,6 @@ export default function SignUp() {
               {...register("role", { value: "employer" })}
               type="text"
               className="input w-full max-w-xs input-bordered mb-4"
-              disabled
             />
             <button
               type="submit"

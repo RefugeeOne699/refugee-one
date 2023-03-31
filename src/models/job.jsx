@@ -73,11 +73,6 @@ const JobContextProvider = ({ children }) => {
     const jobDocRef = doc(database, "Jobs", id);
     const jobDoc = await getDoc(jobDocRef);
     const job = jobDoc.data();
-    const companyDoc = await getDoc(job.company);
-    job.company = {
-      id: companyDoc.id,
-      name: companyDoc.data().name,
-    };
     const ownerDoc = await getDoc(job.owner);
     job.owner = {
       uid: ownerDoc.id,
@@ -97,10 +92,7 @@ const JobContextProvider = ({ children }) => {
    * {
    *    title: "title of the job",
    *    id: "id of the job doc",
-   *    company: {
-   *      name: "name of the company",
-   *      id: "id of the company doc"
-   *    },
+   *    company: "name of the company"
    *    stauts: "pending",
    * }
    */
@@ -112,17 +104,10 @@ const JobContextProvider = ({ children }) => {
     const jobDocs = await getDocs(jobQuery);
     const jobList = jobDocs.docs.map(async (doc) => {
       const job = doc.data();
-      const companyDoc = await getDoc(job.company);
-      const data = companyDoc.data();
-      const company = {
-        id: companyDoc.id,
-        name: data.name,
-        status: data.status,
-      };
       return {
         id: doc.id,
         title: job.title,
-        company,
+        company: job.company,
         status: job.status,
         location: job.location,
         wage: job.wage,

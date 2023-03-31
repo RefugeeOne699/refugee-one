@@ -14,26 +14,21 @@ export default function AddJob() {
   const job = useJob();
 
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    // formState: { errors }
-  } = useForm();
-  console.log(job);
+  const { register, handleSubmit } = useForm({
+    // if the user is an employer, has a company, autofill the company name
+    defaultValues: { company: auth.user?.company || "" },
+  });
+
   const { run: addJob } = useRequest(
     async (data) =>
       job.createJob({
         ...data,
-        // fixme: temp demo solution
-        //company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
         adminMessage: "",
-        company: auth.user.company,
         owner: auth.userRef,
         status: JOB_STATUS.PENDING,
         datePost: new Date(),
         location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
         dateCreated: new Date(),
-        // fixme: temp solution: we need an admin to approve the job
       }),
     {
       manual: true,
@@ -41,9 +36,8 @@ export default function AddJob() {
         toast.success("Create Job succeeded");
         navigate("/");
       },
-      onError: (e) => {
+      onError: () => {
         toast.error("Create Job failed.");
-        console.log(e);
       },
     }
   );
@@ -69,7 +63,6 @@ export default function AddJob() {
             type="text"
             className="input input-bordered w-full"
             {...register("company")}
-            disabled
           />
         </div>
 
