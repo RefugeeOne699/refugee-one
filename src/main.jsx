@@ -20,7 +20,7 @@ const Admin = {
 };
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
-const SignIn = lazy(async () => import("@/pages/Home"));
+const SignIn = lazy(async () => import("@/pages/SignIn"));
 const Center = lazy(async () => import("@/components/Center"));
 const Job = {
   View: lazy(async () => import("@/components/job/JobView")),
