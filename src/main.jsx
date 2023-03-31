@@ -21,7 +21,7 @@ const Admin = {
 const SignUp = lazy(async () => import("@/pages/SignUp"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Profile = lazy(async () => import("@/pages/Profile"));
-const Blank = lazy(async () => import("@/components/Blank"));
+const Center = lazy(async () => import("@/components/Center"));
 const Job = {
   View: lazy(async () => import("@/components/job/JobView")),
 };
@@ -68,7 +68,7 @@ const router = createBrowserRouter([
         path: "jobs",
         element: <JobRoot />,
         children: [
-          { index: true, element: <Blank /> },
+          { index: true, element: <Center /> },
           {
             path: ":jobId",
             element: <Job.View />,

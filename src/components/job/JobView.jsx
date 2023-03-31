@@ -15,16 +15,16 @@ import { Link, useParams } from "react-router-dom";
 
 import { useJob } from "@/models";
 
-import Blank from "../Blank";
+import Center from "../Center";
 import Spin from "../Spin";
 import JobSave from "./JobSave";
 function ErrorInfo() {
   return (
-    <Blank>
+    <Center>
       <div className="text-8xl text-error">
         <ErrorOutline fontSize="inherit" />
       </div>
-    </Blank>
+    </Center>
   );
 }
 export default function JobView() {
@@ -50,9 +50,9 @@ export default function JobView() {
   const content = useMemo(() => {
     if (loading) {
       return (
-        <Blank>
+        <Center>
           <Spin className="h-8 w-8" />
-        </Blank>
+        </Center>
       );
     }
     if (error) {

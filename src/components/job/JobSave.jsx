@@ -2,9 +2,12 @@ import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { useRequest } from "ahooks";
 import { useMemo } from "react";
+import { toast } from "react-hot-toast";
 
 import Spin from "@/components/Spin";
 import { useAuth, useJobSave } from "@/models";
+
+import Center from "../Center";
 
 export default function JobSave({ jobId, mode }) {
   const {
@@ -17,8 +20,12 @@ export default function JobSave({ jobId, mode }) {
   const { uid } = auth.user;
   const saveJobRequest = useRequest(async () => saveJob.run(jobId, uid), {
     manual: true,
-    // todo: alert success message here
-    onSuccess: () => {},
+    onSuccess: () => {
+      toast.success("Job is saved!");
+    },
+    onError: () => {
+      toast.error("Failed to save the job");
+    },
   });
   const onClick = async () => {
     await saveJobRequest.run(jobId, uid);
@@ -37,7 +44,7 @@ export default function JobSave({ jobId, mode }) {
       }
     }, [saveJob.loading, checking, jobsSaved]);
 
-    return <div className="text-4xl">{starIcon}</div>;
+    return <Center className="text-4xl">{starIcon}</Center>;
   } else {
     const button = useMemo(() => {
       return (

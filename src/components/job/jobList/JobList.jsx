@@ -11,6 +11,7 @@ import { useRequest } from "ahooks";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 
 import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE } from "@/constants";
@@ -24,6 +25,9 @@ export default function JobList() {
   const { jobId } = useParams();
   const { run, data } = useRequest(async () => listJobs(), {
     manual: true,
+    onError: () => {
+      toast.error("Failed to get job list");
+    },
   });
   const auth = useAuth();
 
@@ -254,32 +258,30 @@ export default function JobList() {
           return (
             <li className="flex flex-row w-full mt-5 " key={job.id}>
               <div
-                className={`card card-compact w-full rounded-xl border-slate-400 border-4 ${
+                className={`card card-compact w-full rounded-xl border-slate-400 border-4 flex flex-row justify-between ${
                   job.id && job.id == jobId ? "active" : ""
                 }`}
               >
-                <Link to={job.id} className="w-full flex flex-row justify-between">
-                  <div className="card-body basis-9/12 flex-none">
-                    <div className="card-title text-xl">{job.title}</div>
-                    <div className="flex flex-row flex-none">
-                      <div className="flex flex-row flex-wrap flex-auto">
-                        <p className="truncate w-1/2">{job.company}</p>
-                        <p className="truncate w-1/2">{`${job.location}`}</p>
-                        <p className="truncate w-1/2">
-                          {job.benefit.hasMedical
-                            ? "Medical Benefits"
-                            : "No Medical Benefits"}
-                        </p>
-                        <p className="truncate w-1/2">
-                          Minimum Pay: {job.wage.min} {job.wage.type}
-                        </p>
-                      </div>
+                <Link to={job.id} className="card-body basis-9/12 flex-none">
+                  <div className="card-title text-xl">{job.title}</div>
+                  <div className="flex flex-row flex-none">
+                    <div className="flex flex-row flex-wrap flex-auto">
+                      <p className="truncate w-1/2">{job.company}</p>
+                      <p className="truncate w-1/2">{`${job.location}`}</p>
+                      <p className="truncate w-1/2">
+                        {job.benefit.hasMedical
+                          ? "Medical Benefits"
+                          : "No Medical Benefits"}
+                      </p>
+                      <p className="truncate w-1/2">
+                        Minimum Pay: {job.wage.min} {job.wage.type}
+                      </p>
                     </div>
                   </div>
-                  <div className="card-actions basis-1/12 items-center justify-center">
-                    <JobSave jobId={job.id} mode={"list"} />
-                  </div>
                 </Link>
+                <div className="card-actions basis-1/12 items-center justify-center">
+                  <JobSave jobId={job.id} mode="list" />
+                </div>
               </div>
             </li>
           );
