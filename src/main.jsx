@@ -20,7 +20,7 @@ const Admin = {
 };
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
-const Home = lazy(async () => import("@/pages/Home"));
+const SignIn = lazy(async () => import("@/pages/Home"));
 const Center = lazy(async () => import("@/components/Center"));
 const Job = {
   View: lazy(async () => import("@/components/job/JobView")),
@@ -35,13 +35,20 @@ const Profile = {
 
 const router = createBrowserRouter([
   {
+    path: "/signIn",
+    element: <SignIn />,
+  },
+  // all the pages below requires signed in
+  {
     path: "/",
     element: <AppRoot />,
+    // todo: error page
     // errorElement: <ErrorBoundary />,
     children: [
+      // TODO: home page
       {
         index: true,
-        element: <Home />, // TODO: home page
+        element: <Center />,
       },
       {
         path: "signUp",
