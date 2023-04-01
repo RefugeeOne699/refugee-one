@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import { useRequest } from "ahooks";
@@ -30,7 +31,7 @@ export default function Home() {
   );
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
       <div className="card max-w-md">
         <div className="card-body">
           <p className="mb-5 text-3xl">Login To RefugeeOne Job Search Portal</p>

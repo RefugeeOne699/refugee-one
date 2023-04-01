@@ -1,7 +1,7 @@
 import { useRequest } from "ahooks";
 import { React, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
@@ -12,37 +12,30 @@ export default function AddJob() {
   const job = useJob();
 
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    setValue,
-    // formState: { errors }
-  } = useForm();
-  console.log(job);
+  const { register, handleSubmit, setValue, getValues } = useForm({
+    // if the user is an employer, has a company, autofill the company name
+    defaultValues: { company: auth.user?.company || "" },
+  });
+
   const { run: addJob } = useRequest(
     async (data) =>
       job.createJob({
         ...data,
-        // fixme: temp demo solution
-        // company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
-        company: auth.user.company,
+        adminMessage: "",
         owner: auth.userRef,
         status: JOB_STATUS.PENDING,
         datePost: new Date(),
         location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
-        adminMessage: "",
         dateCreated: new Date(),
-        // fixme: temp solution: we need an admin to approve the job
       }),
     {
       manual: true,
       onSuccess: () => {
+        toast.success("Create Job succeeded");
         navigate("/");
       },
       onError: () => {
-        //todo: handle error
-        //   console.error(error);
+        toast.error("Create Job failed.");
       },
     }
   );
@@ -124,7 +117,6 @@ export default function AddJob() {
             type="text"
             className="input input-bordered w-full"
             {...register("company")}
-            disabled
           />
         </div>
 
@@ -138,7 +130,7 @@ export default function AddJob() {
                     type="date"
                     className="input input-bordered w-full bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                     placeholder="Select a date"
-                    {...register("dateJobStart", { setValueAs: (v) => new Date(v) })}
+                    {...register("dateJobStart", { required: true })}
                   />
                   <label
                     htmlFor="dateJobStart"
@@ -164,7 +156,6 @@ export default function AddJob() {
                   </option>
                 );
               })}
-              {}
             </select>
           </div>
         </div>
@@ -210,7 +201,7 @@ export default function AddJob() {
                 type="number"
                 className="input input-bordered w-1/3"
                 placeholder="Min $"
-                {...register("wage.min", { required: true })}
+                {...register("wage.min", { required: true, valueAsNumber: true })}
               />
               <div>
                 <span className="ml-4 mr-4 text-center self-center text-4xl"> - </span>
@@ -220,7 +211,10 @@ export default function AddJob() {
                 type="number"
                 className="input input-bordered w-1/3"
                 placeholder="Max $"
-                {...register("wage.max", { required: true })}
+                {...register("wage.max", {
+                  required: true,
+                  valueAsNumber: true,
+                })}
               />
             </div>
           </div>
@@ -233,20 +227,17 @@ export default function AddJob() {
               <div className="self-center items-center w-1/3">
                 <input
                   type="checkbox"
-                  name="medical"
-                  value="medical"
+                  name="Medical"
                   className="scale-125"
                   {...register("benefit.hasMedical")}
                 />
-                <label className="pl-2" htmlFor="hasMedical">
-                  Medical
-                </label>
+                <label className="pl-2">Medical</label>
               </div>
+
               <div className="self-center items-center w-1/3">
                 <input
                   type="checkbox"
                   name="other"
-                  value="other"
                   className="scale-125"
                   {...register("benefit.hasOthers")}
                 />
@@ -331,18 +322,13 @@ export default function AddJob() {
             type="text"
             rows="10"
             className="textarea textarea-bordered w-full"
+            placeholder="Please specify other requirements or/and skills required for job such as driver license, or other certifications needed."
             {...register("description", { required: true })}
           />
         </div>
         <div className="flex w-full justify-end mb-4">
           <div className="flex flex-row justify-around w-1/2">
-            <button
-              type="submit"
-              className="btn btn-primary w-1/3"
-              onClick={() => {
-                window.localStorage.clear();
-              }}
-            >
+            <button type="submit" className="btn btn-primary w-1/3">
               Submit
             </button>
             <button

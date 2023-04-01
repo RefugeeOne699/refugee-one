@@ -1,8 +1,10 @@
+/* eslint-disable prettier/prettier */
 export const ROLES = {
   ADMIN: "admin",
   EMPLOYER: "employer",
   CLIENT: "client",
 };
+
 export const ENGLISH_LEVEL = {
   NOT_REQUIRED: "Not required",
   BASIC: "Basic",
@@ -17,6 +19,7 @@ export const JOB_STATUS = {
   APPROVED: "approved",
   CLOSED: "closed",
 };
+
 export const DAYS_OF_WEEK = [
   "Sunday",
   "Monday",
@@ -36,4 +39,9 @@ export const SHIFT_TYPE = {
   FULL_TIME: "Full-time",
   PART_TIME: "Part-time",
   SHIFT_BASED: "Shift based",
+};
+
+export const BENEFIT_TYPE = {
+  MEDICAL: "Medical",
+  OTHERS: "Others",
 };

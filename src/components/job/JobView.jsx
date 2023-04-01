@@ -43,7 +43,7 @@ export default function JobView() {
       <div className="flex flex-col card">
         <div className="card-body items-center">
           <p className="card-title text-2xl">{data.title}</p>
-          <p className="text-bold text-1xl">{data.company.name}</p>
+          <p className="text-bold text-1xl">{data.company}</p>
           <p className="text-bold text-1xl">
             Posted:{" "}
             {`${new Date(data.datePost.seconds * 1000)}`.split(" ").slice(0, 4).join(" ")}
@@ -119,6 +119,14 @@ export default function JobView() {
             <div className="ml-3">
               <p className="font-bold">Job Location:</p>
               <p>{data.location}</p>
+              <a
+                className="text-blue-400"
+                href={"https://www.google.com/maps/search/?api=1&query=" + data.location}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View location on Google Map
+              </a>
             </div>
           </div>
           <div className="flex w-full mt-5 flex-row">
