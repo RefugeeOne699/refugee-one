@@ -1,5 +1,5 @@
 import { useRequest } from "ahooks";
-import { React, useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,9 @@ import { useAuth, useJob } from "@/models";
 export default function AddJob() {
   const auth = useAuth();
   const job = useJob();
+
+  const [hasLoad, setHasLoad] = useState(false);
+  const toastid = [];
 
   const navigate = useNavigate();
   const { register, handleSubmit, setValue, getValues } = useForm({
@@ -42,28 +45,37 @@ export default function AddJob() {
 
   useEffect(() => {
     let hasdraft = window.localStorage.getItem("draft");
-    if (hasdraft !== null) {
-      toast(
-        (t) => (
-          <div className="flex flex-row justify-between w-[400px]">
-            <div className="w-1/2">
-              <p>Load draft?</p>
-            </div>
-            <div className="flex flex-row w-1/2 justify-between">
+    if (hasdraft !== null && toastid.length === 0) {
+      toastid.push(1);
+      toast((t) => (
+        <div className="flex flex-row justify-between items-center w-[500px] p-4 rounded-lg shadow-md">
+          <div className="w-1/2">
+            <p>Load draft?</p>
+          </div>
+          <div className="flex flex-row w-1/2 justify-between h-full">
+            <div>
               <button
                 onClick={() => {
                   loadDraft();
+                  setHasLoad(true);
                   toast.dismiss(t.id);
                 }}
+                className="btn btn-primary btn-sm"
               >
                 Load
               </button>
-              <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+            </div>
+            <div>
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="btn btn-outline btn-primary btn-sm"
+              >
+                Dismiss
+              </button>
             </div>
           </div>
-        ),
-        { duration: 1000000 }
-      );
+        </div>
+      ));
     }
   }, []);
 
@@ -77,9 +89,9 @@ export default function AddJob() {
     const draft = JSON.parse(window.localStorage.getItem("draft"));
     //console.log(typeof draft);
     setValue("title", draft.title);
+    setValue("company", auth.user?.company || draft.company);
     setValue("jobType", draft.jobType);
     setValue("dateJobStart", draft.dateJobStart);
-    console.log(draft.dateJobStart.split("T")[0]);
     setValue("shift", draft.shift);
     setValue("wage.type", draft.wage.type);
     setValue("wage.min", parseInt(draft.wage.min));
@@ -328,7 +340,16 @@ export default function AddJob() {
         </div>
         <div className="flex w-full justify-end mb-4">
           <div className="flex flex-row justify-around w-1/2">
-            <button type="submit" className="btn btn-primary w-1/3">
+            <button
+              type="submit"
+              className="btn btn-primary w-1/3"
+              onClick={() => {
+                if (hasLoad === true) {
+                  setHasLoad(false);
+                  window.localStorage.clear();
+                }
+              }}
+            >
               Submit
             </button>
             <button
