@@ -45,3 +45,5 @@ export const BENEFIT_TYPE = {
   MEDICAL: "Medical",
   OTHERS: "Others",
 };
+
+export const AUTH_INITIAL_STATE = "UNINITIALIZED";
