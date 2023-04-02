@@ -31,7 +31,7 @@ const buttonMap = {
       },
       "Manage Jobs": {
         icon: <BusinessCenterIcon />,
-        path: "admin",
+        path: "admin/jobs",
       },
       "Manage Accounts": {
         icon: <SupervisorAccountIcon />,
