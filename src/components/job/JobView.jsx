@@ -13,6 +13,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { useJob } from "@/models";
 
+import JobApproveReject from "./JobApproveReject";
 import JobSave from "./JobSave";
 
 export default function JobView() {
@@ -146,6 +147,9 @@ export default function JobView() {
               <p className="font-bold">Job Description:</p>
               <p>{data.description}</p>
             </div>
+          </div>
+          <div className="mt-5" id="temporaryColumn">
+            <JobApproveReject jobId={jobId} />
           </div>
           <div className="w-full flex flex-row justify-center mt-5">
             <Link to={".."}>
