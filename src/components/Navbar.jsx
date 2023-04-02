@@ -140,36 +140,34 @@ export default function Navbar() {
   return (
     <>
       {auth.user ? (
-        auth.user.role ? (
-          <>
-            <div className="md:hidden max-md:block h-24">
-              <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-grey h-24 bg-white"></div>
-              {/* todo: fix dark mode compatibility */}
-              <Menu
-                isOpen={open}
-                onStateChange={(state) => setOpen(state.isOpen)}
-                crossClassName={"bg-black"}
-                // todo: fix dark mode compatibility
-                overlayClassName={"opacity-25"}
-                menuClassName={
-                  "fixed top-0 left-0 bg-white px-4 pt-16 text-xl font-semibold"
-                }
-                // todo: fix dark mode compatibility
-                burgerBarClassName={"bg-black"}
-                // todo: fix dark mode compatibility
-                burgerButtonClassName={"fixed top-8 left-8 z-50 w-10 h-8"}
-                className={"fixed top-0 left-0 w-full h-full"}
-              >
-                <NavbarList setOpen={setOpen} />
-              </Menu>
-            </div>
-
-            <div className="w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
-              {/* todo: fix dark mode compatibility */}
+        <>
+          <div className="md:hidden max-md:block h-24">
+            <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-grey h-24 bg-white"></div>
+            {/* todo: fix dark mode compatibility */}
+            <Menu
+              isOpen={open}
+              onStateChange={(state) => setOpen(state.isOpen)}
+              crossClassName={"bg-black"}
+              // todo: fix dark mode compatibility
+              overlayClassName={"opacity-25"}
+              menuClassName={
+                "fixed top-0 left-0 bg-white px-4 pt-16 text-xl font-semibold"
+              }
+              // todo: fix dark mode compatibility
+              burgerBarClassName={"bg-black"}
+              // todo: fix dark mode compatibility
+              burgerButtonClassName={"fixed top-8 left-8 z-50 w-10 h-8"}
+              className={"fixed top-0 left-0 w-full h-full"}
+            >
               <NavbarList setOpen={setOpen} />
-            </div>
-          </>
-        ) : null
+            </Menu>
+          </div>
+
+          <div className="w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
+            {/* todo: fix dark mode compatibility */}
+            <NavbarList setOpen={setOpen} />
+          </div>
+        </>
       ) : null}
     </>
   );
