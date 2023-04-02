@@ -57,7 +57,7 @@ const approveJob = async (jobId) => {
 };
 
 const rejectJob = async (jobId, adminMessage) => {
-  await updateJob(jobId, { status: JOB_STATUS.REJECTED, adminMessage: adminMessage });
+  await updateJob(jobId, { status: JOB_STATUS.REJECTED, adminMessage });
 };
 
 const JobContextProvider = ({ children }) => {
