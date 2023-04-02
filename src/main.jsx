@@ -2,7 +2,7 @@ import "./index.css";
 
 import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
 
 import JobRoot from "@/pages/Job";
 
@@ -15,7 +15,7 @@ import { JobSaveContextProvider } from "./models/jobSave";
 
 const AddJob = lazy(async () => import("@/pages/AddJob"));
 const Admin = {
-  Dashboard: lazy(async () => import("@/pages/admin/AdminDashboard")),
+  Jobs: lazy(async () => import("@/pages/admin/JobsAdmin")),
 };
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
@@ -59,8 +59,17 @@ const router = createBrowserRouter([
         // element: <AdminContextProvider />,
         children: [
           {
-            index: true,
-            element: <Admin.Dashboard />,
+            path: "jobs",
+            children: [
+              {
+                index: true,
+                element: <Navigate to="pending" />,
+              },
+              {
+                path: ":tabUrl",
+                element: <Admin.Jobs />,
+              },
+            ],
           },
         ],
       },
