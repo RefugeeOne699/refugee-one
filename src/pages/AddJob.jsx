@@ -77,7 +77,7 @@ export default function AddJob() {
             </div>
           </div>
         ),
-        { duration: 90000 }
+        { duration: 60000 }
       );
     }
   }, []);
@@ -90,7 +90,6 @@ export default function AddJob() {
 
   const loadDraft = () => {
     const draft = JSON.parse(window.localStorage.getItem("draft"));
-    //console.log(typeof draft);
     setValue("title", draft.title);
     setValue("company", auth.user?.company || draft.company);
     setValue("jobType", draft.jobType);
