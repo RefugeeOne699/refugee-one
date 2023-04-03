@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 
-// eslint-disable-next-line import/namespace
 import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
