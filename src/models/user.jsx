@@ -17,6 +17,7 @@ import { JOB_STATUS } from "@/constants";
 
 const UserContext = createContext({
   approveUser: () => {},
+  updateUser: () =>{},
   deleteUser: () => {},
   listUsers: (_queryConstraints) => [],
   countUsers: (_queryConstraints) => Number,
@@ -63,7 +64,9 @@ const UserContextProvider = ({ children }) => {
         status: user.status ? user.status : JOB_STATUS.PENDING
       };
     });
-    return await Promise.all(userList);
+    const users =  await Promise.all(userList);
+    console.log(users)
+    return users
   };
 
   const countUsers = async (queryConstraints) => {
