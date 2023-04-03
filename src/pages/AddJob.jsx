@@ -47,35 +47,38 @@ export default function AddJob() {
     let hasdraft = window.localStorage.getItem("draft");
     if (hasdraft !== null && toastid.length === 0) {
       toastid.push(1);
-      toast((t) => (
-        <div className="flex flex-row justify-between items-center w-[500px] p-4 rounded-lg shadow-md">
-          <div className="w-1/2">
-            <p>Load draft?</p>
-          </div>
-          <div className="flex flex-row w-1/2 justify-between h-full">
-            <div>
-              <button
-                onClick={() => {
-                  loadDraft();
-                  setHasLoad(true);
-                  toast.dismiss(t.id);
-                }}
-                className="btn btn-primary btn-sm"
-              >
-                Load
-              </button>
+      toast(
+        (t) => (
+          <div className="flex flex-row justify-between items-center w-[450px] p-4 rounded-lg shadow-md">
+            <div className="w-1/2">
+              <p>Load draft?</p>
             </div>
-            <div>
-              <button
-                onClick={() => toast.dismiss(t.id)}
-                className="btn btn-outline btn-primary btn-sm"
-              >
-                Dismiss
-              </button>
+            <div className="flex flex-row w-1/2 justify-between h-full">
+              <div>
+                <button
+                  onClick={() => {
+                    loadDraft();
+                    setHasLoad(true);
+                    toast.dismiss(t.id);
+                  }}
+                  className="btn btn-primary btn-sm"
+                >
+                  Load
+                </button>
+              </div>
+              <div>
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="btn btn-outline btn-primary btn-sm"
+                >
+                  Dismiss
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      ));
+        ),
+        { duration: 90000 }
+      );
     }
   }, []);
 
