@@ -1,47 +1,43 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { useRequest } from "ahooks";
-import { doc } from "firebase/firestore";
-import React from "react";
-import DatePicker from "react-datepicker";
-import { Controller, useForm } from "react-hook-form";
+import { React } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import database from "@/clients/firebase";
-import { ENGLISH_LEVEL, JOB_STATUS } from "@/constants";
+import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
 export default function AddJob() {
   const auth = useAuth();
   const job = useJob();
+
   const navigate = useNavigate();
-  const {
-    control,
-    register,
-    handleSubmit,
-    // formState: { errors }
-  } = useForm();
-  console.log(job);
+  const { register, handleSubmit } = useForm({
+    // if the user is an employer, has a company, autofill the company name
+    defaultValues: { company: auth.user?.company || "" },
+  });
+
   const { run: addJob } = useRequest(
     async (data) =>
       job.createJob({
         ...data,
-        // fixme: temp demo solution
-        company: doc(database, "Companies", "KJLOQ9jWh9zsc3JfBugR"),
-        // company: auth.user.company,
+        adminMessage: "",
         owner: auth.userRef,
         status: JOB_STATUS.PENDING,
-        postDate: new Date(),
-        // fixme: temp solution: we need an admin to approve the job
+        datePost: new Date(),
+        location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
+        dateCreated: new Date(),
       }),
     {
       manual: true,
       onSuccess: () => {
+        toast.success("Create Job succeeded");
         navigate("/");
       },
       onError: () => {
-        //todo: handle error
-        //   console.error(error);
+        toast.error("Create Job failed.");
       },
     }
   );
@@ -49,134 +45,243 @@ export default function AddJob() {
   return (
     <div className="flex flex-col justify-center items-center">
       <form onSubmit={handleSubmit(addJob)}>
-        <div className="form-control">
-          <label className="label" htmlFor="title">
-            Title
+        <div className="flex flex-row mb-4 mt-4 items-center">
+          <label className="label flex basis-44" htmlFor="title">
+            Job Title
           </label>
           <input
             type="text"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             {...register("title", { required: true })}
           />
         </div>
-        <div className="form-control">
-          <label className="label" htmlFor="company">
+        <div className="flex flex-row mb-4 items-center">
+          <label className="label flex basis-44" htmlFor="company">
             Company Name
           </label>
           <input
             type="text"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             {...register("company")}
-            disabled
           />
         </div>
-        <div className="form-control">
-          <label className="label" htmlFor="startDate">
-            Start Date
-          </label>
-          <div className="input-group">
-            <div
-              className="relative max-w-sm"
-              style={{ zIndex: "9999", left: "17rem", top: "-0.5rem" }}
-            >
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg
-                  aria-hidden="true"
-                  className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
+
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row mb-4 items-center w-1/2">
+            <label className="label flex basis-44">Start Date</label>
+            <div className="input ml-2 w-full">
+              <div className="flex items-center justify-center">
+                <div className="flex w-full ">
+                  <input
+                    type="date"
+                    className="input input-bordered w-full bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    placeholder="Select a date"
+                    {...register("dateJobStart", { required: true })}
+                  />
+                  <label
+                    htmlFor="dateJobStart"
+                    className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200"
+                  ></label>
+                </div>
               </div>
             </div>
-            <Controller
-              name="dateInput"
-              control={control}
-              render={({ field }) => (
-                <DatePicker
-                  className="input w-full max-w-xs input-bordered mb-4"
-                  // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholderText="Select Start Date"
-                  onChange={(date) => field.onChange(date)}
-                  selected={field.value}
+          </div>
+
+          <div className="dropdown dropdown-right flex flex-row mb-4 items-center w-1/2">
+            <label className="label flex basis-44 ml-4" htmlFor="jobType">
+              Job Type
+            </label>
+            <select
+              className="input input-bordered w-full"
+              {...register("jobType", { required: true })}
+            >
+              {Object.values(SHIFT_TYPE).map((type, index) => {
+                return (
+                  <option value={type} key={index}>
+                    {type}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        </div>
+
+        <div className="flex flex-row items-center w-full mb-4">
+          <label className="label flex basis-44" htmlFor="shift">
+            Shift Detail
+          </label>
+          <textarea
+            type="text"
+            rows="3"
+            className="textarea textarea-bordered w-full"
+            placeholder="Please enter shift details in the following format:
+            Monday-Tuesday 8:30 AM to 1 PM
+            Thursday - Friday 1 PM to 5 PM"
+            {...register("shift")}
+          ></textarea>
+        </div>
+
+        <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-row mb-4 items-center w-1/2">
+            <label className="label flex basis-44" htmlFor="wage.type">
+              Salary Type
+            </label>
+            <select
+              className="input input-bordered w-4/5"
+              {...register("wage.type", { required: true })}
+            >
+              {Object.values(WAGE_TYPE).map((type, index) => {
+                return (
+                  <option value={type} key={index}>
+                    {type}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <div className="flex flex-row mb-4 w-1/2 items-center">
+            <label className="label flex basis-44 ml-4">Salary Range</label>
+            <div className="inline-flex w-full">
+              <input
+                type="number"
+                className="input input-bordered w-1/3"
+                placeholder="Min $"
+                {...register("wage.min", { required: true, valueAsNumber: true })}
+              />
+              <div>
+                <span className="ml-4 mr-4 text-center self-center text-4xl"> - </span>
+              </div>
+
+              <input
+                type="number"
+                className="input input-bordered w-1/3"
+                placeholder="Max $"
+                {...register("wage.max", {
+                  required: true,
+                  valueAsNumber: true,
+                })}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-row items-center w-full mb-4">
+          <div className="flex flex-row items-center w-full">
+            <label className="label flex basis-44">Benefits</label>
+            <div className="flex flex-row w-full">
+              <div className="self-center items-center w-1/3">
+                <input
+                  type="checkbox"
+                  name="Medical"
+                  className="scale-125"
+                  {...register("benefit.hasMedical")}
                 />
-              )}
+                <label className="pl-2">Medical</label>
+              </div>
+
+              <div className="self-center items-center w-1/3">
+                <input
+                  type="checkbox"
+                  name="other"
+                  className="scale-125"
+                  {...register("benefit.hasOthers")}
+                />
+                <label className="pl-2">Others</label>
+              </div>
+              <textarea
+                type="text"
+                rows="2"
+                className="textarea textarea-bordered w-full"
+                placeholder="Add other benefits provided"
+                {...register("benefit.others")}
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-row items-center mb-4 justify-between">
+          <div className="flex flex-row items-center w-1/2">
+            <label className="label flex basis-44" htmlFor="langEnglishLevel">
+              English level
+            </label>
+            <select
+              className="input input-bordered w-4/5"
+              {...register("langEnglishLevel", { required: true })}
+            >
+              {Object.values(ENGLISH_LEVEL).map((type, index) => {
+                return (
+                  <option value={type} key={index}>
+                    {type}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex flex-row items-center w-1/2">
+            <label className="label flex basis-48 ml-4" htmlFor="langNote">
+              Other language(s)
+            </label>
+            <input
+              type="text"
+              className="input input-bordered w-4/5"
+              {...register("langNote")}
             />
           </div>
         </div>
-        <div className="form-control">
-          <label className="label" htmlFor="wage">
-            Wages
-          </label>
-          <div style={{ display: "inline-flex" }}>
-            <label className="input-group input-md">
-              <span>Min Wage</span>
-              <input
-                type="number"
-                className="input input-bordered"
-                {...register("minWage", { required: true })}
-              />
-              <span>USD</span>
-            </label>
-            <span> - </span>
-            <label className="input-group input-md">
-              <span>Max Wage</span>
-              <input
-                type="number"
-                className="input input-bordered"
-                {...register("maxWage", { required: true })}
-              />
-              <span>USD</span>
-            </label>
+
+        <div className="flex flex-row items-center mb-4">
+          <label className="label flex basis-44">Job Location</label>
+          <div className="flex flex-row w-full justify-between">
+            <input
+              type="text"
+              className="input input-bordered w-1/3"
+              placeholder="Address"
+              {...register("address.street", { required: true })}
+            />
+            <input
+              type="text"
+              className="input input-bordered w-1/5"
+              placeholder="City"
+              {...register("address.city", { required: true })}
+            />
+            <input
+              type="text"
+              className="input input-bordered w-1/6"
+              placeholder="State"
+              {...register("address.state", { required: true })}
+            />
+            <input
+              type="number"
+              className="input input-bordered w-1/6"
+              placeholder="Zip code"
+              {...register("address.zipcode", { required: true })}
+            />
           </div>
         </div>
-        <div className="form-control">
-          <label className="label" htmlFor="location">
-            Job Location
-          </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            {...register("location", { required: true })}
-          />
-        </div>
-        <div className="form-control">
-          <label className="label" htmlFor="englishLevel">
-            English Level
-          </label>
-          <select
-            className="input input-bordered"
-            {...register("englishLevel", { required: true })}
-          >
-            {ENGLISH_LEVEL.map((type, index) => {
-              return (
-                <option value={type} key={index}>
-                  {type}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <div className="form-control">
-          <label className="label" htmlFor="description">
+
+        <div className="flex flex-row items-center mb-4">
+          <label className="label flex basis-44" htmlFor="description">
             Job Description
           </label>
           <textarea
             type="text"
             rows="10"
-            className="textarea textarea-bordered"
+            className="textarea textarea-bordered w-full"
+            placeholder="Please specify other requirements or/and skills required for job such as driver license, or other certifications needed."
             {...register("description", { required: true })}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Submit Job Listing
-        </button>
+        <div className="flex w-full justify-end mb-4">
+          <div className="flex flex-row justify-around w-1/2">
+            <button type="submit" className="btn btn-primary w-1/3">
+              Submit
+            </button>
+            <button type="button" className="btn btn-outline btn-primary w-1/3">
+              Save as draft
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );
