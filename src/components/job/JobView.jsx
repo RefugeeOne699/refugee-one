@@ -13,7 +13,8 @@ import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 
-import { useJob } from "@/models";
+import { ROLES } from "@/constants";
+import { useAuth, useJob } from "@/models";
 
 import Center from "../Center";
 import Spin from "../Spin";
@@ -29,6 +30,7 @@ function ErrorInfo() {
   );
 }
 export default function JobView() {
+  const auth = useAuth();
   const { jobId } = useParams();
   const { getJob } = useJob();
   if (!jobId) {
@@ -167,15 +169,18 @@ export default function JobView() {
               <p>{data.description}</p>
             </div>
           </div>
-          <div className="mt-5" id="temporaryColumn">
-            <JobApproveReject jobId={jobId} />
-          </div>
-          <div className="w-full flex flex-row justify-center mt-5">
-            <Link to={".."}>
-              <button className="btn btn-primary mr-10 md:hidden">Back</button>
-            </Link>
-            <JobSave jobId={jobId} />
-          </div>
+          {auth.user.role === ROLES.ADMIN ? (
+            <div className="w-full flex flex-row justify-center mt-5">
+              <JobApproveReject jobId={jobId} />
+            </div>
+          ) : (
+            <div className="w-full flex flex-row justify-center mt-5">
+              <Link to={".."}>
+                <button className="btn btn-secondary mr-10 md:hidden">Back</button>
+              </Link>
+              <JobSave jobId={jobId} />
+            </div>
+          )}
         </div>
       </div>
     ) : (
