@@ -5,7 +5,6 @@ import {
   getDocs,
   query,
   // eslint-disable-next-line no-unused-vars
-  QueryConstraint,
   runTransaction,
 } from "firebase/firestore";
 import { createContext, useMemo } from "react";
@@ -17,14 +16,13 @@ import { JOB_STATUS } from "@/constants";
 
 const UserContext = createContext({
   approveUser: () => {},
-  updateUser: () =>{},
+  updateUser: () => {},
   deleteUser: () => {},
   listUsers: (_queryConstraints) => [],
   countUsers: (_queryConstraints) => Number,
 });
 
 const updateUser = async (userId, payload) => {
-
   if (payload.id) {
     delete payload.id;
   }
@@ -43,9 +41,7 @@ const approveUser = async (userId) => {
   await updateUser(userId, { status: JOB_STATUS.APPROVED });
 };
 
-
 const UserContextProvider = ({ children }) => {
-
   const listUsers = async (queryConstraints) => {
     const userCollection = collection(database, "Users");
     const userQuery = queryConstraints
@@ -61,12 +57,10 @@ const UserContextProvider = ({ children }) => {
         name: user.name,
         phone: user.phone,
         role: user.role,
-        status: user.status ? user.status : JOB_STATUS.PENDING
+        status: user.status ? user.status : JOB_STATUS.PENDING,
       };
     });
-    const users =  await Promise.all(userList);
-    console.log(users)
-    return users
+    return await Promise.all(userList);
   };
 
   const countUsers = async (queryConstraints) => {
