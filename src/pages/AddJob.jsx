@@ -1,7 +1,5 @@
-import "react-datepicker/dist/react-datepicker.css";
-
 import { useRequest } from "ahooks";
-import { React } from "react";
+import { React, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +11,11 @@ export default function AddJob() {
   const auth = useAuth();
   const job = useJob();
 
+  const [hasLoad, setHasLoad] = useState(false);
+  const toastid = [];
+
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, setValue, getValues } = useForm({
     // if the user is an employer, has a company, autofill the company name
     defaultValues: { company: auth.user?.company || "" },
   });
@@ -41,6 +42,73 @@ export default function AddJob() {
       },
     }
   );
+
+  useEffect(() => {
+    let hasdraft = window.localStorage.getItem("draft");
+    if (hasdraft !== null && toastid.length === 0) {
+      toastid.push(1);
+      toast(
+        (t) => (
+          <div className="flex flex-row justify-between items-center w-[450px] p-4 rounded-lg shadow-md">
+            <div className="w-1/2">
+              <p>Load draft?</p>
+            </div>
+            <div className="flex flex-row w-1/2 justify-between h-full">
+              <div>
+                <button
+                  onClick={() => {
+                    loadDraft();
+                    setHasLoad(true);
+                    toast.dismiss(t.id);
+                  }}
+                  className="btn btn-primary btn-sm"
+                >
+                  Load
+                </button>
+              </div>
+              <div>
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="btn btn-outline btn-primary btn-sm"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          </div>
+        ),
+        { duration: 60000 }
+      );
+    }
+  }, []);
+
+  const saveDraft = () => {
+    window.localStorage.setItem("draft", JSON.stringify(getValues()));
+    toast.success("Draft saved!");
+    navigate("/");
+  };
+
+  const loadDraft = () => {
+    const draft = JSON.parse(window.localStorage.getItem("draft"));
+    setValue("title", draft.title);
+    setValue("company", auth.user?.company || draft.company);
+    setValue("jobType", draft.jobType);
+    setValue("dateJobStart", draft.dateJobStart);
+    setValue("shift", draft.shift);
+    setValue("wage.type", draft.wage.type);
+    setValue("wage.min", parseInt(draft.wage.min));
+    setValue("wage.max", parseInt(draft.wage.max));
+    setValue("benefit.hasMedical", draft.benefit.hasMedical);
+    setValue("benefit.hasOthers", draft.benefit.hasOthers);
+    setValue("benefit.others", draft.benefit.others);
+    setValue("langEnglishLevel", draft.langEnglishLevel);
+    setValue("langNote", draft.langNote);
+    setValue("address.street", draft.address.street);
+    setValue("address.city", draft.address.city);
+    setValue("address.state", draft.address.state);
+    setValue("address.zipcode", draft.address.zipcode);
+    setValue("description", draft.description);
+  };
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -274,10 +342,23 @@ export default function AddJob() {
         </div>
         <div className="flex w-full justify-end mb-4">
           <div className="flex flex-row justify-around w-1/2">
-            <button type="submit" className="btn btn-primary w-1/3">
+            <button
+              type="submit"
+              className="btn btn-primary w-1/3"
+              onClick={() => {
+                if (hasLoad === true) {
+                  setHasLoad(false);
+                  window.localStorage.clear();
+                }
+              }}
+            >
               Submit
             </button>
-            <button type="button" className="btn btn-outline btn-primary w-1/3">
+            <button
+              type="button"
+              className="btn btn-outline btn-primary w-1/3"
+              onClick={saveDraft}
+            >
               Save as draft
             </button>
           </div>
