@@ -49,7 +49,7 @@ export default function AddJob() {
       toastid.push(1);
       toast(
         (t) => (
-          <div className="flex flex-row justify-between items-center w-[450px] p-4 rounded-lg shadow-md">
+          <div className="flex flex-row justify-between items-center w-[350px] p-4 rounded-lg shadow-md">
             <div className="w-1/2">
               <p>Load draft?</p>
             </div>
