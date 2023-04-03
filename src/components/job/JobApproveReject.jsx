@@ -40,14 +40,14 @@ export default function JobApproveReject({ jobId }) {
     <>
       <div className="items-center text-center w-3/4">
         <div className="w-full flex flex-row justify-center">
-          <label htmlFor="feedback-display" className="btn btn-error">
+          <label htmlFor="feedback-display" className="btn btn-primary">
             Reject
           </label>
           <button
             onClick={() => {
               approve();
             }}
-            className="btn btn-success ml-5"
+            className="btn btn-primary ml-5"
           >
             Approve
           </button>
@@ -70,7 +70,7 @@ export default function JobApproveReject({ jobId }) {
             <label htmlFor="feedback-display" className="btn btn-primary mr-5">
               Back
             </label>
-            <label htmlFor="feedback-display" onClick={() => reject()} className="btn btn-error">
+            <label htmlFor="feedback-display" onClick={() => reject()} className="btn btn-primary">
               Reject
             </label>
           </div>
