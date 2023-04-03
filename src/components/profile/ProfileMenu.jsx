@@ -18,9 +18,8 @@ export default function ProfileMenu() {
       toast.success("Logout successful");
       navigate("/", { replace: true });
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("Logout failed");
-      console.error(error);
     },
   });
 

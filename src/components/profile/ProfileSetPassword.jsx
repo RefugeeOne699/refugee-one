@@ -10,10 +10,10 @@ import { useAuth } from "@/models";
 export default function ProfileSetPassword() {
   const auth = useAuth();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const { register, watch, handleSubmit } = useForm();
   const [matchState, setMatchState] = useState(false);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const newPassword = watch("newPassword");
+  const confirmPassword = watch("confirmPassword");
 
   const { run: modifiedContent, loading: modificationLoading } = useRequest(
     async (data) => {
@@ -30,9 +30,10 @@ export default function ProfileSetPassword() {
           toast.error("Try again later");
         } else if (error.code === "auth/wrong-password") {
           toast.error("Wrong password");
+        } else if (error.code === "auth/weak-password") {
+          toast.error("Password should be at least 6 characters");
         } else {
           toast.error("Unknown error");
-          console.log(error);
         }
       },
     }
@@ -44,12 +45,11 @@ export default function ProfileSetPassword() {
 
   const handleMatch = () => {
     if (newPassword === "") {
-      setMatchState(false);
-    } else if (newPassword === confirmPassword) {
-      setMatchState(false);
-    } else {
-      console.log(newPassword + " " + confirmPassword);
       setMatchState(true);
+    } else if (newPassword === confirmPassword) {
+      setMatchState(true);
+    } else {
+      setMatchState(false);
     }
   };
 
@@ -88,11 +88,8 @@ export default function ProfileSetPassword() {
                     type="text"
                     placeholder="new password"
                     className={
-                      "input w-full input-bordered" + (matchState ? " input-error" : "")
+                      "input w-full input-bordered" + (matchState ? "" : " input-error")
                     }
-                    onChange={(e) => {
-                      setNewPassword(e.target.value);
-                    }}
                   />
                 </div>
               </div>
@@ -104,23 +101,27 @@ export default function ProfileSetPassword() {
                 </div>
                 <div className="flex w-full justify-end">
                   <input
+                    {...register("confirmPassword", { required: true })}
                     type="text"
                     placeholder="confirm password"
                     className={
-                      "input w-full input-bordered" + (matchState ? " input-error" : "")
+                      "input w-full input-bordered" + (matchState ? "" : " input-error")
                     }
-                    onChange={(e) => {
-                      setConfirmPassword(e.target.value);
-                    }}
                   />
                 </div>
               </div>
             </li>
           </ul>
           <>
-            <button type="submit" className="btn btn-xs btn-md lg:btn-lg m-2">
-              {modificationLoading ? "loading" : "Save Password"}
-            </button>
+            {matchState && newPassword !== "" ? (
+              <button type="submit" className="btn btn-xs btn-md lg:btn-lg m-2">
+                {modificationLoading ? "loading" : "Save Password"}
+              </button>
+            ) : (
+              <button type="submit" className="btn btn-xs btn-md lg:btn-lg m-2" disabled>
+                {modificationLoading ? "loading" : "Save Password"}
+              </button>
+            )}
             <button className="btn btn-xs btn-md lg:btn-lg m-2" onClick={handleCancel}>
               Cancel
             </button>

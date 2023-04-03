@@ -22,9 +22,8 @@ export default function ProfileSetProfile() {
         toast.success("Profile updated");
         navigate("../account", { replace: true });
       },
-      onError: (error) => {
+      onError: () => {
         toast.error("Profile update failed");
-        console.error(error);
       },
     }
   );
