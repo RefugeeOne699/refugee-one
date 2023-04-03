@@ -30,7 +30,7 @@ const updateUser = async (userId, payload) => {
 
   await runTransaction(database, async (transaction) => {
     const userDocRef = doc(database, "Users", userId);
-    const userDoc = await transaction.get(jobDocRef);
+    const userDoc = await transaction.get(userDocRef);
     if (!userDoc.exists()) {
       throw `User ${userId} does not exist`;
     }
