@@ -12,7 +12,6 @@ import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
 import { JobSaveContextProvider } from "./models/jobSave";
-import { UserContextProvider } from "./models/user";
 
 const AddJob = lazy(async () => import("@/pages/AddJob"));
 const Admin = {
@@ -95,10 +94,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <AuthContextProvider>
         <JobContextProvider>
           <JobSaveContextProvider>
-            <UserContextProvider>
-              <RouterProvider router={router} />
-              <TailWindToaster />
-            </UserContextProvider>
+            <RouterProvider router={router} />
+            <TailWindToaster />
           </JobSaveContextProvider>
         </JobContextProvider>
       </AuthContextProvider>

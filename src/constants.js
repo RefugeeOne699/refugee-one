@@ -4,6 +4,11 @@ export const ROLES = {
   CLIENT: "client",
 };
 
+export const USER_STATUS = {
+  PENDING: "pending",
+  APPROVED: "approved",
+};
+
 export const ENGLISH_LEVEL = {
   NOT_REQUIRED: "Not required",
   BASIC: "Basic",
