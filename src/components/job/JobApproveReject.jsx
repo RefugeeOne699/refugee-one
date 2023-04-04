@@ -40,7 +40,7 @@ export default function JobApproveReject({ jobId }) {
     <>
       <div className="items-center text-center w-3/4">
         <div className="w-full flex flex-row justify-center">
-          <label htmlFor="feedback-display" className="btn btn-secondary">
+          <label htmlFor="feedback-display" className="btn">
             Reject
           </label>
           <button
@@ -67,7 +67,7 @@ export default function JobApproveReject({ jobId }) {
             ></textarea>
           </div>
           <div className="w-full flex flex-row justify-center mt-5">
-            <label htmlFor="feedback-display" className="btn btn-secondary mr-5">
+            <label htmlFor="feedback-display" className="btn mr-5">
               Back
             </label>
             <label
