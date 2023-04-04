@@ -1,3 +1,4 @@
+import { ErrorOutline } from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -9,23 +10,37 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
+import { toast } from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 
-import { useJob } from "@/models";
+import { ROLES } from "@/constants";
+import { useAuth, useJob } from "@/models";
 
+import Center from "../Center";
+import Spin from "../Spin";
+import JobApproveReject from "./JobApproveReject";
 import JobSave from "./JobSave";
-
+function ErrorInfo() {
+  return (
+    <Center>
+      <div className="text-8xl text-error">
+        <ErrorOutline fontSize="inherit" />
+      </div>
+    </Center>
+  );
+}
 export default function JobView() {
+  const auth = useAuth();
   const { jobId } = useParams();
   const { getJob } = useJob();
   if (!jobId) {
-    // todo: add an error page
-    return <p className="text-bold text-3xl">404 not found.</p>;
+    // this
+    return <ErrorInfo />;
   }
-  const { run, data, loading } = useRequest(async () => getJob(jobId), {
+  const { run, data, loading, error } = useRequest(async () => getJob(jobId), {
     manual: true,
     onError: () => {
-      alert("unable to get the job");
+      toast.error("Failed to get the job information");
     },
   });
 
@@ -37,13 +52,20 @@ export default function JobView() {
 
   const content = useMemo(() => {
     if (loading) {
-      return <p>loading</p>;
+      return (
+        <Center>
+          <Spin className="h-8 w-8" />
+        </Center>
+      );
+    }
+    if (error) {
+      return <ErrorInfo />;
     }
     return data ? (
       <div className="flex flex-col card">
         <div className="card-body items-center">
           <p className="card-title text-2xl">{data.title}</p>
-          <p className="text-bold text-1xl">{data.company.name}</p>
+          <p className="text-bold text-1xl">{data.company}</p>
           <p className="text-bold text-1xl">
             Posted:{" "}
             {`${new Date(data.datePost.seconds * 1000)}`.split(" ").slice(0, 4).join(" ")}
@@ -147,19 +169,24 @@ export default function JobView() {
               <p>{data.description}</p>
             </div>
           </div>
-          <div className="w-full flex flex-row justify-center mt-5">
-            <Link to={".."}>
-              <button className="btn btn-primary mr-10 md:hidden">Back</button>
-            </Link>
-            <JobSave jobId={jobId} />
-          </div>
+          {auth.user.role === ROLES.ADMIN ? (
+            <div className="w-full flex flex-row justify-center mt-5">
+              <JobApproveReject jobId={jobId} />
+            </div>
+          ) : (
+            <div className="w-full flex flex-row justify-center mt-5">
+              <Link to={".."}>
+                <button className="btn mr-10 md:hidden">Back</button>
+              </Link>
+              <JobSave jobId={jobId} />
+            </div>
+          )}
         </div>
       </div>
     ) : (
       <p>Nothing</p>
     );
-  }, [data, loading]);
+  }, [data, loading, error]);
 
-  // todo: job details
-  return content;
+  return <div className="w-full h-screen">{content}</div>;
 }

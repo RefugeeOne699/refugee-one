@@ -7,7 +7,7 @@ function searchCheck(job, search) {
   if (!job) return false;
   return (
     job.title.toLowerCase().includes(search.toLowerCase()) ||
-    job.company.name.toLowerCase().includes(search.toLowerCase())
+    job.company.toLowerCase().includes(search.toLowerCase())
   );
 }
 
