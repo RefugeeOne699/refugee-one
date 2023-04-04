@@ -5,9 +5,9 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
-import { USER_STATUS } from "@/constants";
 
 import database, { auth } from "@/clients/firebase";
+import { USER_STATUS } from "@/constants";
 
 /**
  * User interface
@@ -62,7 +62,7 @@ const AuthContextProvider = ({ children }) => {
           role,
           phone,
           company,
-          status: USER_STATUS.PENDING 
+          status: USER_STATUS.PENDING,
         });
       })
       .catch((error) => {

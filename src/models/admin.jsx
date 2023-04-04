@@ -1,6 +1,3 @@
-
-import { createContext, useMemo } from "react";
-import { Navigate } from "react-router-dom";
 import {
   collection,
   doc,
@@ -10,9 +7,12 @@ import {
   // eslint-disable-next-line no-unused-vars
   runTransaction,
 } from "firebase/firestore";
-import database from "@/clients/firebase";
+import { createContext, useMemo } from "react";
+import { Navigate } from "react-router-dom";
 
-import { USER_STATUS, ROLES } from "@/constants";
+import database from "@/clients/firebase";
+import { ROLES, USER_STATUS } from "@/constants";
+
 import { useAuth } from ".";
 
 const AdminContext = createContext({
@@ -64,7 +64,7 @@ const AdminContextProvider = ({ children }) => {
         phone: user.phone,
         role: user.role,
         // to deal with existing accounts who don't have status field
-        status: user.status === undefined ? "pending" : USER_STATUS.PENDING
+        status: user.status === undefined ? "pending" : USER_STATUS.PENDING,
       };
     });
     return await Promise.all(userList);

@@ -16,7 +16,7 @@ export default function UsersAdmin() {
   const { tabUrl } = useParams();
   const { listUsers } = useAdmin();
   // Todo: employ parameters based on which tab is chosen
-  const param = {}
+  const param = {};
   const { data, run, loading } = useRequest(async () => listUsers(), {
     manual: true,
     onError: () => {
