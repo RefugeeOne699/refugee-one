@@ -176,7 +176,7 @@ export default function JobView() {
           ) : (
             <div className="w-full flex flex-row justify-center mt-5">
               <Link to={".."}>
-                <button className="btn btn-secondary mr-10 md:hidden">Back</button>
+                <button className="btn mr-10 md:hidden">Back</button>
               </Link>
               <JobSave jobId={jobId} />
             </div>
