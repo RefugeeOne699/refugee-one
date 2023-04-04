@@ -4,33 +4,21 @@ import { toast } from "react-hot-toast";
 import { NavLink, useParams } from "react-router-dom";
 
 import Spin from "@/components/Spin";
-import { useAdmin, useJob } from "@/models";
+import { useJob } from "@/models";
 
-// Todo: Determine if user is coming from job management link or user management link
-// Below is temp solution
-const isJob = true;
-
-const menu = isJob
-  ? [
-      { url: "pending", name: "All Pending Jobs" },
-      { url: "approved", name: "All Approved Jobs" },
-      { url: "todo", name: "All Action Required Jobs" },
-    ]
-  : [
-      { url: "employers", name: "Employers" },
-      { url: "refugees", name: "Refugees" },
-      { url: "admin", name: "Administrators" },
-    ];
+const menu = [
+  { url: "pending", name: "All Pending Jobs" },
+  { url: "approved", name: "All Approved Jobs" },
+  { url: "todo", name: "All Action Required Jobs" },
+];
 
 export default function JobsAdmin() {
   const { tabUrl } = useParams();
   const { listJobs } = useJob();
-  const { listUsers } = useAdmin();
-  const fetchFunction = isJob ? listJobs : listUsers;
-  const { data, run, loading } = useRequest(async () => fetchFunction(), {
+  const { data, run, loading } = useRequest(async () => listJobs(), {
     manual: true,
     onError: () => {
-      toast.error(`Failed to fetch ${isJob ? "jobs" : "users"} list`);
+      toast.error("Failed to fetch job list");
     },
   });
   useEffect(() => {
@@ -43,7 +31,7 @@ export default function JobsAdmin() {
       <div className="tabs tabs-boxed">
         {menu.map((tab) => (
           <NavLink
-            to={`/admin/${isJob ? "jobs" : "users"}/${tab.url}`}
+            to={`/admin/jobs/${tab.url}`}
             className={({ isActive }) => `tab ${isActive ? "tab-active" : null}`}
             key={tab.name}
           >
@@ -63,7 +51,7 @@ export default function JobsAdmin() {
     if (loading) {
       return <Spin className="h-8 w-8" />;
     }
-    //todo: display Job.jsx or User.jsx and filter
+    //todo: display and filter
     return data ? JSON.stringify(data) : "no data";
   }, [data, loading, tabUrl]);
   return (

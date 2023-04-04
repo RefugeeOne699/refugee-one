@@ -71,19 +71,6 @@ const router = createBrowserRouter([
               },
             ],
           },
-          {
-            path: "users",
-            children: [
-              {
-                index: true,
-                element: <Navigate to="employers" />,
-              },
-              {
-                path: ":tabUrl",
-                element: <Admin.Jobs />,
-              },
-            ],
-          },
         ],
       },
       {
