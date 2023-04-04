@@ -1,6 +1,5 @@
 import KeyIcon from "@mui/icons-material/Key";
 import { useRequest } from "ahooks";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -11,9 +10,6 @@ export default function ProfileSetPassword() {
   const auth = useAuth();
   const navigate = useNavigate();
   const { register, watch, handleSubmit } = useForm();
-  const [matchState, setMatchState] = useState(false);
-  const newPassword = watch("newPassword");
-  const confirmPassword = watch("confirmPassword");
 
   const { run: modifiedContent, loading: modificationLoading } = useRequest(
     async (data) => {
@@ -39,27 +35,22 @@ export default function ProfileSetPassword() {
     }
   );
 
+  const handleFormErrors = (errors) => {
+    console.log(errors);
+    const values = Object.values(errors);
+    if (values.length > 0) {
+      // always only prompt the first error, the same error that the cursor will focus on
+      toast.error(values[0].message || "Errors in form input");
+    }
+  };
+
   const handleCancel = () => {
     navigate("../account", { replace: true });
   };
 
-  const handleMatch = () => {
-    if (newPassword === "") {
-      setMatchState(true);
-    } else if (newPassword === confirmPassword) {
-      setMatchState(true);
-    } else {
-      setMatchState(false);
-    }
-  };
-
-  useEffect(() => {
-    handleMatch();
-  }, [newPassword, confirmPassword]);
-
   return (
     <div className="w-full">
-      <form onSubmit={handleSubmit(modifiedContent)}>
+      <form onSubmit={handleSubmit(modifiedContent, handleFormErrors)}>
         <div className="w-full flex flex-col items-center">
           <ul className="menu bg-base-100 px-12 w-full rounded-box">
             <li>
@@ -87,9 +78,7 @@ export default function ProfileSetPassword() {
                     {...register("newPassword", { required: true })}
                     type="text"
                     placeholder="new password"
-                    className={
-                      "input w-full input-bordered" + (matchState ? "" : " input-error")
-                    }
+                    className={"input w-full input-bordered"}
                   />
                 </div>
               </div>
@@ -101,31 +90,24 @@ export default function ProfileSetPassword() {
                 </div>
                 <div className="flex w-full justify-end">
                   <input
-                    {...register("confirmPassword", { required: true })}
+                    {...register("confirmPassword", {
+                      required: true,
+                      validate: (value) => watch("newPassword") === value,
+                    })}
                     type="text"
                     placeholder="confirm password"
-                    className={
-                      "input w-full input-bordered" + (matchState ? "" : " input-error")
-                    }
+                    className={"input w-full input-bordered"}
                   />
                 </div>
               </div>
             </li>
           </ul>
-          <>
-            {matchState && newPassword !== "" ? (
-              <button type="submit" className="btn btn-xs btn-md lg:btn-lg m-2">
-                {modificationLoading ? "loading" : "Save Password"}
-              </button>
-            ) : (
-              <button type="submit" className="btn btn-xs btn-md lg:btn-lg m-2" disabled>
-                {modificationLoading ? "loading" : "Save Password"}
-              </button>
-            )}
-            <button className="btn btn-xs btn-md lg:btn-lg m-2" onClick={handleCancel}>
-              Cancel
-            </button>
-          </>
+          <button type="submit" className="btn btn-xs btn-md lg:btn-lg m-2">
+            {modificationLoading ? "loading" : "Save Password"}
+          </button>
+          <button className="btn btn-xs btn-md lg:btn-lg m-2" onClick={handleCancel}>
+            Cancel
+          </button>
         </div>
       </form>
     </div>
