@@ -4,21 +4,31 @@ import { toast } from "react-hot-toast";
 import { NavLink, useParams } from "react-router-dom";
 
 import Spin from "@/components/Spin";
-import { useJob } from "@/models";
+import { useAdmin, useJob } from "@/models";
 
-const menu = [
+// Todo: Determine if user is coming from job management link or user management link
+// Below is temp solution
+const isJob = true
+
+const menu = isJob ? [
   { url: "pending", name: "All Pending Jobs" },
   { url: "approved", name: "All Approved Jobs" },
   { url: "todo", name: "All Action Required Jobs" },
-];
+]: [
+  { url: "employers", name: "Employers" },
+  { url: "refugees", name: "Refugees" },
+  { url: "admin", name: "Administrators" },
+]
 
 export default function JobsAdmin() {
   const { tabUrl } = useParams();
   const { listJobs } = useJob();
-  const { data, run, loading } = useRequest(async () => listJobs(), {
+  const { listUsers } = useAdmin()
+  const fetchFunction = isJob ? listJobs : listUsers
+  const { data, run, loading } = useRequest(async () => fetchFunction(), {
     manual: true,
     onError: () => {
-      toast.error("Failed to fetch job list");
+      toast.error(`Failed to fetch ${isJob?"jobs":"users"} list`);
     },
   });
   useEffect(() => {
@@ -31,7 +41,7 @@ export default function JobsAdmin() {
       <div className="tabs tabs-boxed">
         {menu.map((tab) => (
           <NavLink
-            to={`/admin/jobs/${tab.url}`}
+            to={`/admin/${isJob?"jobs":"users"}/${tab.url}`}
             className={({ isActive }) => `tab ${isActive ? "tab-active" : null}`}
             key={tab.name}
           >
@@ -51,7 +61,7 @@ export default function JobsAdmin() {
     if (loading) {
       return <Spin className="h-8 w-8" />;
     }
-    //todo: display and filter
+    //todo: display Job.jsx or User.jsx and filter
     return data ? JSON.stringify(data) : "no data";
   }, [data, loading, tabUrl]);
   return (
