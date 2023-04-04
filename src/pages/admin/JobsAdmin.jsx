@@ -8,27 +8,29 @@ import { useAdmin, useJob } from "@/models";
 
 // Todo: Determine if user is coming from job management link or user management link
 // Below is temp solution
-const isJob = true
+const isJob = true;
 
-const menu = isJob ? [
-  { url: "pending", name: "All Pending Jobs" },
-  { url: "approved", name: "All Approved Jobs" },
-  { url: "todo", name: "All Action Required Jobs" },
-]: [
-  { url: "employers", name: "Employers" },
-  { url: "refugees", name: "Refugees" },
-  { url: "admin", name: "Administrators" },
-]
+const menu = isJob
+  ? [
+      { url: "pending", name: "All Pending Jobs" },
+      { url: "approved", name: "All Approved Jobs" },
+      { url: "todo", name: "All Action Required Jobs" },
+    ]
+  : [
+      { url: "employers", name: "Employers" },
+      { url: "refugees", name: "Refugees" },
+      { url: "admin", name: "Administrators" },
+    ];
 
 export default function JobsAdmin() {
   const { tabUrl } = useParams();
   const { listJobs } = useJob();
-  const { listUsers } = useAdmin()
-  const fetchFunction = isJob ? listJobs : listUsers
+  const { listUsers } = useAdmin();
+  const fetchFunction = isJob ? listJobs : listUsers;
   const { data, run, loading } = useRequest(async () => fetchFunction(), {
     manual: true,
     onError: () => {
-      toast.error(`Failed to fetch ${isJob?"jobs":"users"} list`);
+      toast.error(`Failed to fetch ${isJob ? "jobs" : "users"} list`);
     },
   });
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function JobsAdmin() {
       <div className="tabs tabs-boxed">
         {menu.map((tab) => (
           <NavLink
-            to={`/admin/${isJob?"jobs":"users"}/${tab.url}`}
+            to={`/admin/${isJob ? "jobs" : "users"}/${tab.url}`}
             className={({ isActive }) => `tab ${isActive ? "tab-active" : null}`}
             key={tab.name}
           >
