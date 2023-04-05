@@ -8,8 +8,7 @@ export const ENGLISH_LEVEL = {
   NOT_REQUIRED: "Not required",
   BASIC: "Basic",
   INTERMEDIATE: "Intermediate",
-  ADVANCED: "Fluent/Advanced",
-  NATIVE: "Native",
+  ADVANCED: "Advanced",
 };
 
 export const JOB_STATUS = {
@@ -37,7 +36,6 @@ export const WAGE_TYPE = {
 export const SHIFT_TYPE = {
   FULL_TIME: "Full-time",
   PART_TIME: "Part-time",
-  SHIFT_BASED: "Shift based",
 };
 
 export const BENEFIT_TYPE = {
