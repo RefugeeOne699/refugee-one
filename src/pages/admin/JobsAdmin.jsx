@@ -67,15 +67,14 @@ export default function JobsAdmin() {
       : [];
     return filteredJob
       ? filteredJob.map((job) => {
-          console.log(jobId, job.id);
           return (
             <li className="flex flex-row w-full mt-5 " key={job.id}>
               <div
                 className={`card card-compact w-full rounded-xl border-slate-400 border-4 flex flex-row justify-between ${
-                  job.id && job.id == jobId ? "active" : ""
+                  job.id && job.id === jobId ? "active" : ""
                 }`}
               >
-                <Link to={job.id} className="card-body basis-9/12 flex-none">
+                <Link to={job.id} className="card-body w-full flex-none">
                   <div className="card-title text-xl">{job.title}</div>
                   <div className="flex flex-row flex-none">
                     <div className="flex flex-row flex-wrap flex-auto">
@@ -106,13 +105,15 @@ export default function JobsAdmin() {
     //todo: display and filter
     return (
       <div className="flex flex-row">
-        <div className={`md:block md:basis-1/2 lg:basis-1/3 flex-none`}>{JobList}</div>
+        <div className={`md:block md:basis-1/2 lg:basis-1/3 flex-none bg-yellow-100`}>
+          <ul className="menu w-full">{JobList}</ul>
+        </div>
         <div className={`md:block md:basis-1/2 lg:basis-2/3 flex-none bg-slate-200`}>
           <Outlet />
         </div>
       </div>
     );
-  }, [data, loading, tabUrl]);
+  }, [data, loading, tabUrl, jobId]);
   return (
     <div className="flex flex-col">
       {tabs}
