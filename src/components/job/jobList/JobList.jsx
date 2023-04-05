@@ -90,7 +90,7 @@ export default function JobList() {
           {/* Top Bar */}
           <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-slate-200">
             <button
-              className="btn btn-sm"
+              className="btn btn-md"
               onClick={() => {
                 reset(emptyFilter);
               }}
@@ -126,7 +126,7 @@ export default function JobList() {
                 {JOB_POSTED_FILTER.map((item, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">{item}</span>
+                      <span className="text-lg">{item}</span>
                       <input
                         type="radio"
                         name="radio-jobPosted"
@@ -151,7 +151,7 @@ export default function JobList() {
                 {[SHIFT_TYPE.FULL_TIME, SHIFT_TYPE.PART_TIME].map((item, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">{item}</span>
+                      <span className="text-lg">{item}</span>
                       <input
                         type="checkbox"
                         name="checkbox-jobType"
@@ -176,7 +176,7 @@ export default function JobList() {
                 {WAGE_FILTER.map((minWage, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">
+                      <span className="text-lg">
                         {index === 0 ? "Any Wage" : `$ ${minWage}+ / hour`}
                       </span>
                       <input
@@ -208,7 +208,7 @@ export default function JobList() {
                 ].map((englishLevel, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">{englishLevel}</span>
+                      <span className="text-lg">{englishLevel}</span>
                       <input
                         type="checkbox"
                         name="checkbox-english"
@@ -233,7 +233,7 @@ export default function JobList() {
                 {[BENEFIT_TYPE.MEDICAL, BENEFIT_TYPE.OTHERS].map((benefitType, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">{benefitType}</span>
+                      <span className="text-lg">{benefitType}</span>
                       <input
                         type="checkbox"
                         name="checkbox-benefit"
@@ -279,7 +279,7 @@ export default function JobList() {
 
               {/* bottom submit button */}
               <div className="form-control pt-5 pb-5">
-                <button className="btn w-44" type="submit">
+                <button className="btn btn-primary w-44" type="submit">
                   Show Results
                 </button>
               </div>
@@ -346,21 +346,38 @@ export default function JobList() {
   return (
     <div className="relative flex flex-col bg-yellow-100">
       {/* Search bar and filter icon */}
-      <div className="flex flex-row items-center justify-between h-16 p-3 bg-blue-100">
+      <div className="fixed w-full z-10 flex flex-row items-center justify-between h-16 p-3 bg-blue-100">
         <div className="form-control">
           <div className="input-group">
-            <input type="text" placeholder="Search job or company" className="input input-bordered" 
-              ref={searchRef} 
+            <input
+              type="text"
+              placeholder="Search job or company"
+              className="input input-bordered"
+              ref={searchRef}
               onKeyDown={(e) => {
                 if (e.key === "Enter") setSearch(searchRef.current.value);
               }}
             />
-            <button className="btn btn-square" 
+            <button
+              className="btn btn-square"
               onClick={() => {
                 setSearch(searchRef.current.value);
               }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
             </button>
           </div>
         </div>
@@ -381,7 +398,7 @@ export default function JobList() {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full">{jobs}</ul>
+      <ul className="menu w-full pt-16">{jobs}</ul>
     </div>
   );
 }
