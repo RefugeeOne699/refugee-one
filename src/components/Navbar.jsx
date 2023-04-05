@@ -165,12 +165,7 @@ export default function Navbar() {
         </Menu>
       </div>
 
-      <div className="w-60 h-screen max-md:hidden">
-        {/* todo: fix dark mode compatibility */}
-        <NavbarList setOpen={setOpen} />
-      </div>
-
-      <div className="fixed top-0 left-0 w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
+      <div className="w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
         {/* todo: fix dark mode compatibility */}
         <NavbarList setOpen={setOpen} />
       </div>
