@@ -1,4 +1,5 @@
 import InfoIcon from "@mui/icons-material/Info";
+import KeyIcon from "@mui/icons-material/Key";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
@@ -31,6 +32,17 @@ export default function ProfileMenu() {
             <div className="flex justify-start gap-4">
               <PersonIcon />
               Account
+            </div>
+            <div className="flex justify-end">
+              <KeyboardArrowRightIcon />
+            </div>
+          </Link>
+        </li>
+        <li className="w-full">
+          <Link to="set_password" className="flex justify-between">
+            <div className="flex justify-start gap-4">
+              <KeyIcon />
+              Change Password
             </div>
             <div className="flex justify-end">
               <KeyboardArrowRightIcon />

@@ -43,14 +43,6 @@ export default function ProfileAccount() {
           <button
             className="btn btn-xs btn-md lg:btn-lg m-2"
             onClick={() => {
-              navigate("../set_password", { replace: true });
-            }}
-          >
-            Change Password
-          </button>
-          <button
-            className="btn btn-xs btn-md lg:btn-lg m-2"
-            onClick={() => {
               navigate("../", { replace: true });
             }}
           >
