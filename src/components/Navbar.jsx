@@ -145,7 +145,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="md:hidden max-md:block h-24">
+      <div className="md:hidden max-md:block h-16">
         <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-grey h-16 bg-white"></div>
         {/* todo: fix dark mode compatibility */}
         <Menu
