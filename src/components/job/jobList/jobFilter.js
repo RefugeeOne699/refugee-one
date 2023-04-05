@@ -1,6 +1,6 @@
 import { WAGE_TYPE } from "@/constants";
 
-export const WAGE_FILTER = [0, 5, 10, 18, 25, 32];
+export const WAGE_FILTER = [0, 16, 17, 18, 19, 20];
 export const JOB_POSTED_FILTER = ["Anytime", "Past 3 days", "Past week", "Past month"];
 
 function searchCheck(job, search) {
