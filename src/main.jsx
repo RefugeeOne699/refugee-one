@@ -68,6 +68,13 @@ const router = createBrowserRouter([
               {
                 path: ":tabUrl",
                 element: <Admin.Jobs />,
+                children: [
+                  { index: true, element: <Center /> },
+                  {
+                    path: ":jobId",
+                    element: <Job.View />,
+                  },
+                ],
               },
             ],
           },

@@ -1,7 +1,7 @@
 import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
-import { NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 
 import Spin from "@/components/Spin";
 import { useJob } from "@/models";
@@ -15,6 +15,7 @@ const menu = [
 export default function JobsAdmin() {
   const { tabUrl } = useParams();
   const { listJobs } = useJob();
+  const { jobId } = useParams();
   const { data, run, loading } = useRequest(async () => listJobs(), {
     manual: true,
     onError: () => {
@@ -40,7 +41,19 @@ export default function JobsAdmin() {
               {tab.name}
               {"---"}
               {/*  todo: update the count */}
-              {loading ? <Spin /> : data ? data.length : 0}
+              {loading ? (
+                <Spin />
+              ) : !data ? (
+                0
+              ) : tab.url === "pending" ? (
+                data.filter((v) => v.status === "pending").length
+              ) : tab.url === "approved" ? (
+                data.filter((v) => v.status === "approved").length
+              ) : tab.url === "todo" ? (
+                data.filter((v) => v.status === "rejected").length
+              ) : (
+                data.length
+              )}
             </div>
           </NavLink>
         ))}
@@ -52,8 +65,53 @@ export default function JobsAdmin() {
       return <Spin className="h-8 w-8" />;
     }
     //todo: display and filter
-    return data ? JSON.stringify(data) : "no data";
-  }, [data, loading, tabUrl]);
+    console.log(data);
+    const filteredJob = data
+      ? Object.values(data).filter((v) => v.status === tabUrl)
+      : [];
+    const JobList = filteredJob
+      ? filteredJob.map((job) => {
+          console.log(jobId == job.id);
+          return (
+            //  <div>
+            <li className="flex flex-row w-full mt-5 " key={job.id}>
+              <div
+                className={`card card-compact w-full rounded-xl border-slate-400 border-4 flex flex-row justify-between ${
+                  job.id && job.id == jobId ? "active" : ""
+                }`}
+              >
+                <Link to={job.id} className="card-body basis-9/12 flex-none">
+                  <div className="card-title text-xl">{job.title}</div>
+                  <div className="flex flex-row flex-none">
+                    <div className="flex flex-row flex-wrap flex-auto">
+                      <p className="truncate w-1/2">{job.company}</p>
+                      <p className="truncate w-1/2">{`${job.location}`}</p>
+                      <p className="truncate w-1/2">
+                        {job.benefit.hasMedical
+                          ? "Medical Benefits"
+                          : "No Medical Benefits"}
+                      </p>
+                      <p className="truncate w-1/2">
+                        Minimum Pay: {job.wage.min} {job.wage.type}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </li>
+            //  </div>
+          );
+        })
+      : "loading";
+    return (
+      <div className="flex flex-row">
+        <div className={`md:block md:basis-1/2 lg:basis-1/3 flex-none`}>{JobList}</div>
+        <div className={`md:block md:basis-1/2 lg:basis-2/3 flex-none bg-slate-200`}>
+          <Outlet />
+        </div>
+      </div>
+    );
+  }, [data, loading, tabUrl, jobId]);
   return (
     <div className="flex flex-col">
       {tabs}
