@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
 
 import JobRoot from "@/pages/Job";
+import ProfileRoot from "@/pages/Profile";
 
 import AppRoot from "./App";
 import TailWindToaster from "./components/TailwindToaster";
@@ -20,10 +21,16 @@ const Admin = {
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
 const Home = lazy(async () => import("@/pages/Home"));
-const Profile = lazy(async () => import("@/pages/Profile"));
 const Center = lazy(async () => import("@/components/Center"));
 const Job = {
   View: lazy(async () => import("@/components/job/JobView")),
+};
+const Profile = {
+  Menu: lazy(async () => import("@/components/profile/ProfileMenu")),
+  Help: lazy(async () => import("@/components/profile/ProfileHelp")),
+  Account: lazy(async () => import("@/components/profile/ProfileAccount")),
+  SetProfile: lazy(async () => import("@/components/profile/ProfileSetProfile")),
+  SetPassword: lazy(async () => import("@/components/profile/ProfileSetPassword")),
 };
 
 const router = createBrowserRouter([
@@ -43,10 +50,6 @@ const router = createBrowserRouter([
       {
         path: "addJob",
         element: <AddJob />, //add job listing
-      },
-      {
-        path: "profile",
-        element: <Profile />,
       },
       // example: example for router and nested router
       {
@@ -81,6 +84,29 @@ const router = createBrowserRouter([
           {
             path: ":jobId",
             element: <Job.View />,
+          },
+        ],
+      },
+      {
+        path: "profile",
+        element: <ProfileRoot />,
+        children: [
+          { index: true, element: <Profile.Menu /> },
+          {
+            path: "account",
+            element: <Profile.Account />,
+          },
+          {
+            path: "help",
+            element: <Profile.Help />,
+          },
+          {
+            path: "set_profile",
+            element: <Profile.SetProfile />,
+          },
+          {
+            path: "set_password",
+            element: <Profile.SetPassword />,
           },
         ],
       },
