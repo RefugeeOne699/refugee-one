@@ -11,7 +11,7 @@ function searchCheck(job, search) {
   );
 }
 
-function jobPostedCheck(job, jobPosted) {
+function jobPostedCheck(job, jobPosted) {   
   if (!job) return false;
   switch (jobPosted) {
     case "Anytime":
