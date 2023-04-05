@@ -60,20 +60,15 @@ export default function JobsAdmin() {
       </div>
     );
   }, [tabUrl, data, loading]);
-  const content = useMemo(() => {
-    if (loading) {
-      return <Spin className="h-8 w-8" />;
-    }
-    //todo: display and filter
-    console.log(data);
+
+  const JobList = useMemo(() => {
     const filteredJob = data
       ? Object.values(data).filter((v) => v.status === tabUrl)
       : [];
-    const JobList = filteredJob
+    return filteredJob
       ? filteredJob.map((job) => {
-          console.log(jobId == job.id);
+          console.log(jobId, job.id);
           return (
-            //  <div>
             <li className="flex flex-row w-full mt-5 " key={job.id}>
               <div
                 className={`card card-compact w-full rounded-xl border-slate-400 border-4 flex flex-row justify-between ${
@@ -99,10 +94,16 @@ export default function JobsAdmin() {
                 </Link>
               </div>
             </li>
-            //  </div>
           );
         })
       : "loading";
+  }, [data, loading, tabUrl, jobId]);
+
+  const content = useMemo(() => {
+    if (loading) {
+      return <Spin className="h-8 w-8" />;
+    }
+    //todo: display and filter
     return (
       <div className="flex flex-row">
         <div className={`md:block md:basis-1/2 lg:basis-1/3 flex-none`}>{JobList}</div>
@@ -111,7 +112,7 @@ export default function JobsAdmin() {
         </div>
       </div>
     );
-  }, [data, loading, tabUrl, jobId]);
+  }, [data, loading, tabUrl]);
   return (
     <div className="flex flex-col">
       {tabs}
