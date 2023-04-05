@@ -122,22 +122,20 @@ export default function JobList() {
                   </label>
                 </div>
 
-                {[SHIFT_TYPE.FULL_TIME, SHIFT_TYPE.PART_TIME, SHIFT_TYPE.SHIFT_BASED].map(
-                  (item, index) => {
-                    return (
-                      <label className="label cursor-pointer" key={index}>
-                        <span className="label-text">{item}</span>
-                        <input
-                          type="checkbox"
-                          name="checkbox-jobType"
-                          className="checkbox checkbox-primary"
-                          value={item}
-                          {...register("jobType")}
-                        />
-                      </label>
-                    );
-                  }
-                )}
+                {[SHIFT_TYPE.FULL_TIME, SHIFT_TYPE.PART_TIME].map((item, index) => {
+                  return (
+                    <label className="label cursor-pointer" key={index}>
+                      <span className="label-text">{item}</span>
+                      <input
+                        type="checkbox"
+                        name="checkbox-jobType"
+                        className="checkbox checkbox-primary"
+                        value={item}
+                        {...register("jobType")}
+                      />
+                    </label>
+                  );
+                })}
               </div>
 
               {/* Wage Category */}
@@ -181,7 +179,6 @@ export default function JobList() {
                   ENGLISH_LEVEL.BASIC,
                   ENGLISH_LEVEL.INTERMEDIATE,
                   ENGLISH_LEVEL.ADVANCED,
-                  ENGLISH_LEVEL.NATIVE,
                 ].map((englishLevel, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
@@ -293,26 +290,24 @@ export default function JobList() {
     <div className="relative flex flex-col bg-yellow-100">
       {/* Search bar and filter icon */}
       <div className="flex flex-row items-center justify-between h-16 p-3 bg-blue-100">
-        <div className="relative text-gray-600">
-          <input
-            className="w-64 border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-lg text-sm focus:outline-none"
-            type="search"
-            name="search"
-            placeholder="Search"
-            ref={searchRef}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") setSearch(searchRef.current.value);
-            }}
-          />
-          <button
-            className="absolute right-0 top-1.5  mr-4 "
-            onClick={() => {
-              setSearch(searchRef.current.value);
-            }}
-          >
-            <SearchIcon />
-          </button>
+        <div className="form-control">
+          <div className="input-group">
+            <input type="text" placeholder="Search job or company" className="input input-bordered" 
+              ref={searchRef} 
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setSearch(searchRef.current.value);
+              }}
+            />
+            <button className="btn btn-square" 
+              onClick={() => {
+                setSearch(searchRef.current.value);
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            </button>
+          </div>
         </div>
+
         <button
           className={
             _.isEqual(filter, emptyFilter)
