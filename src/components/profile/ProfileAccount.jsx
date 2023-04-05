@@ -31,22 +31,32 @@ export default function ProfileAccount() {
             </div>
           </li>
         </ul>
-        <button
-          className="btn btn-xs btn-md lg:btn-lg m-2"
-          onClick={() => {
-            navigate("../set_profile", { replace: true });
-          }}
-        >
-          Edit Profile
-        </button>
-        <button
-          className="btn btn-xs btn-md lg:btn-lg m-2"
-          onClick={() => {
-            navigate("../set_password", { replace: true });
-          }}
-        >
-          Change Password
-        </button>
+        <div className="m-2 flex flex-col md:flex-row md:gap-4 justify-center">
+          <button
+            className="btn btn-xs btn-md lg:btn-lg m-2"
+            onClick={() => {
+              navigate("../set_profile", { replace: true });
+            }}
+          >
+            Edit Profile
+          </button>
+          <button
+            className="btn btn-xs btn-md lg:btn-lg m-2"
+            onClick={() => {
+              navigate("../set_password", { replace: true });
+            }}
+          >
+            Change Password
+          </button>
+          <button
+            className="btn btn-xs btn-md lg:btn-lg m-2"
+            onClick={() => {
+              navigate("../", { replace: true });
+            }}
+          >
+            Back
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -102,12 +102,14 @@ export default function ProfileSetPassword() {
               </div>
             </li>
           </ul>
-          <button type="submit" className="btn btn-xs btn-md lg:btn-lg m-2">
-            {modificationLoading ? "loading" : "Save Password"}
-          </button>
-          <button className="btn btn-xs btn-md lg:btn-lg m-2" onClick={handleCancel}>
-            Cancel
-          </button>
+          <div className="m-2 flex flex-col md:flex-row md:gap-4 justify-center">
+            <button type="submit" className="btn btn-xs btn-md lg:btn-lg m-2">
+              {modificationLoading ? "loading" : "Save Password"}
+            </button>
+            <button className="btn btn-xs btn-md lg:btn-lg m-2" onClick={handleCancel}>
+              Cancel
+            </button>
+          </div>
         </div>
       </form>
     </div>

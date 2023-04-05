@@ -1,4 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 export default function ProfileHelp() {
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate("../", { replace: true });
+  };
+
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="px-12">
@@ -21,6 +29,11 @@ export default function ProfileHelp() {
         </a>
         <p className="font-bold mt-4">Office Hours</p>
         <p>8:30 a.m. – 4:30 p.m Monday – Friday</p>
+      </div>
+      <div className="m-2 flex flex-col md:flex-row md:gap-4 justify-center">
+        <button className="btn btn-xs btn-md lg:btn-lg m-2" onClick={handleBack}>
+          Back
+        </button>
       </div>
     </div>
   );
