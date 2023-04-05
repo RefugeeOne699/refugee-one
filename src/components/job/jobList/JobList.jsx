@@ -56,7 +56,7 @@ export default function JobList() {
   const auth = useAuth();
 
   const emptyFilter = {
-    jobPosted: "0",
+    jobPosted: JOB_POSTED_FILTER[0],
     jobType: [],
     wage: "0",
     english: [],
@@ -131,7 +131,7 @@ export default function JobList() {
                         type="radio"
                         name="radio-jobPosted"
                         className="radio radio-primary"
-                        value={index}
+                        value={item}
                         {...register("jobPosted")}
                       />
                     </label>
