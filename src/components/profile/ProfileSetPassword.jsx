@@ -26,7 +26,7 @@ export default function ProfileSetPassword() {
       manual: true,
       onSuccess: async () => {
         toast.success("Password updated");
-        navigate("../account", { replace: true });
+        navigate("../", { replace: true });
       },
       onError: (error) => {
         let localErrorState = [...errorState];
@@ -59,7 +59,7 @@ export default function ProfileSetPassword() {
   };
 
   const handleCancel = () => {
-    navigate("../account", { replace: true });
+    navigate("../", { replace: true });
   };
 
   const handleVisualError = () => {
