@@ -20,7 +20,8 @@ export default function ProfileSetProfile() {
       manual: true,
       onSuccess: async () => {
         toast.success("Profile updated");
-        navigate("../account", { replace: true });
+        navigate("../", { replace: true });
+        navigate(0);
       },
       onError: () => {
         toast.error("Profile update failed");
@@ -29,7 +30,7 @@ export default function ProfileSetProfile() {
   );
 
   const handleCancel = () => {
-    navigate("../account", { replace: true });
+    navigate("../", { replace: true });
   };
 
   return (
@@ -42,12 +43,15 @@ export default function ProfileSetProfile() {
                 <div className="flex justify-start gap-4">
                   <PersonIcon />
                 </div>
-                <div className="flex w-full justify-end">
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Name</span>
+                  </label>
                   <input
                     {...register("name", { required: true })}
                     type="text"
                     placeholder="name"
-                    value={auth.user?.name}
+                    defaultValue={auth.user?.name}
                     className="input w-full input-bordered"
                   />
                 </div>
@@ -58,12 +62,15 @@ export default function ProfileSetProfile() {
                 <div className="flex justify-start gap-4">
                   <PhoneIcon />
                 </div>
-                <div className="flex w-full justify-end">
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Phone Number</span>
+                  </label>
                   <input
                     {...register("phone", { required: true })}
                     type="text"
                     placeholder="phone number"
-                    value={auth.user?.phone}
+                    defaultValue={auth.user?.phone}
                     className="input w-full input-bordered"
                   />
                 </div>

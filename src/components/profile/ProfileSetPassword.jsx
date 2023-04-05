@@ -49,7 +49,6 @@ export default function ProfileSetPassword() {
   );
 
   const handleFormErrors = (errors) => {
-    console.log(errors);
     const values = Object.values(errors);
     if (values.length > 0) {
       // always only prompt the first error, the same error that the cursor will focus on
@@ -68,7 +67,6 @@ export default function ProfileSetPassword() {
       newPassword !== confirmPassword || newPassword.length < passwordMinLength;
     localErrorState[2] =
       newPassword !== confirmPassword || confirmPassword.length < passwordMinLength;
-    console.log(localErrorState);
     setErrorState(localErrorState);
   };
 
@@ -94,7 +92,7 @@ export default function ProfileSetPassword() {
                   </label>
                   <input
                     {...register("oldPassword", { required: true })}
-                    type="text"
+                    type="password"
                     placeholder=""
                     className={
                       "input input-bordered w-full " +
@@ -121,7 +119,7 @@ export default function ProfileSetPassword() {
                         message: "Password should be at least 6 characters",
                       },
                     })}
-                    type="text"
+                    type="password"
                     placeholder=""
                     className={
                       "input input-bordered w-full " +
@@ -155,7 +153,7 @@ export default function ProfileSetPassword() {
                         message: "Password should be at least 6 characters",
                       },
                     })}
-                    type="text"
+                    type="password"
                     placeholder=""
                     className={
                       "input input-bordered w-full " +
