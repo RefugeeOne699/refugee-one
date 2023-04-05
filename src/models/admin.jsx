@@ -64,7 +64,7 @@ const AdminContextProvider = ({ children }) => {
         phone: user.phone,
         role: user.role,
         // to deal with existing accounts who don't have status field
-        status: user.status === undefined ? "pending" : USER_STATUS.PENDING,
+        status: user.status === undefined ? USER_STATUS.PENDING : user.status,
       };
     });
     return await Promise.all(userList);
