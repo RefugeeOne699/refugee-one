@@ -21,7 +21,7 @@ export default function ProfileSetProfile() {
       onSuccess: async () => {
         toast.success("Profile updated");
         navigate("../", { replace: true });
-        navigate(0);
+        navigate(0); // todo: this is a temp fix to basic information not updated until refresh
       },
       onError: () => {
         toast.error("Profile update failed");
