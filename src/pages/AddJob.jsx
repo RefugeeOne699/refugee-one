@@ -1,5 +1,5 @@
 import { useRequest } from "ahooks";
-import { React, useEffect, useState } from "react";
+import { React } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,6 @@ import { useAuth, useJob } from "@/models";
 export default function AddJob() {
   const auth = useAuth();
   const job = useJob();
-
-  const [hasLoad, setHasLoad] = useState(false);
-  const toastid = [];
 
   const navigate = useNavigate();
   const { register, handleSubmit, setValue, getValues } = useForm({
@@ -43,53 +40,20 @@ export default function AddJob() {
     }
   );
 
-  useEffect(() => {
-    let hasdraft = window.localStorage.getItem("draft");
-    if (hasdraft !== null && toastid.length === 0) {
-      toastid.push(1);
-      toast(
-        (t) => (
-          <div className="flex flex-row justify-between items-center w-[350px] p-4 rounded-lg shadow-md">
-            <div className="w-1/2">
-              <p>Load draft?</p>
-            </div>
-            <div className="flex flex-row w-1/2 justify-between h-full">
-              <div>
-                <button
-                  onClick={() => {
-                    loadDraft();
-                    setHasLoad(true);
-                    toast.dismiss(t.id);
-                  }}
-                  className="btn btn-primary btn-sm"
-                >
-                  Load
-                </button>
-              </div>
-              <div>
-                <button
-                  onClick={() => toast.dismiss(t.id)}
-                  className="btn btn-outline btn-primary btn-sm"
-                >
-                  Dismiss
-                </button>
-              </div>
-            </div>
-          </div>
-        ),
-        { duration: 60000 }
-      );
-    }
-  }, []);
+  let hasDraft =
+    window.localStorage.getItem("REFUGEE_ONE_JOB_DRAFT") === null ? "hidden" : "";
+
+  const hideModal = () => {
+    document.getElementById("refugeeOneDraft").classList.add("hidden");
+  };
 
   const saveDraft = () => {
-    window.localStorage.setItem("draft", JSON.stringify(getValues()));
+    window.localStorage.setItem("REFUGEE_ONE_JOB_DRAFT", JSON.stringify(getValues()));
     toast.success("Draft saved!");
-    navigate("/");
   };
 
   const loadDraft = () => {
-    const draft = JSON.parse(window.localStorage.getItem("draft"));
+    const draft = JSON.parse(window.localStorage.getItem("REFUGEE_ONE_JOB_DRAFT"));
     setValue("title", draft.title);
     setValue("company", auth.user?.company || draft.company);
     setValue("jobType", draft.jobType);
@@ -108,11 +72,49 @@ export default function AddJob() {
     setValue("address.state", draft.address.state);
     setValue("address.zipcode", draft.address.zipcode);
     setValue("description", draft.description);
+    hideModal();
+    toast.success("Load draft succeeded");
   };
 
   return (
     <div className="flex flex-col justify-center items-center">
       <form onSubmit={handleSubmit(addJob)}>
+        <div id="refugeeOneDraft" className={`w-[60%] fixed m-auto top-2 ${hasDraft}`}>
+          <div className="alert shadow-lg">
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="stroke-info flex-shrink-0 w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span>Load latest draft version?</span>
+            </div>
+            <div className="flex-none">
+              <button
+                type="button"
+                className="btn btn-sm btn-outline btn-primary"
+                onClick={hideModal}
+              >
+                Dismiss
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-primary"
+                onClick={loadDraft}
+              >
+                Load
+              </button>
+            </div>
+          </div>
+        </div>
         <div className="flex flex-row mb-4 mt-4 items-center">
           <label className="label flex basis-44" htmlFor="title">
             Job Title
@@ -343,23 +345,20 @@ export default function AddJob() {
         <div className="flex w-full justify-end mb-4">
           <div className="flex flex-row justify-around w-1/2">
             <button
-              type="submit"
-              className="btn btn-primary w-1/3"
-              onClick={() => {
-                if (hasLoad === true) {
-                  setHasLoad(false);
-                  window.localStorage.clear();
-                }
-              }}
-            >
-              Submit
-            </button>
-            <button
               type="button"
               className="btn btn-outline btn-primary w-1/3"
               onClick={saveDraft}
             >
               Save as draft
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary w-1/3"
+              onClick={() => {
+                window.localStorage.removeItem("REFUGEE_ONE_JOB_DRAFT");
+              }}
+            >
+              Submit
             </button>
           </div>
         </div>
