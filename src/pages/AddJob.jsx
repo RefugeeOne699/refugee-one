@@ -53,27 +53,31 @@ export default function AddJob() {
   };
 
   const loadDraft = () => {
-    const draft = JSON.parse(window.localStorage.getItem("REFUGEE_ONE_JOB_DRAFT"));
-    setValue("title", draft.title);
-    setValue("company", auth.user?.company || draft.company);
-    setValue("jobType", draft.jobType);
-    setValue("dateJobStart", draft.dateJobStart);
-    setValue("shift", draft.shift);
-    setValue("wage.type", draft.wage.type);
-    setValue("wage.min", parseInt(draft.wage.min));
-    setValue("wage.max", parseInt(draft.wage.max));
-    setValue("benefit.hasMedical", draft.benefit.hasMedical);
-    setValue("benefit.hasOthers", draft.benefit.hasOthers);
-    setValue("benefit.others", draft.benefit.others);
-    setValue("langEnglishLevel", draft.langEnglishLevel);
-    setValue("langNote", draft.langNote);
-    setValue("address.street", draft.address.street);
-    setValue("address.city", draft.address.city);
-    setValue("address.state", draft.address.state);
-    setValue("address.zipcode", draft.address.zipcode);
-    setValue("description", draft.description);
-    hideModal();
-    toast.success("Load draft succeeded");
+    try {
+      const draft = JSON.parse(window.localStorage.getItem("REFUGEE_ONE_JOB_DRAFT"));
+      setValue("title", draft.title);
+      setValue("company", auth.user?.company || draft.company);
+      setValue("jobType", draft.jobType);
+      setValue("dateJobStart", draft.dateJobStart);
+      setValue("shift", draft.shift);
+      setValue("wage.type", draft.wage.type);
+      setValue("wage.min", parseInt(draft.wage.min));
+      setValue("wage.max", parseInt(draft.wage.max));
+      setValue("benefit.hasMedical", draft.benefit.hasMedical);
+      setValue("benefit.hasOthers", draft.benefit.hasOthers);
+      setValue("benefit.others", draft.benefit.others);
+      setValue("langEnglishLevel", draft.langEnglishLevel);
+      setValue("langNote", draft.langNote);
+      setValue("address.street", draft.address.street);
+      setValue("address.city", draft.address.city);
+      setValue("address.state", draft.address.state);
+      setValue("address.zipcode", draft.address.zipcode);
+      setValue("description", draft.description);
+      hideModal();
+      toast.success("Load draft succeeded");
+    } catch {
+      toast.error("Load draft failed.");
+    }
   };
 
   return (
