@@ -27,7 +27,6 @@ export default function JobList() {
   const { jobId } = useParams();
   const { run, data } = useRequest(
     async () => {
-      //return listJobs();
       return listJobs().then((data) => {
         for (let i = 0; i < data.length; i++) {
           if (auth.user.coordinate && data[i].coordinate) {
