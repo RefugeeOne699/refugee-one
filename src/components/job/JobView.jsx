@@ -40,6 +40,7 @@ export default function JobView() {
   }
   const { run, data, loading, error } = useRequest(
     async () => {
+      // return getJob(jobId);
       return getJob(jobId).then((data) => {
         if (auth.user.coordinate && data.coordinate) {
           let userCoordinate = auth.user.coordinate;
@@ -51,7 +52,11 @@ export default function JobView() {
             jobCoordinate.longitude
           );
           data.distance = distance;
+        } else {
+          data.distance = null;
         }
+        console.log(data);
+        return data;
       });
     },
     {
@@ -167,9 +172,11 @@ export default function JobView() {
               >
                 View location on Google Map
               </a>
-              {data.distance ? (
-                <p className="text-red-500">{data.distance} miles from you</p>
-              ) : null}
+              <p>
+                {data.distance
+                  ? data.distance.toFixed(1) + " miles from you"
+                  : "Setup your location in profile to check distance"}{" "}
+              </p>
             </div>
           </div>
           <div className="flex w-full mt-5 flex-row">
