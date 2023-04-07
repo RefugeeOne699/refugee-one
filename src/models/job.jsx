@@ -110,6 +110,7 @@ const JobContextProvider = ({ children }) => {
         company: job.company,
         status: job.status,
         location: job.location,
+        coordinate: job.coordinate,
         wage: job.wage,
         benefit: job.benefit,
         jobType: job.jobType,

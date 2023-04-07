@@ -41,10 +41,15 @@ function benefitCheck(job, benefit) {
   if (!job) return false;
   for (const b of benefit) {
     const benefit_field = "has" + b;
-    console.log(benefit_field);
     if (!job.benefit[benefit_field]) return false;
   }
   return true;
+}
+
+function distanceCheck(job, anyDistance, distance) {
+  if (!job) return false;
+  if (anyDistance) return true;
+  return job.distance && parseFloat(job.distance) < parseFloat(distance);
 }
 
 /**
@@ -61,7 +66,8 @@ export function getSearchAndFilterResult(jobs, search, filter) {
     .filter((job) => jobTypeCheck(job, filter.jobType))
     .filter((job) => wageCheck(job, filter.wage))
     .filter((job) => englishCheck(job, filter.english))
-    .filter((job) => benefitCheck(job, filter.benefit));
+    .filter((job) => benefitCheck(job, filter.benefit))
+    .filter((job) => distanceCheck(job, filter.anyDistance, filter.distance));
 
   return result;
 }

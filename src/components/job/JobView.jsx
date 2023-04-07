@@ -55,7 +55,6 @@ export default function JobView() {
         } else {
           data.distance = null;
         }
-        console.log(data);
         return data;
       });
     },
@@ -175,7 +174,7 @@ export default function JobView() {
               <p>
                 {data.distance
                   ? data.distance.toFixed(1) + " miles from you"
-                  : "Setup your location in profile to check distance"}{" "}
+                  : "Distance not applied"}{" "}
               </p>
             </div>
           </div>
