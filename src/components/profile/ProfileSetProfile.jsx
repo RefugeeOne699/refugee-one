@@ -1,20 +1,32 @@
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
+import PlaceIcon from "@mui/icons-material/Place";
 import { useRequest } from "ahooks";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "@/models";
+import { useAuth, usePosition } from "@/models";
 
 export default function ProfileSetProfile() {
   const auth = useAuth();
   const navigate = useNavigate();
+  const position = usePosition();
   const { register, handleSubmit } = useForm();
 
   const { run: modifiedContent, loading: modificationLoading } = useRequest(
     async (data) => {
-      return auth.updateProfile(data);
+      return position
+        .getCoordinate(
+          data.address.street,
+          data.address.city,
+          data.address.state,
+          data.address.zipcode
+        )
+        .then((coordinate) => {
+          data.coordinate = coordinate;
+          return auth.updateProfile(data);
+        });
     },
     {
       manual: true,
@@ -71,6 +83,75 @@ export default function ProfileSetProfile() {
                     type="text"
                     placeholder="phone number"
                     defaultValue={auth.user?.phone}
+                    className="input w-full input-bordered"
+                  />
+                </div>
+              </div>
+            </li>
+            <li>
+              <div className="flex justify-between">
+                <div className="flex justify-start gap-4">
+                  <PlaceIcon />
+                </div>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Address</span>
+                  </label>
+                  <input
+                    {...register("address.street", { required: true })}
+                    type="text"
+                    placeholder="Address"
+                    defaultValue={auth.user?.address?.street}
+                    className="input w-full input-bordered"
+                  />
+                </div>
+              </div>
+            </li>
+            <li>
+              <div className="flex justify-between">
+                <div className="flex justify-start gap-4">
+                  <PlaceIcon />
+                </div>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">City</span>
+                  </label>
+                  <input
+                    {...register("address.city", { required: true })}
+                    type="text"
+                    placeholder="City"
+                    defaultValue={auth.user?.address?.city}
+                    className="input w-full input-bordered"
+                  />
+                </div>
+              </div>
+            </li>
+            <li>
+              <div className="flex justify-between">
+                <div className="flex justify-start gap-4">
+                  <PlaceIcon />
+                </div>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">State</span>
+                  </label>
+                  <input
+                    {...register("address.state", { required: true })}
+                    type="text"
+                    placeholder="State"
+                    defaultValue={auth.user?.address?.state}
+                    className="input w-full input-bordered"
+                  />
+                </div>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Zipcode</span>
+                  </label>
+                  <input
+                    {...register("address.zipcode", { required: true })}
+                    type="text"
+                    placeholder="Zipcode"
+                    defaultValue={auth.user?.address?.zipcode}
                     className="input w-full input-bordered"
                   />
                 </div>
