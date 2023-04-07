@@ -10,11 +10,12 @@ import {
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { createContext, useContext, useMemo, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
-import database, { auth } from "@/clients/firebase";
+import database, { auth, subAuth, subDatabase } from "@/clients/firebase";
 import Center from "@/components/Center";
 import Spin from "@/components/Spin";
-import { AUTH_INITIAL_STATE, USER_STATUS } from "@/constants";
+import { AUTH_INITIAL_STATE, ROLES, USER_STATUS } from "@/constants";
 
 /**
  * User interface
@@ -66,24 +67,27 @@ const AuthContextProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const signUp = (payload) => {
+  // Sign Up
+  const signUp = async (payload) => {
     setUser(AUTH_INITIAL_STATE);
     const { email, password, name, phone, role, company } = payload;
-    return createUserWithEmailAndPassword(auth, email, password)
-      .then(async (credential) => {
-        await setDoc(doc(database, "Users", credential.user.uid), {
-          name,
-          email,
-          role,
-          phone,
-          company,
-          status: USER_STATUS.PENDING,
-        });
-      })
-      .catch((error) => {
-        // todo: store error info
-        throw new Error(error);
-      });
+    // if we are creating a refugee account, the payload may not have a password.
+    // so we generate a uuid() as default value, mark the account as PENDING
+    let credential = await createUserWithEmailAndPassword(
+      subAuth,
+      email,
+      password || uuidv4()
+    );
+    const userDoc = {
+      name,
+      email,
+      role,
+      phone,
+      company,
+      status: role === ROLES.ADMIN ? USER_STATUS.APPROVED : USER_STATUS.PENDING,
+    };
+    await setDoc(doc(subDatabase, "Users", credential.user.uid), userDoc);
+    await subAuth.signOut();
   };
 
   const signOut = () => {
