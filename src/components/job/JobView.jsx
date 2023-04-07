@@ -15,6 +15,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
+import { calculateDistance } from "@/utils";
 
 import Center from "../Center";
 import Spin from "../Spin";
@@ -37,12 +38,29 @@ export default function JobView() {
     // this
     return <ErrorInfo />;
   }
-  const { run, data, loading, error } = useRequest(async () => getJob(jobId), {
-    manual: true,
-    onError: () => {
-      toast.error("Failed to get the job information");
+  const { run, data, loading, error } = useRequest(
+    async () => {
+      return getJob(jobId).then((data) => {
+        if (auth.user.coordinate && data.coordinate) {
+          let userCoordinate = auth.user.coordinate;
+          let jobCoordinate = data.coordinate;
+          const distance = calculateDistance(
+            userCoordinate.latitude,
+            userCoordinate.longitude,
+            jobCoordinate.latitude,
+            jobCoordinate.longitude
+          );
+          data.distance = distance;
+        }
+      });
     },
-  });
+    {
+      manual: true,
+      onError: () => {
+        toast.error("Failed to get the job information");
+      },
+    }
+  );
 
   useEffect(() => {
     (async () => {
@@ -149,6 +167,9 @@ export default function JobView() {
               >
                 View location on Google Map
               </a>
+              {data.distance ? (
+                <p className="text-red-500">{data.distance} miles from you</p>
+              ) : null}
             </div>
           </div>
           <div className="flex w-full mt-5 flex-row">
