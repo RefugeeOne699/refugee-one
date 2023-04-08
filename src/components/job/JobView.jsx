@@ -171,7 +171,7 @@ export default function JobView() {
           </div>
           {auth.user.role === ROLES.ADMIN ? (
             <div className="w-full flex flex-row justify-center mt-5">
-              <JobApproveReject jobId={jobId} />
+              <JobApproveReject jobId={jobId} status={data.status} />
             </div>
           ) : (
             <div className="w-full flex flex-row justify-center mt-5">

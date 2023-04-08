@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 
 import { useJob } from "@/models";
 
-export default function JobApproveReject({ jobId }) {
+export default function JobApproveReject({ jobId, status }) {
   const [jobFeedback, setJobFeedback] = useState("");
   const { approveJob, rejectJob } = useJob();
 
@@ -40,16 +40,31 @@ export default function JobApproveReject({ jobId }) {
     <>
       <div className="items-center text-center w-3/4">
         <div className="w-full flex flex-row justify-center">
-          <label htmlFor="feedback-display" className="btn">
+          <label
+            htmlFor="feedback-display"
+            className={`btn ${status === "pending" ? "" : "hidden"}`}
+          >
             Reject
           </label>
+          <button
+            className={`btn btn-primary btn-outline ml-5 ${
+              status === "pending" || status === "approved" ? "" : "hidden"
+            }`}
+          >
+            Edit
+          </button>
           <button
             onClick={() => {
               approve();
             }}
-            className="btn btn-primary ml-5"
+            className={`btn btn-primary ml-5 ${status === "pending" ? "" : "hidden"}`}
           >
             Approve
+          </button>
+          <button
+            className={`btn btn-primary ml-5 ${status === "pending" ? "hidden" : ""}`}
+          >
+            Remove Job Post
           </button>
         </div>
       </div>

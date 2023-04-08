@@ -12,7 +12,7 @@ const menu = [
   { url: "rejected", name: "All Action Required Jobs" },
 ];
 
-export default function JobsAdmin() {
+export default function JobsEmployer() {
   const { tabUrl } = useParams();
   const { listJobs } = useJob();
   const { jobId } = useParams();
