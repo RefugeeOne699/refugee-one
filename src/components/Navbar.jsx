@@ -137,8 +137,8 @@ function NavbarList(props) {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const auth = useAuth();
 
+  const auth = useAuth();
   if (!auth.user || auth.user === AUTH_INITIAL_STATE) {
     return null;
   }
