@@ -1,5 +1,6 @@
-import BingKey from "@/bingConfig";
 import { createContext, useMemo } from "react";
+
+import BingKey from "@/bingConfig.js";
 
 const PositionContext = createContext({
   getCoordinate: () => {},
