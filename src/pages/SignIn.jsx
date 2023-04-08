@@ -4,20 +4,29 @@ import LockIcon from "@mui/icons-material/Lock";
 import { useRequest } from "ahooks";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/models";
 
-export default function Home() {
+export default function SignIn() {
   const auth = useAuth();
   const { register, handleSubmit } = useForm();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+
+  //   if (auth.isSignedIn) {
+  //     return <Navigate to="/" replace />;
+  //   }
+
   // follow this function for a better practice with interactive button
   const { run: signIn, loading: signInLoading } = useRequest(
     async (data) => auth.signIn(data),
     {
       manual: true,
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.success("Sign in succeeded");
+        navigate(from, { replace: true });
       },
       onError: (error) => {
         if (
