@@ -10,12 +10,16 @@ import AppRoot from "./App";
 import TailWindToaster from "./components/TailwindToaster";
 import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider } from "./models/auth";
+import { EmployerContextProvider } from "./models/employer";
 import { JobContextProvider } from "./models/job";
 import { JobSaveContextProvider } from "./models/jobSave";
 
 const AddJob = lazy(async () => import("@/pages/AddJob"));
 const Admin = {
   Jobs: lazy(async () => import("@/pages/admin/JobsAdmin")),
+};
+const Employer = {
+  Jobs: lazy(async () => import("@/pages/employer/JobsEmployer")),
 };
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
@@ -68,6 +72,36 @@ const router = createBrowserRouter([
               {
                 path: ":tabUrl",
                 element: <Admin.Jobs />,
+                children: [
+                  { index: true, element: <Center /> },
+                  {
+                    path: ":jobId",
+                    element: <Job.View />,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "employer",
+        element: (
+          <EmployerContextProvider>
+            <Outlet />
+          </EmployerContextProvider>
+        ),
+        children: [
+          {
+            path: "jobs",
+            children: [
+              {
+                index: true,
+                element: <Navigate to="pending" />,
+              },
+              {
+                path: ":tabUrl",
+                element: <Employer.Jobs />,
                 children: [
                   { index: true, element: <Center /> },
                   {

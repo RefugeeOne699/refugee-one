@@ -19,6 +19,7 @@ import { useAuth, useJob } from "@/models";
 import Center from "../Center";
 import Spin from "../Spin";
 import JobApproveReject from "./JobApproveReject";
+import JobEditRemove from "./JobEditRemove";
 import JobSave from "./JobSave";
 function ErrorInfo() {
   return (
@@ -172,6 +173,10 @@ export default function JobView() {
           {auth.user.role === ROLES.ADMIN ? (
             <div className="w-full flex flex-row justify-center mt-5">
               <JobApproveReject jobId={jobId} status={data.status} />
+            </div>
+          ) : auth.user.role === ROLES.EMPLOYER ? (
+            <div className="w-full flex flex-row justify-center mt-5">
+              <JobEditRemove jobId={jobId} status={data.status} />
             </div>
           ) : (
             <div className="w-full flex flex-row justify-center mt-5">

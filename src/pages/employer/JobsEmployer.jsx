@@ -1,10 +1,11 @@
 import { useRequest } from "ahooks";
+import { where } from "firebase/firestore";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 
 import Spin from "@/components/Spin";
-import { useJob } from "@/models";
+import { useAuth, useJob } from "@/models";
 
 const menu = [
   { url: "pending", name: "All Pending Jobs" },
@@ -13,15 +14,19 @@ const menu = [
 ];
 
 export default function JobsEmployer() {
+  const auth = useAuth();
   const { tabUrl } = useParams();
   const { listJobs } = useJob();
   const { jobId } = useParams();
-  const { data, run, loading } = useRequest(async () => listJobs(), {
-    manual: true,
-    onError: () => {
-      toast.error("Failed to fetch job list");
-    },
-  });
+  const { data, run, loading } = useRequest(
+    async () => listJobs(where("owner", "==", auth.userRef)),
+    {
+      manual: true,
+      onError: () => {
+        toast.error("Failed to fetch job list");
+      },
+    }
+  );
   useEffect(() => {
     (async () => {
       await run();
@@ -32,7 +37,7 @@ export default function JobsEmployer() {
       <div className="tabs tabs-boxed">
         {menu.map((tab) => (
           <NavLink
-            to={`/admin/jobs/${tab.url}`}
+            to={`/employer/jobs/${tab.url}`}
             className={({ isActive }) => `tab ${isActive ? "tab-active" : null}`}
             key={tab.name}
           >

@@ -55,11 +55,11 @@ const buttonMap = {
       "Manage Jobs": {
         icon: <WorkIcon />,
         // todo: add path
-        path: "",
+        path: "employer/jobs",
       },
       Setting: {
         icon: <SettingsIcon />,
-        path: "profile",
+        path: "",
       },
     },
   },
