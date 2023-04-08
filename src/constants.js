@@ -7,6 +7,7 @@ export const ROLES = {
 export const USER_STATUS = {
   PENDING: "pending",
   APPROVED: "approved",
+  INITIAL: "initial",
 };
 
 export const ENGLISH_LEVEL = {

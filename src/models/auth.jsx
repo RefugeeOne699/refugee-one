@@ -84,7 +84,7 @@ const AuthContextProvider = ({ children }) => {
       role,
       phone,
       company,
-      status: role === ROLES.ADMIN ? USER_STATUS.APPROVED : USER_STATUS.PENDING,
+      status: role === ROLES.EMPLOYER ? USER_STATUS.PENDING : USER_STATUS.INITIAL,
     };
     await setDoc(doc(subDatabase, "Users", credential.user.uid), userDoc);
     await subAuth.signOut();
