@@ -131,7 +131,6 @@ const AuthContextProvider = ({ children }) => {
 function RequireAuth({ children }) {
   let auth = useContext(AuthContext);
   let location = useLocation();
-  console.log(auth.user);
   if (auth.user === AUTH_INITIAL_STATE || auth.pullUserRequest.loading) {
     return (
       <Center className="w-screen h-screen">
