@@ -94,7 +94,7 @@ function NavbarList(props) {
           {Object.keys(buttonMap[auth.user.role].buttons).map((key) => (
             <div
               key={key}
-              className="border-2 border-yellow-600 rounded-2xl text-yellow-600 flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
+              className="border-2 border-primary rounded-2xl text-primary flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-white cursor-pointer"
               onClick={() => {
                 navigate(buttonMap[auth.user.role].buttons[key].path);
                 props.setOpen(false);
@@ -114,7 +114,7 @@ function NavbarList(props) {
           {Object.keys(buttonMap[auth.user.role].navs).map((key) => (
             <div
               key={key}
-              className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-yellow-600 hover:text-white cursor-pointer"
+              className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-white cursor-pointer"
               onClick={() => {
                 navigate(buttonMap[auth.user.role].navs[key].path);
                 props.setOpen(false);
