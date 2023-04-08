@@ -1,5 +1,3 @@
-import "react-datepicker/dist/react-datepicker.css";
-
 import { useRequest } from "ahooks";
 import { React } from "react";
 import { useForm } from "react-hook-form";
@@ -14,7 +12,7 @@ export default function AddJob() {
   const job = useJob();
 
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, setValue, getValues } = useForm({
     // if the user is an employer, has a company, autofill the company name
     defaultValues: { company: auth.user?.company || "" },
   });
@@ -42,8 +40,80 @@ export default function AddJob() {
     }
   );
 
+  let hasDraft =
+    window.localStorage.getItem("REFUGEE_ONE_JOB_DRAFT") === null ? "hidden" : "";
+
+  const hideModal = () => {
+    document.getElementById("refugeeOneDraft").classList.add("hidden");
+  };
+
+  const saveDraft = () => {
+    window.localStorage.setItem("REFUGEE_ONE_JOB_DRAFT", JSON.stringify(getValues()));
+    toast.success("Draft saved!");
+  };
+
+  const loadDraft = () => {
+    try {
+      const draft = JSON.parse(window.localStorage.getItem("REFUGEE_ONE_JOB_DRAFT"));
+      setValue("title", draft.title);
+      setValue("company", auth.user?.company || draft.company);
+      setValue("jobType", draft.jobType);
+      setValue("dateJobStart", draft.dateJobStart);
+      setValue("shift", draft.shift);
+      setValue("wage.type", draft.wage.type);
+      setValue("wage.min", parseInt(draft.wage.min));
+      setValue("wage.max", parseInt(draft.wage.max));
+      setValue("benefit.hasMedical", draft.benefit.hasMedical);
+      setValue("benefit.hasOthers", draft.benefit.hasOthers);
+      setValue("benefit.others", draft.benefit.others);
+      setValue("langEnglishLevel", draft.langEnglishLevel);
+      setValue("langNote", draft.langNote);
+      setValue("address.street", draft.address.street);
+      setValue("address.city", draft.address.city);
+      setValue("address.state", draft.address.state);
+      setValue("address.zipcode", draft.address.zipcode);
+      setValue("description", draft.description);
+      hideModal();
+      toast.success("Load draft succeeded");
+    } catch {
+      toast.error("Load draft failed.");
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center">
+      <div id="refugeeOneDraft" className={`w-[80%] float m-auto ${hasDraft}`}>
+        <div className="alert shadow-lg">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="stroke-info flex-shrink-0 w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <span>Load latest draft version?</span>
+          </div>
+          <div className="flex-none">
+            <button
+              type="button"
+              className="btn btn-sm btn-outline btn-primary"
+              onClick={hideModal}
+            >
+              Dismiss
+            </button>
+            <button type="button" className="btn btn-sm btn-primary" onClick={loadDraft}>
+              Load
+            </button>
+          </div>
+        </div>
+      </div>
       <form onSubmit={handleSubmit(addJob)}>
         <div className="flex flex-row mb-4 mt-4 items-center">
           <label className="label flex basis-44" htmlFor="title">
@@ -274,11 +344,21 @@ export default function AddJob() {
         </div>
         <div className="flex w-full justify-end mb-4">
           <div className="flex flex-row justify-around w-1/2">
-            <button type="submit" className="btn btn-primary w-1/3">
-              Submit
-            </button>
-            <button type="button" className="btn btn-outline btn-primary w-1/3">
+            <button
+              type="button"
+              className="btn btn-outline btn-primary w-1/3"
+              onClick={saveDraft}
+            >
               Save as draft
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary w-1/3"
+              onClick={() => {
+                window.localStorage.removeItem("REFUGEE_ONE_JOB_DRAFT");
+              }}
+            >
+              Submit
             </button>
           </div>
         </div>
