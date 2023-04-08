@@ -174,7 +174,7 @@ export default function JobView() {
               <p>
                 {data.distance
                   ? data.distance.toFixed(1) + " miles from you"
-                  : "Distance not applied"}{" "}
+                  : "Distance not applied"}
               </p>
             </div>
           </div>

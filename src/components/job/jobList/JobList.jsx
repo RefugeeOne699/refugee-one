@@ -61,7 +61,7 @@ export default function JobList() {
     wage: "0",
     english: [],
     benefit: [],
-    anyDistance: false,
+    anyDistance: true,
     distance: "500",
   };
 

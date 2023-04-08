@@ -1,10 +1,9 @@
+import BingKey from "@/bingConfig";
 import { createContext, useMemo } from "react";
 
 const PositionContext = createContext({
   getCoordinate: () => {},
 });
-
-const BingKey = "AgXLKJqvvaCBQb9-OrR7_pON_UPvsZafaJEPU9LRkXBREwvv3Z6jvilQG1EexTuA";
 
 const PositionContextProvider = ({ children }) => {
   const getCoordinate = async (street, city, state, zipcode) => {
