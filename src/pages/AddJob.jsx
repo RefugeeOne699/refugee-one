@@ -17,24 +17,23 @@ export default function AddJob() {
     defaultValues: { company: auth.user?.company || "" },
   });
 
-  const { run: addJob } = useRequest(
+  const { run: createJob, loading } = useRequest(
     async (data) => {
-      getCoordinate(
+      const coordinate = await getCoordinate(
         data.address.street,
         data.address.city,
         data.address.state,
         data.address.zipcode
-      ).then((coordinate) => {
-        job.createJob({
-          ...data,
-          adminMessage: "",
-          owner: auth.userRef,
-          status: JOB_STATUS.PENDING,
-          datePost: new Date(),
-          location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
-          coordinate: coordinate,
-          dateCreated: new Date(),
-        });
+      );
+      return job.createJob({
+        ...data,
+        adminMessage: "",
+        owner: auth.userRef,
+        status: JOB_STATUS.PENDING,
+        datePost: new Date(),
+        location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
+        coordinate: coordinate,
+        dateCreated: new Date(),
       });
     },
     {
@@ -123,7 +122,7 @@ export default function AddJob() {
           </div>
         </div>
       </div>
-      <form onSubmit={handleSubmit(addJob)}>
+      <form onSubmit={handleSubmit(createJob)}>
         <div className="flex flex-row mb-4 mt-4 items-center">
           <label className="label flex basis-44" htmlFor="title">
             Job Title
@@ -362,12 +361,13 @@ export default function AddJob() {
             </button>
             <button
               type="submit"
-              className="btn btn-primary w-1/3"
+              className={`btn btn-primary w-1/3 ${loading ? "loading" : ""}`}
               onClick={() => {
                 window.localStorage.removeItem("REFUGEE_ONE_JOB_DRAFT");
               }}
+              disabled={loading}
             >
-              Submit
+              {loading ? "Loading" : "Submit"}
             </button>
           </div>
         </div>
