@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   updatePassword as firebaseUpdatePassword,
@@ -37,6 +38,7 @@ const AuthContext = createContext({
   updatePassword: async () => {},
   updateProfile: async () => {},
   isSignedIn: () => Boolean,
+  resetpassWordByEmail: async () => {},
 });
 
 const AuthContextProvider = ({ children }) => {
@@ -91,6 +93,10 @@ const AuthContextProvider = ({ children }) => {
     await subAuth.signOut();
   };
 
+  const resetpassWordByEmail = async (email) => {
+    await sendPasswordResetEmail(subAuth, email);
+  };
+
   const signOut = () => {
     return firebaseSignOut(auth);
   };
@@ -128,6 +134,7 @@ const AuthContextProvider = ({ children }) => {
       updatePassword,
       updateProfile,
       isSignedIn,
+      resetpassWordByEmail,
     }),
     [user]
   );
