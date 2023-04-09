@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import AbcIcon from "@mui/icons-material/Abc";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,7 +21,12 @@ import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
 
 import JobSave from "../JobSave";
-import { getSearchAndFilterResult, JOB_POSTED_FILTER, WAGE_FILTER } from "./jobFilter";
+import {
+  getSearchAndFilterResult,
+  JOB_POSTED_FILTER,
+  OTHER_LANGUAGE_FILTER,
+  WAGE_FILTER,
+} from "./jobFilter";
 
 export default function JobList() {
   const { listJobs } = useJob();
@@ -63,6 +69,7 @@ export default function JobList() {
     benefit: [],
     anyDistance: true,
     distance: "500",
+    otherLanguage: [],
   };
 
   // useStates for filter and search
@@ -169,7 +176,7 @@ export default function JobList() {
                 <div className="flex flex-row items-center">
                   <AttachMoneyIcon fontSize="large" className="mr-1" />
                   <label className="label text-xl text-black" htmlFor="wage">
-                    Wage
+                    Pay
                   </label>
                 </div>
 
@@ -177,7 +184,7 @@ export default function JobList() {
                   return (
                     <label className="label cursor-pointer" key={index}>
                       <span className="text-lg">
-                        {index === 0 ? "Any Wage" : `$ ${minWage}+ / hour`}
+                        {index === 0 ? "All" : `$ ${minWage}+ / hour`}
                       </span>
                       <input
                         type="radio"
@@ -194,7 +201,7 @@ export default function JobList() {
               {/* English Level Category */}
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
-                  <LanguageIcon fontSize="large" className="mr-1" />
+                  <AbcIcon fontSize="large" className="mr-1" />
                   <label className="label text-xl text-black" htmlFor="english">
                     English Level
                   </label>
@@ -215,6 +222,31 @@ export default function JobList() {
                         className="checkbox checkbox-primary"
                         value={englishLevel}
                         {...register("english")}
+                      />
+                    </label>
+                  );
+                })}
+              </div>
+
+              {/* Other Language Category */}
+              <div className="form-control pt-2">
+                <div className="flex flex-row items-center">
+                  <LanguageIcon fontSize="large" className="mr-1" />
+                  <label className="label text-xl text-black" htmlFor="otherLanguage">
+                    Other Languages
+                  </label>
+                </div>
+
+                {OTHER_LANGUAGE_FILTER.map((language, index) => {
+                  return (
+                    <label className="label cursor-pointer" key={index}>
+                      <span className="text-lg">{language}</span>
+                      <input
+                        type="checkbox"
+                        name="checkbox-otherLanguage"
+                        className="checkbox checkbox-primary"
+                        value={language}
+                        {...register("otherLanguage")}
                       />
                     </label>
                   );
@@ -316,24 +348,22 @@ export default function JobList() {
                   job.id && job.id == jobId ? "active" : ""
                 }`}
               >
-                <Link to={job.id} className="card-body basis-9/12 flex-none">
-                  <div className="card-title text-xl">{job.title}</div>
-                  <div className="flex flex-row flex-none">
-                    <div className="flex flex-row flex-wrap flex-auto">
-                      <p className="truncate w-1/2">{job.company}</p>
-                      <p className="truncate w-1/2">{`${job.location}`}</p>
-                      <p className="truncate w-1/2">
-                        {job.benefit.hasMedical
-                          ? "Medical Benefits"
-                          : "No Medical Benefits"}
-                      </p>
-                      <p className="truncate w-1/2">
-                        Minimum Pay: {job.wage.min} {job.wage.type}
-                      </p>
-                    </div>
+                <Link to={job.id} className="card-body w-10/12 flex-none">
+                  <div className="card-title text-xl w-full">{job.title}</div>
+                  <div className="flex flex-row flex-wrap flex-auto">
+                    <p className="truncate w-1/2">{job.company}</p>
+                    <p className="truncate w-1/2">{`${job.location}`}</p>
+                    <p className="truncate w-1/2">
+                      {job.benefit.hasMedical
+                        ? "Medical Benefits"
+                        : "No Medical Benefits"}
+                    </p>
+                    <p className="truncate w-1/2">
+                      Minimum Pay: {job.wage.min} {job.wage.type}
+                    </p>
                   </div>
                 </Link>
-                <div className="card-actions basis-1/12 items-center justify-center">
+                <div className="card-actions w-2/12 items-center justify-center p-3">
                   <JobSave jobId={job.id} mode="list" />
                 </div>
               </div>
@@ -344,9 +374,9 @@ export default function JobList() {
   }, [filteredJobs, jobId]);
 
   return (
-    <div className="relative flex flex-col bg-yellow-100">
+    <div className="relative w-full flex flex-col min-w-0 bg-black-50">
       {/* Search bar and filter icon */}
-      <div className="fixed w-full z-10 flex flex-row items-center justify-between h-16 p-3 bg-blue-100">
+      <div className="fixed w-full md:sticky md:top-0 z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-orange-200">
         <div className="form-control">
           <div className="input-group">
             <input
@@ -398,7 +428,7 @@ export default function JobList() {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full pt-16">{jobs}</ul>
+      <ul className="menu w-full pt-16 min-w-0 md:pt-0">{jobs}</ul>
     </div>
   );
 }

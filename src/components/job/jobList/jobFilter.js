@@ -1,7 +1,10 @@
+import ISO6391 from "iso-639-1";
+
 import { WAGE_TYPE } from "@/constants";
 
 export const WAGE_FILTER = [0, 16, 17, 18, 19, 20];
 export const JOB_POSTED_FILTER = ["Anytime", "Past 3 days", "Past week", "Past month"];
+export const OTHER_LANGUAGE_FILTER = ["Spanish", "French", "Arabic", "Hindi", "Others"];
 
 function searchCheck(job, search) {
   if (!job) return false;
@@ -11,7 +14,7 @@ function searchCheck(job, search) {
   );
 }
 
-function jobPostedCheck(job, jobPosted) {   
+function jobPostedCheck(job, jobPosted) {
   if (!job) return false;
   switch (jobPosted) {
     case "Anytime":
@@ -70,6 +73,50 @@ function distanceCheck(job, anyDistance, distance) {
   return job.distance && parseFloat(job.distance) < parseFloat(distance);
 }
 
+function containOtherLanguage(langNote) {
+  // get a list of all the languages in the world except Spanish, French, Arabic, Hindi, and English
+  const languageList = ISO6391.getAllNames();
+  const otherLanguageList = languageList.filter(
+    (language) => !["Spanish", "French", "Arabic", "Hindi", "English"].includes(language)
+  );
+  for (let language of otherLanguageList) {
+    if (langNote.toLowerCase().includes(language.toLowerCase())) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function otherLanguageCheck(job, otherLanguage) {
+  if (!job) return false;
+  if (!otherLanguage.length) return true;
+  console.log(otherLanguage);
+
+  for (let language of otherLanguage) {
+    switch (language) {
+      case "Spanish":
+        if (job.langNote.toLowerCase().includes("spanish")) return true;
+        break;
+      case "French":
+        if (job.langNote.toLowerCase().includes("french")) return true;
+        break;
+      case "Arabic":
+        if (job.langNote.toLowerCase().includes("arabic")) return true;
+        break;
+      case "Hindi":
+        if (job.langNote.toLowerCase().includes("hindi")) return true;
+        break;
+      case "Others":
+        if (containOtherLanguage(job.langNote)) return true;
+        break;
+      default:
+        return false;
+    }
+  }
+
+  return false;
+}
+
 /**
  * Get a subset of jobs according to search and filter requirements
  * @param {Object[]} jobs
@@ -85,7 +132,8 @@ export function getSearchAndFilterResult(jobs, search, filter) {
     .filter((job) => wageCheck(job, filter.wage))
     .filter((job) => englishCheck(job, filter.english))
     .filter((job) => benefitCheck(job, filter.benefit))
-    .filter((job) => distanceCheck(job, filter.anyDistance, filter.distance));
+    .filter((job) => distanceCheck(job, filter.anyDistance, filter.distance))
+    .filter((job) => otherLanguageCheck(job, filter.otherLanguage));
 
   return result;
 }
