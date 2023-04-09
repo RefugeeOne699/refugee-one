@@ -1,12 +1,14 @@
 import { useRequest } from "ahooks";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import { useJob } from "@/models";
 
 export default function JobApproveReject({ jobId, status }) {
   const [jobFeedback, setJobFeedback] = useState("");
-  const { approveJob, rejectJob } = useJob();
+  const { approveJob, rejectJob, deleteJob } = useJob();
+  const navigate = useNavigate();
 
   const approveJobRequest = useRequest(async () => approveJob(jobId), {
     manual: true,
@@ -50,6 +52,7 @@ export default function JobApproveReject({ jobId, status }) {
             className={`btn btn-primary btn-outline ml-5 ${
               status === "pending" || status === "approved" ? "" : "hidden"
             }`}
+            onClick={() => navigate("../../../../addJob", { state: { jobId: jobId } })}
           >
             Edit
           </button>
@@ -63,6 +66,9 @@ export default function JobApproveReject({ jobId, status }) {
           </button>
           <button
             className={`btn btn-primary ml-5 ${status === "pending" ? "hidden" : ""}`}
+            onClick={async () => {
+              await deleteJob(jobId);
+            }}
           >
             Remove Job Post
           </button>

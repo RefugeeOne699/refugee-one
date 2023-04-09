@@ -2,7 +2,7 @@ import { useRequest } from "ahooks";
 import { React } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
@@ -10,6 +10,55 @@ import { useAuth, useJob } from "@/models";
 export default function AddJob() {
   const auth = useAuth();
   const job = useJob();
+  const location = useLocation();
+
+  const dateToString = (dateObj) => {
+    const date = new Date(dateObj.seconds * 1000);
+
+    return (
+      date.getFullYear().toString() +
+      "-" +
+      ((date.getMonth() + 1).toString().length == 2
+        ? (date.getMonth() + 1).toString()
+        : "0" + (date.getMonth() + 1).toString()) +
+      "-" +
+      (date.getDate().toString().length == 2
+        ? date.getDate().toString()
+        : "0" + date.getDate().toString())
+    );
+  };
+
+  const editJob = (jobdata) => {
+    setValue("title", jobdata.title);
+    setValue("company", auth.user?.company || jobdata.company);
+    setValue("jobType", jobdata.jobType);
+    setValue("dateJobStart", dateToString(jobdata.dateJobStart));
+    setValue("shift", jobdata.shift);
+    setValue("wage.type", jobdata.wage.type);
+    setValue("wage.min", parseInt(jobdata.wage.min));
+    setValue("wage.max", parseInt(jobdata.wage.max));
+    setValue("benefit.hasMedical", jobdata.benefit.hasMedical);
+    setValue("benefit.hasOthers", jobdata.benefit.hasOthers);
+    setValue("benefit.others", jobdata.benefit.others);
+    setValue("langEnglishLevel", jobdata.langEnglishLevel);
+    setValue("langNote", jobdata.langNote);
+    setValue("address.street", jobdata.address.street);
+    setValue("address.city", jobdata.address.city);
+    setValue("address.state", jobdata.address.state);
+    setValue("address.zipcode", jobdata.address.zipcode);
+    setValue("description", jobdata.description);
+  };
+
+  try {
+    const jobId = location.state.jobId;
+    //let jobData;
+    job
+      .getJob(jobId)
+      .then((data) => editJob(data))
+      .catch((e) => console.log(e));
+  } catch {
+    console.log("Creating a new job");
+  }
 
   const navigate = useNavigate();
   const { register, handleSubmit, setValue, getValues } = useForm({
