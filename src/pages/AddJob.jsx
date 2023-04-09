@@ -146,7 +146,7 @@ export default function AddJob() {
                     type="date"
                     className="input input-bordered w-full bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                     placeholder="Select a date"
-                    {...register("dateJobStart", { required: true })}
+                    {...register("dateJobStart", { required: true, valueAsDate: true })}
                   />
                   <label
                     htmlFor="dateJobStart"
