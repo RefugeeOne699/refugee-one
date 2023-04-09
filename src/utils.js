@@ -1,3 +1,5 @@
+import BingKey from "@/bingConfig.js";
+
 import { DAYS_OF_WEEK } from "./constants";
 
 export function debounce(fn, t) {
@@ -37,6 +39,31 @@ export function daysOfWeekToNumber(days) {
 export function convertKilometersToMiles(kilometers) {
   const miles = kilometers * 0.621371;
   return miles;
+}
+
+export async function getCoordinate(street, city, state, zipcode) {
+  const countryRegion = "US";
+  const response = await fetch(
+    "http://dev.virtualearth.net/REST/v1/Locations/" +
+      countryRegion +
+      "/" +
+      state +
+      "/" +
+      zipcode +
+      "/" +
+      city +
+      "/" +
+      street +
+      "?key=" +
+      BingKey
+  );
+  const json = await response.json();
+  const latitude = json.resourceSets[0].resources[0].point.coordinates[0];
+  const longitude = json.resourceSets[0].resources[0].point.coordinates[1];
+  return {
+    latitude,
+    longitude,
+  };
 }
 
 export function calculateDistance(lat1, lon1, lat2, lon2) {

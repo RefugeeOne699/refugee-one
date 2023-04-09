@@ -6,28 +6,25 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth, usePosition } from "@/models";
+import { useAuth } from "@/models";
+import { getCoordinate } from "@/utils";
 
 export default function ProfileSetProfile() {
   const auth = useAuth();
   const navigate = useNavigate();
-  const position = usePosition();
   const { register, handleSubmit } = useForm();
 
   const { run: modifiedContent, loading: modificationLoading } = useRequest(
-    async (data) => {
-      return position
-        .getCoordinate(
-          data.address.street,
-          data.address.city,
-          data.address.state,
-          data.address.zipcode
-        )
-        .then((coordinate) => {
-          data.coordinate = coordinate;
-          return auth.updateProfile(data);
-        });
-    },
+    async (data) =>
+      getCoordinate(
+        data.address.street,
+        data.address.city,
+        data.address.state,
+        data.address.zipcode
+      ).then((coordinate) => {
+        data.coordinate = coordinate;
+        return auth.updateProfile(data);
+      }),
     {
       manual: true,
       onSuccess: async () => {

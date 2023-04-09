@@ -5,12 +5,12 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
-import { useAuth, useJob, usePosition } from "@/models";
+import { useAuth, useJob } from "@/models";
+import { getCoordinate } from "@/utils";
 
 export default function AddJob() {
   const auth = useAuth();
   const job = useJob();
-  const position = usePosition();
   const navigate = useNavigate();
   const { register, handleSubmit, setValue, getValues } = useForm({
     // if the user is an employer, has a company, autofill the company name
@@ -19,25 +19,23 @@ export default function AddJob() {
 
   const { run: addJob } = useRequest(
     async (data) => {
-      position
-        .getCoordinate(
-          data.address.street,
-          data.address.city,
-          data.address.state,
-          data.address.zipcode
-        )
-        .then((coordinate) => {
-          job.createJob({
-            ...data,
-            adminMessage: "",
-            owner: auth.userRef,
-            status: JOB_STATUS.PENDING,
-            datePost: new Date(),
-            location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
-            coordinate: coordinate,
-            dateCreated: new Date(),
-          });
+      getCoordinate(
+        data.address.street,
+        data.address.city,
+        data.address.state,
+        data.address.zipcode
+      ).then((coordinate) => {
+        job.createJob({
+          ...data,
+          adminMessage: "",
+          owner: auth.userRef,
+          status: JOB_STATUS.PENDING,
+          datePost: new Date(),
+          location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
+          coordinate: coordinate,
+          dateCreated: new Date(),
         });
+      });
     },
     {
       manual: true,
