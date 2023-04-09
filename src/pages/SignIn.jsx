@@ -1,8 +1,6 @@
-/* eslint-disable no-unused-vars */
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import { useRequest } from "ahooks";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
