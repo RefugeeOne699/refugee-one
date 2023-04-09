@@ -103,6 +103,8 @@ const AuthContextProvider = ({ children }) => {
     return updateDoc(docRef, {
       name: newProfile.name,
       phone: newProfile.phone,
+      address: newProfile.address,
+      coordinate: newProfile.coordinate,
     });
   };
 

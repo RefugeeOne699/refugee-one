@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import LanguageIcon from "@mui/icons-material/Language";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchIcon from "@mui/icons-material/Search";
 import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
@@ -16,6 +17,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
+import { calculateDistance } from "@/utils";
 
 import JobSave from "../JobSave";
 import { getSearchAndFilterResult, JOB_POSTED_FILTER, WAGE_FILTER } from "./jobFilter";
@@ -23,12 +25,34 @@ import { getSearchAndFilterResult, JOB_POSTED_FILTER, WAGE_FILTER } from "./jobF
 export default function JobList() {
   const { listJobs } = useJob();
   const { jobId } = useParams();
-  const { run, data } = useRequest(async () => listJobs(), {
-    manual: true,
-    onError: () => {
-      toast.error("Failed to get job list");
+  const { run, data } = useRequest(
+    async () => {
+      return listJobs().then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          if (auth.user.coordinate && data[i].coordinate) {
+            let userCoordinate = auth.user.coordinate;
+            let jobCoordinate = data[i].coordinate;
+            const distance = calculateDistance(
+              userCoordinate.latitude,
+              userCoordinate.longitude,
+              jobCoordinate.latitude,
+              jobCoordinate.longitude
+            );
+            data[i].distance = distance.toString();
+          } else {
+            data[i].distance = null;
+          }
+        }
+        return data;
+      });
     },
-  });
+    {
+      manual: true,
+      onError: (error) => {
+        toast.error("Failed to get job list");
+      },
+    }
+  );
   const auth = useAuth();
 
   const emptyFilter = {
@@ -37,6 +61,8 @@ export default function JobList() {
     wage: "0",
     english: [],
     benefit: [],
+    anyDistance: true,
+    distance: "500",
   };
 
   // useStates for filter and search
@@ -47,7 +73,7 @@ export default function JobList() {
 
   const searchRef = useRef();
 
-  const { register, reset, getValues, handleSubmit } = useForm({
+  const { register, reset, watch, getValues, handleSubmit } = useForm({
     defaultValues: emptyFilter,
   });
 
@@ -221,6 +247,37 @@ export default function JobList() {
                     </label>
                   );
                 })}
+              </div>
+
+              {/* Distance Category */}
+              <div className="form-control pt-2">
+                <div className="flex flex-row items-center">
+                  <LocationOnIcon fontSize="large" className="mr-1" />
+                  <label className="label text-xl text-black" htmlFor="wage">
+                    Distance
+                  </label>
+                </div>
+                <label className="label cursor-pointer">
+                  <span className="label-text">Any Distance</span>
+                  <input
+                    type="checkbox"
+                    name="checkbox-distance"
+                    className="checkbox checkbox-primary"
+                    {...register("anyDistance")}
+                  />
+                </label>
+                <label
+                  className={
+                    "label cursor-pointer" + (watch("anyDistance") ? " hidden" : "")
+                  }
+                >
+                  <input
+                    type="text"
+                    name="distance"
+                    className="input input-bordered w-full"
+                    {...register("distance")}
+                  />
+                </label>
               </div>
 
               {/* bottom submit button */}
