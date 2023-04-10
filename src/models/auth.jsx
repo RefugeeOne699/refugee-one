@@ -38,7 +38,11 @@ const AuthContext = createContext({
   updatePassword: async () => {},
   updateProfile: async () => {},
   isSignedIn: () => Boolean,
-  resetpassWordByEmail: async () => {},
+  /**
+   *
+   * @param {string} _email
+   */
+  resetPassWordByEmail: async (_email) => {},
 });
 
 const AuthContextProvider = ({ children }) => {
@@ -92,7 +96,7 @@ const AuthContextProvider = ({ children }) => {
     await subAuth.signOut();
   };
 
-  const resetpassWordByEmail = async (email) => {
+  const resetPassWordByEmail = async (email) => {
     await sendPasswordResetEmail(subAuth, email);
   };
 
@@ -133,7 +137,7 @@ const AuthContextProvider = ({ children }) => {
       updatePassword,
       updateProfile,
       isSignedIn,
-      resetpassWordByEmail,
+      resetPassWordByEmail,
     }),
     [user]
   );
