@@ -44,7 +44,7 @@ export function convertKilometersToMiles(kilometers) {
 export async function getCoordinate(street, city, state, zipcode) {
   const countryRegion = "US";
   const response = await fetch(
-    "http://dev.virtualearth.net/REST/v1/Locations/" +
+    "https://dev.virtualearth.net/REST/v1/Locations/" +
       countryRegion +
       "/" +
       state +
