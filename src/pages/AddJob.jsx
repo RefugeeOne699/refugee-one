@@ -5,39 +5,36 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
-import { useAuth, useJob, usePosition } from "@/models";
+import { useAuth, useJob } from "@/models";
+import { getCoordinate } from "@/utils";
 
 export default function AddJob() {
   const auth = useAuth();
   const job = useJob();
-  const position = usePosition();
   const navigate = useNavigate();
   const { register, handleSubmit, setValue, getValues } = useForm({
     // if the user is an employer, has a company, autofill the company name
     defaultValues: { company: auth.user?.company || "" },
   });
 
-  const { run: addJob } = useRequest(
+  const { run: createJob, loading } = useRequest(
     async (data) => {
-      position
-        .getCoordinate(
-          data.address.street,
-          data.address.city,
-          data.address.state,
-          data.address.zipcode
-        )
-        .then((coordinate) => {
-          job.createJob({
-            ...data,
-            adminMessage: "",
-            owner: auth.userRef,
-            status: JOB_STATUS.PENDING,
-            datePost: new Date(),
-            location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
-            coordinate: coordinate,
-            dateCreated: new Date(),
-          });
-        });
+      const coordinate = await getCoordinate(
+        data.address.street,
+        data.address.city,
+        data.address.state,
+        data.address.zipcode
+      );
+      return job.createJob({
+        ...data,
+        adminMessage: "",
+        owner: auth.userRef,
+        status: JOB_STATUS.PENDING,
+        datePost: new Date(),
+        location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
+        coordinate: coordinate,
+        dateCreated: new Date(),
+      });
     },
     {
       manual: true,
@@ -45,8 +42,8 @@ export default function AddJob() {
         toast.success("Create Job succeeded");
         navigate("/");
       },
-      onError: () => {
-        toast.error("Create Job failed.");
+      onError: (error) => {
+        toast.error(`Create Job failed: ${error.message}`);
       },
     }
   );
@@ -125,7 +122,7 @@ export default function AddJob() {
           </div>
         </div>
       </div>
-      <form onSubmit={handleSubmit(addJob)}>
+      <form onSubmit={handleSubmit(createJob)}>
         <div className="flex flex-row mb-4 mt-4 items-center">
           <label className="label flex basis-44" htmlFor="title">
             Job Title
@@ -364,12 +361,13 @@ export default function AddJob() {
             </button>
             <button
               type="submit"
-              className="btn btn-primary w-1/3"
+              className={`btn btn-primary w-1/3 ${loading ? "loading" : ""}`}
               onClick={() => {
                 window.localStorage.removeItem("REFUGEE_ONE_JOB_DRAFT");
               }}
+              disabled={loading}
             >
-              Submit
+              {loading ? "Loading" : "Submit"}
             </button>
           </div>
         </div>

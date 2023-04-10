@@ -277,6 +277,7 @@ export default function JobList() {
                     className="input input-bordered w-full"
                     {...register("distance")}
                   />
+                  <p className="ml-4">miles</p>
                 </label>
               </div>
 

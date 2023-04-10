@@ -26,4 +26,3 @@ dist-ssr
 .firebase/
 
 src/*Config.js*
-!src/bingConfig.js
