@@ -22,7 +22,6 @@ export default function EmployerSignUp() {
         toast.success(
           "Registration Successful. Please wait for approval from the admin team"
         );
-        // todo: should redirect to login page
         navigate("/signIn");
       },
       onError: (error) => {
@@ -52,7 +51,7 @@ export default function EmployerSignUp() {
             <input
               {...register("name", { required: true })}
               type="text"
-              className="input w-full max-w-xs input-bordered"
+              className="input w-full input-bordered"
             />
             <label className="label" htmlFor="email">
               <span className="label-text">Email</span>
@@ -60,7 +59,7 @@ export default function EmployerSignUp() {
             <input
               {...register("email", { required: true })}
               type="email"
-              className="input w-full max-w-xs input-bordered mb-4"
+              className="input w-full input-bordered mb-4"
             />
             <label className="label" htmlFor="compnay">
               <span className="label-text">Company Name</span>
@@ -68,7 +67,7 @@ export default function EmployerSignUp() {
             <input
               {...register("company")}
               type="text"
-              className="input w-full max-w-xs input-bordered mb-4"
+              className="input w-full input-bordered mb-4"
             />
             <label className="label" htmlFor="phone">
               <span className="label-text">Phone Number</span>
@@ -76,7 +75,7 @@ export default function EmployerSignUp() {
             <input
               {...register("phone", { required: true })}
               type="number"
-              className="input w-full max-w-xs input-bordered mb-4"
+              className="input w-full input-bordered mb-4"
             />
             <label className="label" htmlFor="password">
               <span className="label-text">Password</span>
@@ -84,7 +83,7 @@ export default function EmployerSignUp() {
             <input
               {...register("password", { required: true })}
               type="password"
-              className="input w-full max-w-xs input-bordered mb-4"
+              className="input w-full input-bordered mb-4"
             />
             <button
               type="submit"

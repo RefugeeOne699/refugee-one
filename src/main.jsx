@@ -39,6 +39,10 @@ const router = createBrowserRouter([
     path: "/signIn",
     element: <SignIn />,
   },
+  {
+    path: "/signUp",
+    element: <SignUp />,
+  },
   // all the pages below requires signed in
   {
     path: "/",
@@ -50,10 +54,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Center />,
-      },
-      {
-        path: "signUp",
-        element: <SignUp />,
       },
       {
         path: "addJob",
