@@ -19,7 +19,7 @@ SI 699 (2023 Winter)
 
 It is recommended to load the project using VSCode as there's settings for recommended plugins and editor. Saving the code shall trigger automatic linting and formatting.
 
-Before start, create `firebaseConfig.js` under `src` directory with configurations.
+Before start, create `firebaseConfig.js` and `bingConfig.js` under `src` directory with configurations.
 
 To start development:
 
