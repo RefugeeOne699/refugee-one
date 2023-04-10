@@ -42,8 +42,8 @@ export default function AddJob() {
         toast.success("Create Job succeeded");
         navigate("/");
       },
-      onError: () => {
-        toast.error("Create Job failed.");
+      onError: (error) => {
+        toast.error(`Create Job failed: ${error.message}`);
       },
     }
   );
