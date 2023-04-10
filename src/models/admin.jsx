@@ -6,6 +6,7 @@ import {
   query,
   // eslint-disable-next-line no-unused-vars
   runTransaction,
+  deleteDoc
 } from "firebase/firestore";
 import { createContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
@@ -24,6 +25,7 @@ const AdminContext = createContext({
 });
 
 const updateUser = async (userId, payload) => {
+  console.log(userId)
   if (payload.id) {
     delete payload.id;
   }
@@ -39,7 +41,13 @@ const updateUser = async (userId, payload) => {
 };
 
 const approveUser = async (userId) => {
+  console.log(userId)
   await updateUser(userId, { status: USER_STATUS.APPROVED });
+};
+
+const deleteUser = async (userId) => {
+  console.log(userId)
+  await deleteDoc(doc(database, "Users", userId));
 };
 
 const AdminContextProvider = ({ children }) => {
@@ -84,7 +92,7 @@ const AdminContextProvider = ({ children }) => {
       updateUser,
       approveUser,
       // todo
-      deleteUser: () => {},
+      deleteUser,
       listUsers,
       countUsers,
     }),

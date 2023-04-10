@@ -36,7 +36,7 @@ const buttonMap = {
       "Manage Accounts": {
         icon: <SupervisorAccountIcon />,
         // todo: add path
-        path: "",
+        path: "admin/users",
       },
       Setting: {
         icon: <SettingsIcon />,
@@ -139,7 +139,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   const auth = useAuth();
-  if (!auth.user || auth.user === AUTH_INITIAL_STATE) {
+  if (!auth.user || auth.user === AUTH_INITIAL_STATE || !auth.user.role ) {
     return null;
   }
 
