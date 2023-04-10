@@ -78,7 +78,7 @@ const AuthContextProvider = ({ children }) => {
   const signUp = async (payload) => {
     const { email, password, name, phone, role, company } = payload;
     // if we are creating a refugee account, the payload may not have a password.
-    // so we generate a uuid() as default value, mark the account as PENDING
+    // so we generate a uuid() as default value, mark the account as INITIAL
     let credential = await createUserWithEmailAndPassword(
       subAuth,
       email,
