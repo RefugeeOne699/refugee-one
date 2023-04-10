@@ -4,8 +4,8 @@ import { toast } from "react-hot-toast";
 import { NavLink, useParams } from "react-router-dom";
 
 import Spin from "@/components/Spin";
-import { useAdmin } from "@/models";
 import UserView from "@/components/user/UserView";
+import { useAdmin } from "@/models";
 
 const menu = [
   { url: "clients", name: "Clients" },
@@ -53,9 +53,15 @@ export default function JobsAdmin() {
       return <Spin className="h-8 w-8" />;
     }
     //todo: display and filter
-    return ( <div className="w-full">
-    {data ? data.map(user => {return (<UserView user= {user} run ={run}/>)}) : null}
-      </div>)
+    return (
+      <div className="w-full">
+        {data
+          ? data.map((user) => {
+              return <UserView key={user.id} user={user} run={run} />;
+            })
+          : <p>No users to show</p>}
+      </div>
+    );
   }, [data, loading, tabUrl]);
   return (
     <div className="flex flex-col">
