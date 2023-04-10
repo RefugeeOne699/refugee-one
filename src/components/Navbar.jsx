@@ -145,12 +145,13 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="md:hidden max-md:block h-24">
-        <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-grey h-24 bg-white"></div>
+      <div className="md:hidden max-md:block h-16">
+        <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-grey h-16 bg-white"></div>
         {/* todo: fix dark mode compatibility */}
         <Menu
           isOpen={open}
           onStateChange={(state) => setOpen(state.isOpen)}
+          crossButtonClassName={"mr-4"}
           crossClassName={"bg-black"}
           // todo: fix dark mode compatibility
           overlayClassName={"opacity-25"}
@@ -158,14 +159,19 @@ export default function Navbar() {
           // todo: fix dark mode compatibility
           burgerBarClassName={"bg-black"}
           // todo: fix dark mode compatibility
-          burgerButtonClassName={"fixed top-8 left-8 z-50 w-10 h-8"}
+          burgerButtonClassName={"fixed top-4 left-4 z-50 w-10 h-8"}
           className={"fixed top-0 left-0 w-full h-full"}
         >
           <NavbarList setOpen={setOpen} />
         </Menu>
       </div>
 
-      <div className="w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
+      <div className="w-60 h-screen max-md:hidden">
+        {/* todo: fix dark mode compatibility */}
+        <NavbarList setOpen={setOpen} />
+      </div>
+
+      <div className="fixed top-0 left-0 w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
         {/* todo: fix dark mode compatibility */}
         <NavbarList setOpen={setOpen} />
       </div>
