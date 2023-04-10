@@ -25,7 +25,6 @@ const AdminContext = createContext({
 });
 
 const updateUser = async (userId, payload) => {
-  console.log(userId);
   if (payload.id) {
     delete payload.id;
   }
@@ -41,12 +40,10 @@ const updateUser = async (userId, payload) => {
 };
 
 const approveUser = async (userId) => {
-  console.log(userId);
   await updateUser(userId, { status: USER_STATUS.APPROVED });
 };
 
 const deleteUser = async (userId) => {
-  console.log(userId);
   await deleteDoc(doc(database, "Users", userId));
 };
 
