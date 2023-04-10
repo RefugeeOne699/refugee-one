@@ -8,16 +8,12 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import WorkIcon from "@mui/icons-material/Work";
 import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
-import { useRequest } from "ahooks";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 
 import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE } from "@/constants";
-import { useAuth, useJob } from "@/models";
-import { calculateDistance } from "@/utils";
 
 import JobSave from "../JobSave";
 import {
@@ -28,38 +24,8 @@ import {
   WAGE_FILTER,
 } from "./jobFilter";
 
-export default function JobList() {
-  const { listJobs } = useJob();
+export default function JobList({ data }) {
   const { jobId } = useParams();
-  const { run, data } = useRequest(
-    async () => {
-      return listJobs().then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          if (auth.user.coordinate && data[i].coordinate) {
-            let userCoordinate = auth.user.coordinate;
-            let jobCoordinate = data[i].coordinate;
-            const distance = calculateDistance(
-              userCoordinate.latitude,
-              userCoordinate.longitude,
-              jobCoordinate.latitude,
-              jobCoordinate.longitude
-            );
-            data[i].distance = distance.toString();
-          } else {
-            data[i].distance = null;
-          }
-        }
-        return data;
-      });
-    },
-    {
-      manual: true,
-      onError: () => {
-        toast.error("Failed to get job list");
-      },
-    }
-  );
-  const auth = useAuth();
 
   const emptyFilter = {
     jobPosted: JOB_POSTED_FILTER[0],
@@ -437,14 +403,6 @@ export default function JobList() {
       return null;
     }
   }, [showFilter, getValues()]);
-
-  useEffect(() => {
-    if (auth.user) {
-      (async () => {
-        await run();
-      })();
-    }
-  }, []);
 
   // useEffect for filter and search
   useEffect(() => {

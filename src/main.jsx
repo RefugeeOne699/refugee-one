@@ -4,7 +4,7 @@ import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
 
-import JobRoot from "@/pages/Job";
+import JobRoot from "@/components/job/JobRoot";
 import ProfileRoot from "@/pages/Profile";
 
 import AppRoot from "./App";
@@ -79,6 +79,13 @@ const router = createBrowserRouter([
               {
                 path: ":tabUrl",
                 element: <Admin.Jobs />,
+                children: [
+                  { index: true, element: <Center /> },
+                  {
+                    path: ":jobId",
+                    element: <Job.View />,
+                  },
+                ],
               },
             ],
           },
