@@ -116,6 +116,8 @@ const JobContextProvider = ({ children }) => {
         jobType: job.jobType,
         langEnglishLevel: job.langEnglishLevel,
         datePost: job.datePost,
+        langNote: job.langNote,
+        shift: job["shift"],
       };
     });
     return await Promise.all(jobList);

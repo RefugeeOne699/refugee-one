@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import AbcIcon from "@mui/icons-material/Abc";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,7 +21,12 @@ import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
 
 import JobSave from "../JobSave";
-import { getSearchAndFilterResult, JOB_POSTED_FILTER, WAGE_FILTER } from "./jobFilter";
+import {
+  getSearchAndFilterResult,
+  JOB_POSTED_FILTER,
+  OTHER_LANGUAGE_FILTER,
+  WAGE_FILTER,
+} from "./jobFilter";
 
 export default function JobList() {
   const { listJobs } = useJob();
@@ -56,13 +62,14 @@ export default function JobList() {
   const auth = useAuth();
 
   const emptyFilter = {
-    jobPosted: "0",
+    jobPosted: JOB_POSTED_FILTER[0],
     jobType: [],
     wage: "0",
     english: [],
     benefit: [],
     anyDistance: true,
     distance: "500",
+    otherLanguage: [],
   };
 
   // useStates for filter and search
@@ -90,7 +97,7 @@ export default function JobList() {
           {/* Top Bar */}
           <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-slate-200">
             <button
-              className="btn btn-sm"
+              className="btn btn-md"
               onClick={() => {
                 reset(emptyFilter);
               }}
@@ -126,12 +133,12 @@ export default function JobList() {
                 {JOB_POSTED_FILTER.map((item, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">{item}</span>
+                      <span className="text-lg">{item}</span>
                       <input
                         type="radio"
                         name="radio-jobPosted"
                         className="radio radio-primary"
-                        value={index}
+                        value={item}
                         {...register("jobPosted")}
                       />
                     </label>
@@ -148,22 +155,20 @@ export default function JobList() {
                   </label>
                 </div>
 
-                {[SHIFT_TYPE.FULL_TIME, SHIFT_TYPE.PART_TIME, SHIFT_TYPE.SHIFT_BASED].map(
-                  (item, index) => {
-                    return (
-                      <label className="label cursor-pointer" key={index}>
-                        <span className="label-text">{item}</span>
-                        <input
-                          type="checkbox"
-                          name="checkbox-jobType"
-                          className="checkbox checkbox-primary"
-                          value={item}
-                          {...register("jobType")}
-                        />
-                      </label>
-                    );
-                  }
-                )}
+                {[SHIFT_TYPE.FULL_TIME, SHIFT_TYPE.PART_TIME].map((item, index) => {
+                  return (
+                    <label className="label cursor-pointer" key={index}>
+                      <span className="text-lg">{item}</span>
+                      <input
+                        type="checkbox"
+                        name="checkbox-jobType"
+                        className="checkbox checkbox-primary"
+                        value={item}
+                        {...register("jobType")}
+                      />
+                    </label>
+                  );
+                })}
               </div>
 
               {/* Wage Category */}
@@ -171,15 +176,15 @@ export default function JobList() {
                 <div className="flex flex-row items-center">
                   <AttachMoneyIcon fontSize="large" className="mr-1" />
                   <label className="label text-xl text-black" htmlFor="wage">
-                    Wage
+                    Pay
                   </label>
                 </div>
 
                 {WAGE_FILTER.map((minWage, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">
-                        {index === 0 ? "Any Wage" : `$ ${minWage}+ / hour`}
+                      <span className="text-lg">
+                        {index === 0 ? "All" : `$ ${minWage}+ / hour`}
                       </span>
                       <input
                         type="radio"
@@ -196,7 +201,7 @@ export default function JobList() {
               {/* English Level Category */}
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
-                  <LanguageIcon fontSize="large" className="mr-1" />
+                  <AbcIcon fontSize="large" className="mr-1" />
                   <label className="label text-xl text-black" htmlFor="english">
                     English Level
                   </label>
@@ -207,17 +212,41 @@ export default function JobList() {
                   ENGLISH_LEVEL.BASIC,
                   ENGLISH_LEVEL.INTERMEDIATE,
                   ENGLISH_LEVEL.ADVANCED,
-                  ENGLISH_LEVEL.NATIVE,
                 ].map((englishLevel, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">{englishLevel}</span>
+                      <span className="text-lg">{englishLevel}</span>
                       <input
                         type="checkbox"
                         name="checkbox-english"
                         className="checkbox checkbox-primary"
                         value={englishLevel}
                         {...register("english")}
+                      />
+                    </label>
+                  );
+                })}
+              </div>
+
+              {/* Other Language Category */}
+              <div className="form-control pt-2">
+                <div className="flex flex-row items-center">
+                  <LanguageIcon fontSize="large" className="mr-1" />
+                  <label className="label text-xl text-black" htmlFor="otherLanguage">
+                    Other Languages
+                  </label>
+                </div>
+
+                {OTHER_LANGUAGE_FILTER.map((language, index) => {
+                  return (
+                    <label className="label cursor-pointer" key={index}>
+                      <span className="text-lg">{language}</span>
+                      <input
+                        type="checkbox"
+                        name="checkbox-otherLanguage"
+                        className="checkbox checkbox-primary"
+                        value={language}
+                        {...register("otherLanguage")}
                       />
                     </label>
                   );
@@ -236,7 +265,7 @@ export default function JobList() {
                 {[BENEFIT_TYPE.MEDICAL, BENEFIT_TYPE.OTHERS].map((benefitType, index) => {
                   return (
                     <label className="label cursor-pointer" key={index}>
-                      <span className="label-text">{benefitType}</span>
+                      <span className="text-lg">{benefitType}</span>
                       <input
                         type="checkbox"
                         name="checkbox-benefit"
@@ -283,7 +312,7 @@ export default function JobList() {
 
               {/* bottom submit button */}
               <div className="form-control pt-5 pb-5">
-                <button className="btn w-44" type="submit">
+                <button className="btn btn-primary w-44" type="submit">
                   Show Results
                 </button>
               </div>
@@ -320,24 +349,22 @@ export default function JobList() {
                   job.id && job.id == jobId ? "active" : ""
                 }`}
               >
-                <Link to={job.id} className="card-body basis-9/12 flex-none">
-                  <div className="card-title text-xl">{job.title}</div>
-                  <div className="flex flex-row flex-none">
-                    <div className="flex flex-row flex-wrap flex-auto">
-                      <p className="truncate w-1/2">{job.company}</p>
-                      <p className="truncate w-1/2">{`${job.location}`}</p>
-                      <p className="truncate w-1/2">
-                        {job.benefit.hasMedical
-                          ? "Medical Benefits"
-                          : "No Medical Benefits"}
-                      </p>
-                      <p className="truncate w-1/2">
-                        Minimum Pay: {job.wage.min} {job.wage.type}
-                      </p>
-                    </div>
+                <Link to={job.id} className="card-body w-10/12 flex-none">
+                  <div className="card-title text-xl w-full">{job.title}</div>
+                  <div className="flex flex-row flex-wrap flex-auto">
+                    <p className="truncate w-1/2">{job.company}</p>
+                    <p className="truncate w-1/2">{`${job.location}`}</p>
+                    <p className="truncate w-1/2">
+                      {job.benefit.hasMedical
+                        ? "Medical Benefits"
+                        : "No Medical Benefits"}
+                    </p>
+                    <p className="truncate w-1/2">
+                      Minimum Pay: {job.wage.min} {job.wage.type}
+                    </p>
                   </div>
                 </Link>
-                <div className="card-actions basis-1/12 items-center justify-center">
+                <div className="card-actions w-2/12 items-center justify-center p-3">
                   <JobSave jobId={job.id} mode="list" />
                 </div>
               </div>
@@ -348,29 +375,44 @@ export default function JobList() {
   }, [filteredJobs, jobId]);
 
   return (
-    <div className="relative flex flex-col bg-yellow-100">
+    <div className="relative w-full flex flex-col min-w-0 bg-black-50">
       {/* Search bar and filter icon */}
-      <div className="flex flex-row items-center justify-between h-16 p-3 bg-blue-100">
-        <div className="relative text-gray-600">
-          <input
-            className="w-64 border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-lg text-sm focus:outline-none"
-            type="search"
-            name="search"
-            placeholder="Search"
-            ref={searchRef}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") setSearch(searchRef.current.value);
-            }}
-          />
-          <button
-            className="absolute right-0 top-1.5  mr-4 "
-            onClick={() => {
-              setSearch(searchRef.current.value);
-            }}
-          >
-            <SearchIcon />
-          </button>
+      <div className="fixed w-full md:sticky md:top-0 z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-orange-200">
+        <div className="form-control">
+          <div className="input-group">
+            <input
+              type="text"
+              placeholder="Search job or company"
+              className="input input-bordered"
+              ref={searchRef}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setSearch(searchRef.current.value);
+              }}
+            />
+            <button
+              className="btn btn-square"
+              onClick={() => {
+                setSearch(searchRef.current.value);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
+
         <button
           className={
             _.isEqual(filter, emptyFilter)
@@ -387,7 +429,7 @@ export default function JobList() {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full">{jobs}</ul>
+      <ul className="menu w-full pt-16 min-w-0 md:pt-0">{jobs}</ul>
     </div>
   );
 }
