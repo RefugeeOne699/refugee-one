@@ -21,7 +21,8 @@ const constraints = {
   todo: JOB_STATUS.REJECTED,
 };
 
-export default function JobsAdmin() {
+// This component is for employer and admin job management dashboard
+export default function JobDashboard() {
   const { tabUrl } = useParams();
   const { listJobs, countJobs } = useJob();
 

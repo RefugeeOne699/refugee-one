@@ -8,6 +8,7 @@ import JobRoot from "@/components/job/JobRoot";
 import ProfileRoot from "@/pages/Profile";
 
 import AppRoot from "./App";
+import RequireEmployer from "./components/acess/RequireEmployer";
 import TailWindToaster from "./components/TailwindToaster";
 import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider } from "./models/auth";
@@ -16,7 +17,6 @@ import { JobSaveContextProvider } from "./models/jobSave";
 
 const AddJob = lazy(async () => import("@/pages/AddJob"));
 const Admin = {
-  Jobs: lazy(async () => import("@/pages/admin/JobsAdmin")),
   AccountCreate: lazy(async () => import("@/pages/admin/AccountCreate")),
 };
 
@@ -25,6 +25,7 @@ const SignIn = lazy(async () => import("@/pages/SignIn"));
 const Center = lazy(async () => import("@/components/Center"));
 const Job = {
   View: lazy(async () => import("@/components/job/JobView")),
+  Dashboard: lazy(async () => import("@/components/job/JobDashboard")),
 };
 const Profile = {
   Menu: lazy(async () => import("@/components/profile/ProfileMenu")),
@@ -78,7 +79,37 @@ const router = createBrowserRouter([
               },
               {
                 path: ":tabUrl",
-                element: <Admin.Jobs />,
+                element: <Job.Dashboard />,
+                children: [
+                  { index: true, element: <Center /> },
+                  {
+                    path: ":jobId",
+                    element: <Job.View />,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "employer",
+        element: (
+          <RequireEmployer>
+            <Outlet />
+          </RequireEmployer>
+        ),
+        children: [
+          {
+            path: "jobs",
+            children: [
+              {
+                index: true,
+                element: <Navigate to="pending" />,
+              },
+              {
+                path: ":tabUrl",
+                element: <Job.Dashboard />,
                 children: [
                   { index: true, element: <Center /> },
                   {
