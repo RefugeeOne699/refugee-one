@@ -20,7 +20,7 @@ export default function JobsAdmin() {
   const { data, run, loading } = useRequest(async () => listUsers(), {
     manual: true,
     onError: () => {
-      toast.error("Failed to fetch job list");
+      toast.error("Failed to fetch user list");
     },
   });
   useEffect(() => {
