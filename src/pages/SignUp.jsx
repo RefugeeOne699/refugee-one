@@ -77,17 +77,18 @@ export default function EmployerSignUp() {
               type="number"
               className="input w-full input-bordered mb-4"
             />
-            <label className="label" htmlFor="password">
-              <span className="label-text">Password</span>
+            <label className="label" htmlFor="role">
+              <span className="label-text">Role</span>
             </label>
             <input
-              {...register("password", { required: true })}
-              type="password"
-              className="input w-full input-bordered mb-4"
+              {...register("role", { value: "employer" })}
+              type="text"
+              className="input w-full input-bordered mb-8"
+              disabled
             />
             <button
               type="submit"
-              className={`btn btn-primary ${signUpLoading ? "loading" : ""}`}
+              className={`btn btn-primary${signUpLoading ? "loading" : ""}`}
               disabled={signUpLoading}
             >
               {signUpLoading ? "Loading" : "Sign Up"}
