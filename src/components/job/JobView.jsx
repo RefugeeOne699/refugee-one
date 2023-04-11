@@ -19,7 +19,8 @@ import { calculateDistance } from "@/utils";
 
 import Center from "../Center";
 import Spin from "../Spin";
-import JobApproveReject from "./JobApproveReject";
+import AdminActions from "./jobActions/AdminActions";
+import EmployerActions from "./jobActions/EmployerActions";
 import JobSave from "./JobSave";
 function ErrorInfo() {
   return (
@@ -284,13 +285,11 @@ export default function JobView() {
             </div>
           </div>
           {auth.user.role === ROLES.ADMIN ? (
-            <div className="w-full flex flex-row justify-center mb-8">
-              <JobApproveReject jobId={jobId} />
-            </div>
+            <AdminActions job={data} />
+          ) : auth.user.role === ROLES.EMPLOYER ? (
+            <EmployerActions job={data} />
           ) : (
-            <div className="w-full flex flex-row justify-center mb-8">
-              <JobSave jobId={jobId} />
-            </div>
+            <JobSave jobId={jobId} />
           )}
         </div>
       </div>

@@ -1,14 +1,17 @@
 import { useRequest } from "ahooks";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 
+import { JOB_STATUS } from "@/constants";
 import { useJob } from "@/models";
 
-export default function JobApproveReject({ jobId }) {
+import DeleteButton from "./DeleteButton";
+import EditButton from "./EditButton";
+
+export default function JobApproveReject({ job }) {
   const [jobFeedback, setJobFeedback] = useState("");
   const { approveJob, rejectJob } = useJob();
-
-  const approveJobRequest = useRequest(async () => approveJob(jobId), {
+  const approveJobRequest = useRequest(async () => approveJob(job.id), {
     manual: true,
     onSuccess: () => {
       toast.success("Job has been approved!");
@@ -18,7 +21,7 @@ export default function JobApproveReject({ jobId }) {
     },
   });
 
-  const rejectJobRequest = useRequest(async () => rejectJob(jobId, jobFeedback), {
+  const rejectJobRequest = useRequest(async () => rejectJob(job.id, jobFeedback), {
     manual: true,
     onSuccess: () => {
       toast.success("Job has been rejected!");
@@ -29,24 +32,47 @@ export default function JobApproveReject({ jobId }) {
   });
 
   const reject = async () => {
-    await rejectJobRequest.run(jobId, jobFeedback);
+    await rejectJobRequest.run(job.id, jobFeedback);
   };
 
   const approve = async () => {
-    await approveJobRequest.run(jobId);
+    await approveJobRequest.run(job.id);
   };
+
+  const buttons = useMemo(() => {
+    if (job.status === JOB_STATUS.PENDING) {
+      return (
+        <>
+          <label htmlFor="feedback-display" className="btn btn-error w-32">
+            Reject
+          </label>
+          <EditButton />
+          <button onClick={approve} className="btn btn-success w-32">
+            Approve
+          </button>
+        </>
+      );
+    }
+
+    if (job.status === JOB_STATUS.APPROVED) {
+      return (
+        <>
+          <DeleteButton />
+          <EditButton />
+        </>
+      );
+    }
+
+    if (job.status === JOB_STATUS.REJECTED) {
+      return <button className="btn btn-error w-32">Delete</button>;
+    }
+    return null;
+  }, [job.status]);
 
   return (
     <>
-      <div className="items-center text-center w-full">
-        <div className="w-full flex flex-row justify-center gap-16">
-          <label htmlFor="feedback-display" className="btn btn-error">
-            Reject
-          </label>
-          <button onClick={approve} className="btn btn-success">
-            Approve
-          </button>
-        </div>
+      <div className="items-center text-center w-full flex flex-row justify-center gap-32">
+        {buttons}
       </div>
       {/*https://daisyui.com/components/modal/# */}
       <input type="checkbox" id="feedback-display" className="modal-toggle" />
