@@ -22,7 +22,7 @@ const constraints = {
 };
 
 // This component is for employer and admin job management dashboard
-export default function JobDashboard() {
+export default function JobDashboard({ role }) {
   const { tabUrl } = useParams();
   const { listJobs, countJobs } = useJob();
 
@@ -66,7 +66,7 @@ export default function JobDashboard() {
       <div className="tabs tabs-boxed">
         {menu.map((tab) => (
           <NavLink
-            to={`/admin/jobs/${tab.url}`}
+            to={`/${role}/jobs/${tab.url}`}
             className={({ isActive }) => `tab ${isActive ? "tab-active" : null}`}
             key={tab.name}
           >

@@ -79,7 +79,7 @@ const router = createBrowserRouter([
               },
               {
                 path: ":tabUrl",
-                element: <Job.Dashboard />,
+                element: <Job.Dashboard role="admin" />,
                 children: [
                   { index: true, element: <Center /> },
                   {
@@ -109,7 +109,7 @@ const router = createBrowserRouter([
               },
               {
                 path: ":tabUrl",
-                element: <Job.Dashboard />,
+                element: <Job.Dashboard role="employer" />,
                 children: [
                   { index: true, element: <Center /> },
                   {
