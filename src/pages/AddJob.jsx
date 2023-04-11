@@ -16,6 +16,11 @@ export default function AddJob() {
     // if the user is an employer, has a company, autofill the company name
     defaultValues: { company: auth.user?.company || "" },
   });
+  const dateToString = (dateObj) => {
+    const date = dateObj.split("T");
+    console.log(typeof dateObj);
+    return date[0];
+  };
 
   const { run: createJob, loading } = useRequest(
     async (data) => {
@@ -66,7 +71,7 @@ export default function AddJob() {
       setValue("title", draft.title);
       setValue("company", auth.user?.company || draft.company);
       setValue("jobType", draft.jobType);
-      setValue("dateJobStart", draft.dateJobStart);
+      setValue("dateJobStart", dateToString(draft.dateJobStart));
       setValue("shift", draft.shift);
       setValue("wage.type", draft.wage.type);
       setValue("wage.min", parseInt(draft.wage.min));
