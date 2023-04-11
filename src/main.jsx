@@ -83,7 +83,7 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "users",
+            path: "accounts",
             children: [
               {
                 index: true,

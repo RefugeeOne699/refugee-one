@@ -43,8 +43,8 @@ const approveUser = async (userId) => {
   await updateUser(userId, { status: USER_STATUS.APPROVED });
 };
 
-const deleteUser = async (userId) => {
-  await deleteDoc(doc(database, "Users", userId));
+const deleteUser = async () => {
+  /* todo: implement logic for deleting all of users jobs when user is deleted */
 };
 
 const AdminContextProvider = ({ children }) => {

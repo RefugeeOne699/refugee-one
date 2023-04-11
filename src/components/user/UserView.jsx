@@ -30,13 +30,14 @@ export default function UserView({ user, run }) {
   });
 
   const reject = async () => {
-    rejectUserRequest.run(user.id);
+    await rejectUserRequest.run(user.id);
   };
 
   const approve = async () => {
-    approveUserRequest.run(user.id);
+    await approveUserRequest.run(user.id);
   };
 
+  /* todo: make the styling to other places that show phone number */
   const stylePhoneNumber = (number) => {
     if (number.length !== 10) {
       return number;

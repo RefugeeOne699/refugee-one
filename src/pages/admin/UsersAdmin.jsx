@@ -5,12 +5,13 @@ import { NavLink, useParams } from "react-router-dom";
 
 import Spin from "@/components/Spin";
 import UserView from "@/components/user/UserView";
+import { ROLES } from "@/constants";
 import { useAdmin } from "@/models";
 
 const menu = [
-  { url: "clients", name: "Clients" },
-  { url: "employers", name: "Employers" },
-  { url: "admins", name: "Administrators" },
+  { url: ROLES.CLIENT, name: "Clients" },
+  { url: ROLES.EMPLOYER, name: "Employers" },
+  { url: ROLES.ADMIN, name: "Administrators" },
 ];
 
 export default function JobsAdmin() {
@@ -32,7 +33,7 @@ export default function JobsAdmin() {
       <div className="tabs tabs-boxed">
         {menu.map((tab) => (
           <NavLink
-            to={`/admin/users/${tab.url}`}
+            to={`/admin/accounts/${tab.url}`}
             className={({ isActive }) => `tab ${isActive ? "tab-active" : null}`}
             key={tab.name}
           >
@@ -52,14 +53,17 @@ export default function JobsAdmin() {
     if (loading) {
       return <Spin className="h-8 w-8" />;
     }
-    //todo: display and filter
     return (
       <div className="w-full">
-        {data
-          ? data.map((user) => {
+        {data ? (
+          data
+            .filter((user) => user.role === tabUrl)
+            .map((user) => {
               return <UserView key={user.id} user={user} run={run} />;
             })
-          : <p>No users to show</p>}
+        ) : (
+          <p>No users to show</p>
+        )}
       </div>
     );
   }, [data, loading, tabUrl]);

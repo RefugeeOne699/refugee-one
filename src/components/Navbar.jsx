@@ -36,7 +36,7 @@ const buttonMap = {
       "Manage Accounts": {
         icon: <SupervisorAccountIcon />,
         // todo: add path
-        path: "admin/users",
+        path: "admin/accounts",
       },
       Setting: {
         icon: <SettingsIcon />,
