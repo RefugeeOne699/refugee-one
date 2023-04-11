@@ -90,7 +90,7 @@ export default function JobDashboard() {
   }, [data, jobCounts, loading, counting, tabUrl]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-h-screen h-full">
       {tabs}
       {content}
     </div>

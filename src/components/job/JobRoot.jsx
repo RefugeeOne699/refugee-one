@@ -50,15 +50,15 @@ export default function JobRoot({ data }) {
   const jobs = data || pulledJobs;
 
   const { jobId } = useParams();
-  const sideMenuMobile = jobId ? "hidden" : "basis-full";
-  const contentMobile = jobId ? "basis-full" : "hidden";
+  const sideMenuMobile = jobId ? "hidden" : "w-full";
+  const contentMobile = jobId ? "w-full" : "hidden";
   return (
-    <div className="flex flex-row">
-      <div className={`${sideMenuMobile} md:block md:basis-1/2 lg:basis-1/3 flex-none`}>
+    <div className="flex flex-row h-full max-h-screen">
+      <div className={`${sideMenuMobile} md:block md:w-1/2 lg:w-1/3 flex-none h-full`}>
         <JobList data={jobs} />
       </div>
       <div
-        className={`${contentMobile} md:block md:basis-1/2 lg:basis-2/3 flex-none bg-base-200`}
+        className={`${contentMobile} md:block md:w-1/2 lg:w-2/3 flex-none bg-base-200 max-h-full`}
       >
         <Outlet />
       </div>

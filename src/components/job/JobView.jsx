@@ -215,5 +215,5 @@ export default function JobView() {
     );
   }, [data, loading, error]);
 
-  return <div className="w-full h-screen">{content}</div>;
+  return <div className="w-full h-full">{content}</div>;
 }
