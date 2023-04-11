@@ -18,7 +18,6 @@ export default function AddJob() {
   });
   const dateToString = (dateObj) => {
     const date = dateObj.split("T");
-    console.log(typeof dateObj);
     return date[0];
   };
 
