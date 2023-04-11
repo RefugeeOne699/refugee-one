@@ -90,7 +90,7 @@ const AuthContextProvider = ({ children }) => {
       role,
       phone,
       company,
-      status: role === ROLES.EMPLOYER ? USER_STATUS.PENDING : USER_STATUS.INITIAL,
+      status: role === ROLES.EMPLOYER ? USER_STATUS.PENDING : USER_STATUS.APPROVED,
     };
     await setDoc(doc(subDatabase, "Users", credential.user.uid), userDoc);
     await subAuth.signOut();
@@ -154,10 +154,7 @@ function RequireAuth({ children }) {
       <Spin className="h-10 w-10" />
     </Center>
   );
-  const accessDenied =
-    auth.user &&
-    (auth.user.status === USER_STATUS.INITIAL ||
-      auth.user.status === USER_STATUS.PENDING);
+  const accessDenied = auth.user && auth.user.status === USER_STATUS.PENDING;
 
   const { run, loading } = useRequest(
     async () => {

@@ -74,7 +74,7 @@ const AdminContextProvider = ({ children }) => {
   const approveUser = async (userId, user) => {
     // Approve an employer account, send to his email the password reset email as to notify him the approval
     if (user.role === ROLES.EMPLOYER) {
-      await updateUser(userId, { status: USER_STATUS.INITIAL });
+      await updateUser(userId, { status: USER_STATUS.APPROVED });
       await auth.resetPassWordByEmail(user.email);
     }
   };
