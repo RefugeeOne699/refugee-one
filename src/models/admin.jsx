@@ -43,8 +43,19 @@ const approveUser = async (userId) => {
   await updateUser(userId, { status: USER_STATUS.APPROVED });
 };
 
-const deleteUser = async () => {
-  /* todo: implement logic for deleting all of users jobs when user is deleted */
+const deleteUser = async (userId) => {
+  const userSaveCollection = collection(database, "Users", userId, "JobsSaved");
+  const userJobs = await getDocs(userSaveCollection)
+  const awaitIds = userJobs.docs.map(async (doc) => {
+    return doc.id
+  })
+  const jobsToDelete = await Promise.all(awaitIds)
+  await deleteDoc(doc(database, "Users", userId))
+  const jobDeleted = jobsToDelete.map(async (jobId) =>{
+    await deleteDoc(doc(database, "Jobs", jobId))
+    return null
+  })
+  await Promise.all(jobDeleted)
 };
 
 const AdminContextProvider = ({ children }) => {
