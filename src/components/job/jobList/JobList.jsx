@@ -13,7 +13,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 
-import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE } from "@/constants";
+import { BENEFIT_TYPE, ENGLISH_LEVEL, ROLES, SHIFT_TYPE } from "@/constants";
+import { useAuth } from "@/models";
 
 import JobSave from "../JobSave";
 import {
@@ -410,6 +411,9 @@ export default function JobList({ data }) {
     setFilteredJobs(filteredResult);
   }, [filter, search, data]);
 
+  const auth = useAuth();
+  const enableJobSave = auth.user.role === ROLES.CLIENT;
+
   const jobs = useMemo(() => {
     return filteredJobs
       ? filteredJobs.map((job) => {
@@ -422,7 +426,12 @@ export default function JobList({ data }) {
                     : "border-base-300 bg-base-100 drop-shadow-lg"
                 }`}
               >
-                <Link to={job.id} className="card-body w-10/12 flex-none">
+                <Link
+                  to={job.id}
+                  className={`${
+                    enableJobSave ? "w-10/12" : "w-full"
+                  } card-body flex-none`}
+                >
                   <div className="card-title text-xl w-full">{job.title}</div>
                   <div className="flex flex-row flex-wrap flex-auto">
                     <p className="truncate w-1/2">{job.company}</p>
@@ -437,7 +446,11 @@ export default function JobList({ data }) {
                     </p>
                   </div>
                 </Link>
-                <div className="card-actions w-2/12 items-center justify-center p-3">
+                <div
+                  className={`${
+                    enableJobSave ? "" : "hidden"
+                  } card-actions w-1/12 items-center justify-center `}
+                >
                   <JobSave jobId={job.id} mode="list" />
                 </div>
               </div>
@@ -502,7 +515,7 @@ export default function JobList({ data }) {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap">
+      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap max-md:pt-16">
         {jobs}
       </ul>
     </div>

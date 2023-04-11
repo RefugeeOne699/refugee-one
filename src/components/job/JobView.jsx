@@ -11,7 +11,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
@@ -35,7 +35,6 @@ export default function JobView() {
   const { jobId } = useParams();
   const { getJob } = useJob();
   if (!jobId) {
-    // this
     return <ErrorInfo />;
   }
   const { run, data, loading, error } = useRequest(
