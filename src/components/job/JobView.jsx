@@ -285,9 +285,9 @@ export default function JobView() {
             </div>
           </div>
           {auth.user.role === ROLES.ADMIN ? (
-            <AdminActions job={data} />
+            <AdminActions job={data} jobId={jobId} />
           ) : auth.user.role === ROLES.EMPLOYER ? (
-            <EmployerActions job={data} />
+            <EmployerActions job={data} jobId={jobId} />
           ) : (
             <JobSave jobId={jobId} />
           )}

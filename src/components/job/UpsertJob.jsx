@@ -1,30 +1,78 @@
 import { useRequest } from "ahooks";
-import { React } from "react";
+import { React, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 import { getCoordinate } from "@/utils";
 
-export default function AddJob() {
+import Center from "../Center";
+import Spin from "../Spin";
+const LOCAL_KEY = "REFUGEE_ONE_JOB_DRAFT";
+
+export default function UpsertJob({ update }) {
   const auth = useAuth();
   const job = useJob();
   const navigate = useNavigate();
-  const { register, handleSubmit, setValue, getValues } = useForm({
-    // if the user is an employer, has a company, autofill the company name
-    defaultValues: { company: auth.user?.company || "" },
+  const { jobId } = useParams();
+  const location = useLocation();
+  const from = location.state?.from || "/";
+
+  const {
+    run: getJob,
+    data: jobData,
+    loading: preparing,
+  } = useRequest(async (jobId) => job.getJob(jobId), {
+    manual: true,
+    onSuccess: (data) => {
+      data.dateJobStart = data.dateJobStart.toDate().toISOString();
+      loadData(data);
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to get job information");
+    },
   });
 
-  const { run: createJob, loading } = useRequest(
+  useEffect(() => {
+    if (update) {
+      (async () => getJob(jobId))();
+    }
+  }, []);
+
+  // in update mode, we do not enable load draft feature
+  const [showModal, setShowModal] = useState(
+    !update && window.localStorage.getItem(LOCAL_KEY) !== null
+  );
+
+  const { register, handleSubmit, setValue, getValues } = useForm({
+    // if jobData has a value, it means we are editing the job
+    // if the user is an employer, has a company, autofill the company name
+    defaultValues: jobData || {
+      company: auth.user?.company || "",
+      dateJobStart: Date.now(),
+    },
+  });
+
+  const { run: upsertJob, loading } = useRequest(
     async (data) => {
+      data.dateJobStart = new Date(data.dateJobStart);
       const coordinate = await getCoordinate(
         data.address.street,
         data.address.city,
         data.address.state,
         data.address.zipcode
       );
+      // edit
+      if (jobData) {
+        Object.entries(data).forEach(([key, value]) => {
+          jobData[key] = value;
+        });
+        return job.updateJob(jobId, jobData);
+      }
+      // create
       return job.createJob({
         ...data,
         adminMessage: "",
@@ -39,58 +87,64 @@ export default function AddJob() {
     {
       manual: true,
       onSuccess: () => {
-        toast.success("Create Job succeeded");
-        navigate("/");
+        toast.success(update ? "Update Job succeeded" : "Create Job succeeded");
+        navigate(from);
       },
       onError: (error) => {
-        toast.error(`Create Job failed: ${error.message}`);
+        toast.error(`${update ? "Update" : "Create"} Job failed: ${error.message}`);
       },
     }
   );
 
-  let hasDraft =
-    window.localStorage.getItem("REFUGEE_ONE_JOB_DRAFT") === null ? "hidden" : "";
-
   const hideModal = () => {
-    document.getElementById("refugeeOneDraft").classList.add("hidden");
+    setShowModal(false);
   };
 
   const saveDraft = () => {
-    window.localStorage.setItem("REFUGEE_ONE_JOB_DRAFT", JSON.stringify(getValues()));
+    window.localStorage.setItem(LOCAL_KEY, JSON.stringify(getValues()));
     toast.success("Draft saved!");
+  };
+
+  const loadData = (draft) => {
+    setValue("title", draft.title);
+    setValue("company", draft.company || auth.user?.company);
+    setValue("jobType", draft.jobType);
+    setValue("dateJobStart", draft.dateJobStart.slice(0, 10));
+    setValue("shift", draft.shift);
+    setValue("wage.type", draft.wage.type);
+    setValue("wage.min", parseInt(draft.wage.min));
+    setValue("wage.max", parseInt(draft.wage.max));
+    setValue("benefit.hasMedical", draft.benefit.hasMedical);
+    setValue("benefit.hasOthers", draft.benefit.hasOthers);
+    setValue("benefit.others", draft.benefit.others);
+    setValue("langEnglishLevel", draft.langEnglishLevel);
+    setValue("langNote", draft.langNote);
+    setValue("address.street", draft.address.street);
+    setValue("address.city", draft.address.city);
+    setValue("address.state", draft.address.state);
+    setValue("address.zipcode", draft.address.zipcode);
+    setValue("description", draft.description);
   };
 
   const loadDraft = () => {
     try {
-      const draft = JSON.parse(window.localStorage.getItem("REFUGEE_ONE_JOB_DRAFT"));
-      setValue("title", draft.title);
-      setValue("company", auth.user?.company || draft.company);
-      setValue("jobType", draft.jobType);
-      setValue("dateJobStart", draft.dateJobStart);
-      setValue("shift", draft.shift);
-      setValue("wage.type", draft.wage.type);
-      setValue("wage.min", parseInt(draft.wage.min));
-      setValue("wage.max", parseInt(draft.wage.max));
-      setValue("benefit.hasMedical", draft.benefit.hasMedical);
-      setValue("benefit.hasOthers", draft.benefit.hasOthers);
-      setValue("benefit.others", draft.benefit.others);
-      setValue("langEnglishLevel", draft.langEnglishLevel);
-      setValue("langNote", draft.langNote);
-      setValue("address.street", draft.address.street);
-      setValue("address.city", draft.address.city);
-      setValue("address.state", draft.address.state);
-      setValue("address.zipcode", draft.address.zipcode);
-      setValue("description", draft.description);
+      const draft = JSON.parse(window.localStorage.getItem(LOCAL_KEY));
+      loadData(draft);
       hideModal();
+      window.localStorage.removeItem(LOCAL_KEY);
       toast.success("Load draft succeeded");
     } catch {
       toast.error("Load draft failed.");
     }
   };
 
-  return (
-    <div className="flex flex-col justify-center items-center">
-      <div id="refugeeOneDraft" className={`w-[80%] float m-auto ${hasDraft}`}>
+  const modal = useMemo(() => {
+    if (!showModal) {
+      return null;
+    }
+
+    return (
+      <div className="w-[80%] float m-auto">
         <div className="alert shadow-lg">
           <div>
             <svg
@@ -122,7 +176,21 @@ export default function AddJob() {
           </div>
         </div>
       </div>
-      <form onSubmit={handleSubmit(createJob)}>
+    );
+  }, [showModal]);
+
+  if (update && preparing) {
+    return (
+      <Center>
+        <Spin className="w-10 h-10" />
+      </Center>
+    );
+  }
+
+  return (
+    <div className="flex flex-col justify-center items-center">
+      {modal}
+      <form onSubmit={handleSubmit(upsertJob)}>
         <div className="flex flex-row mb-4 mt-4 items-center">
           <label className="label flex basis-44" htmlFor="title">
             Job Title
@@ -149,17 +217,17 @@ export default function AddJob() {
             <label className="label flex basis-44">Start Date</label>
             <div className="input ml-2 w-full">
               <div className="flex items-center justify-center">
-                <div className="flex w-full ">
+                <div className="flex w-full">
                   <input
                     type="date"
                     className="input input-bordered w-full bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                     placeholder="Select a date"
-                    {...register("dateJobStart", { required: true, valueAsDate: true })}
+                    {...register("dateJobStart", { required: true })}
                   />
                   <label
                     htmlFor="dateJobStart"
                     className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200"
-                  ></label>
+                  />
                 </div>
               </div>
             </div>
@@ -363,7 +431,7 @@ export default function AddJob() {
               type="submit"
               className={`btn btn-primary w-1/3 ${loading ? "loading" : ""}`}
               onClick={() => {
-                window.localStorage.removeItem("REFUGEE_ONE_JOB_DRAFT");
+                window.localStorage.removeItem(LOCAL_KEY);
               }}
               disabled={loading}
             >

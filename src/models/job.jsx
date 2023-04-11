@@ -41,6 +41,9 @@ const updateJob = async (jobId, payload) => {
   if (payload.id) {
     delete payload.id;
   }
+  if (payload.owner) {
+    delete payload.owner;
+  }
   // why use runTransaction? It may happen when you try to update a doc that may be deleted
   await runTransaction(database, async (transaction) => {
     const jobDocRef = doc(database, "Jobs", jobId);

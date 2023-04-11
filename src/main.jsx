@@ -15,10 +15,10 @@ import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
 import { JobSaveContextProvider } from "./models/jobSave";
 
-const AddJob = lazy(async () => import("@/pages/AddJob"));
 const Admin = {
   AccountCreate: lazy(async () => import("@/pages/admin/AccountCreate")),
 };
+const UpsertJob = lazy(async () => import("@/components/job/UpsertJob"));
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
 const SignIn = lazy(async () => import("@/pages/SignIn"));
@@ -58,7 +58,11 @@ const router = createBrowserRouter([
       },
       {
         path: "addJob",
-        element: <AddJob />, //add job listing
+        element: <UpsertJob />, //add job listing
+      },
+      {
+        path: "updateJob/:jobId",
+        element: <UpsertJob update={true} />,
       },
       // example: example for router and nested router
       {

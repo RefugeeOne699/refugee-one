@@ -8,10 +8,10 @@ import { useJob } from "@/models";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 
-export default function JobApproveReject({ job }) {
+export default function AdminActions({ job, jobId }) {
   const [jobFeedback, setJobFeedback] = useState("");
   const { approveJob, rejectJob } = useJob();
-  const approveJobRequest = useRequest(async () => approveJob(job.id), {
+  const approveJobRequest = useRequest(async () => approveJob(jobId), {
     manual: true,
     onSuccess: () => {
       toast.success("Job has been approved!");
@@ -21,7 +21,7 @@ export default function JobApproveReject({ job }) {
     },
   });
 
-  const rejectJobRequest = useRequest(async () => rejectJob(job.id, jobFeedback), {
+  const rejectJobRequest = useRequest(async () => rejectJob(jobId, jobFeedback), {
     manual: true,
     onSuccess: () => {
       toast.success("Job has been rejected!");
@@ -32,11 +32,11 @@ export default function JobApproveReject({ job }) {
   });
 
   const reject = async () => {
-    await rejectJobRequest.run(job.id, jobFeedback);
+    await rejectJobRequest.run(jobId, jobFeedback);
   };
 
   const approve = async () => {
-    await approveJobRequest.run(job.id);
+    await approveJobRequest.run(jobId);
   };
 
   const buttons = useMemo(() => {
@@ -46,7 +46,7 @@ export default function JobApproveReject({ job }) {
           <label htmlFor="feedback-display" className="btn btn-error w-32">
             Reject
           </label>
-          <EditButton />
+          <EditButton jobId={jobId} />
           <button onClick={approve} className="btn btn-success w-32">
             Approve
           </button>
@@ -58,7 +58,7 @@ export default function JobApproveReject({ job }) {
       return (
         <>
           <DeleteButton />
-          <EditButton />
+          <EditButton jobId={jobId} />
         </>
       );
     }
