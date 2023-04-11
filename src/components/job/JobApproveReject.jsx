@@ -14,14 +14,14 @@ export default function JobApproveReject({ jobId }) {
       toast.success("Job has been approved!");
     },
     onError: () => {
-      toast.error("Failed approve job");
+      toast.error("Failed to approve job");
     },
   });
 
   const rejectJobRequest = useRequest(async () => rejectJob(jobId, jobFeedback), {
     manual: true,
     onSuccess: () => {
-      toast.error("Job has been rejected!");
+      toast.success("Job has been rejected!");
     },
     onError: () => {
       toast.error("Failed to reject job");
@@ -29,26 +29,21 @@ export default function JobApproveReject({ jobId }) {
   });
 
   const reject = async () => {
-    rejectJobRequest.run(jobId, jobFeedback);
+    await rejectJobRequest.run(jobId, jobFeedback);
   };
 
   const approve = async () => {
-    approveJobRequest.run(jobId);
+    await approveJobRequest.run(jobId);
   };
 
   return (
     <>
-      <div className="items-center text-center w-3/4">
-        <div className="w-full flex flex-row justify-center">
-          <label htmlFor="feedback-display" className="btn">
+      <div className="items-center text-center w-full">
+        <div className="w-full flex flex-row justify-center gap-16">
+          <label htmlFor="feedback-display" className="btn btn-error">
             Reject
           </label>
-          <button
-            onClick={() => {
-              approve();
-            }}
-            className="btn btn-primary ml-5"
-          >
+          <button onClick={approve} className="btn btn-success">
             Approve
           </button>
         </div>
