@@ -42,8 +42,6 @@ export default function EmployerSignUp() {
       <div className="card max-w-md">
         <div className="card-body">
           <p className="mb-5 text-2xl">Register With RefugeeOne Job Search Portal</p>
-          {/* @tianchi @neha todo: may add an explantion for the sign up here */}
-          <p>@tianchi @neha We could add a explanation here</p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <label className="label" htmlFor="name">
               <span className="label-text">Full Name</span>
