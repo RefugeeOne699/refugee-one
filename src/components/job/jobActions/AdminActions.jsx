@@ -75,14 +75,14 @@ export default function AdminActions({ job, jobId }) {
     if (job.status === JOB_STATUS.APPROVED) {
       return (
         <>
-          <DeleteButton />
+          <DeleteButton jobId={jobId} />
           <EditButton jobId={jobId} />
         </>
       );
     }
 
     if (job.status === JOB_STATUS.REJECTED) {
-      return <button className="btn btn-error w-32">Delete</button>;
+      return <DeleteButton jobId={jobId} />;
     }
     return null;
   }, [job.status, loading]);
