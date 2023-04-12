@@ -17,6 +17,7 @@ import { JobSaveContextProvider } from "./models/jobSave";
 const AddJob = lazy(async () => import("@/pages/AddJob"));
 const Admin = {
   Jobs: lazy(async () => import("@/pages/admin/JobsAdmin")),
+  AccountCreate: lazy(async () => import("@/pages/admin/AccountCreate")),
   Users: lazy(async () => import("@/pages/admin/UsersAdmin")),
 };
 
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
     path: "/signIn",
     element: <SignIn />,
   },
+  {
+    path: "/signUp",
+    element: <SignUp />,
+  },
   // all the pages below requires signed in
   {
     path: "/",
@@ -50,10 +55,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Center />,
-      },
-      {
-        path: "signUp",
-        element: <SignUp />,
       },
       {
         path: "addJob",
@@ -79,6 +80,15 @@ const router = createBrowserRouter([
               {
                 path: ":tabUrl",
                 element: <Admin.Jobs />,
+              },
+            ],
+          },
+          {
+            path: "accounts",
+            children: [
+              {
+                path: "create",
+                element: <Admin.AccountCreate />,
               },
             ],
           },

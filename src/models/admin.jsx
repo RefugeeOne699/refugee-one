@@ -59,11 +59,7 @@ const deleteUser = async (userId) => {
 };
 
 const AdminContextProvider = ({ children }) => {
-  // todo: somewhere deny access, should be in main.jsx
-  //   if (auth.user.role !== ROLES.ADMIN) {
-  //     console.error("?");
-  //   }
-
+  const auth = useAuth();
   const listUsers = async (queryConstraints) => {
     const userCollection = collection(database, "Users");
     const userQuery = queryConstraints
@@ -93,6 +89,29 @@ const AdminContextProvider = ({ children }) => {
       : userCollection;
     const snapshot = await getCountFromServer(userQuery);
     return snapshot.data().count;
+  };
+
+  const updateUser = async (userId, payload) => {
+    if (payload.id) {
+      delete payload.id;
+    }
+
+    await runTransaction(database, async (transaction) => {
+      const userDocRef = doc(database, "Users", userId);
+      const userDoc = await transaction.get(userDocRef);
+      if (!userDoc.exists()) {
+        throw `User ${userId} does not exist`;
+      }
+      transaction.update(userDocRef, payload);
+    });
+  };
+
+  const approveUser = async (userId, user) => {
+    // Approve an employer account, send to his email the password reset email as to notify him the approval
+    if (user.role === ROLES.EMPLOYER) {
+      await updateUser(userId, { status: USER_STATUS.APPROVED });
+      await auth.resetPassWordByEmail(user.email);
+    }
   };
 
   const value = useMemo(
