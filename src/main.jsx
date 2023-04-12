@@ -22,6 +22,9 @@ const Admin = {
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
 const SignIn = lazy(async () => import("@/pages/SignIn"));
+const ForgetPassword = lazy(async () => import("@/pages/ForgetPassword"));
+const ConfirmSendEmail = lazy(async () => import("@/pages/ConfirmSendEmail"));
+const SetPassword = lazy(async () => import("@/pages/SetPassword"));
 const Center = lazy(async () => import("@/components/Center"));
 const Job = {
   View: lazy(async () => import("@/components/job/JobView")),
@@ -42,6 +45,18 @@ const router = createBrowserRouter([
   {
     path: "/signUp",
     element: <SignUp />,
+  },
+  {
+    path: "/set_password",
+    element: <SetPassword />,
+  },
+  {
+    path: "/forget_password",
+    element: <ForgetPassword />,
+  },
+  {
+    path: "/confirm_send_email",
+    element: <ConfirmSendEmail />,
   },
   // all the pages below requires signed in
   {

@@ -79,13 +79,10 @@ export default function SignIn() {
             <br />
             <label className="text-sm">
               <div className="flex justify-end gap-2">
-                {/* @tianchi todo: add link to reset password page */}
                 <LockResetIcon fontSize="medium" />
-                {
-                  <Link to="/" className="underline text-orange-500">
-                    Forgot password?
-                  </Link>
-                }
+                <Link to="/forget_password" className="underline text-orange-500">
+                  Forgot password?
+                </Link>
               </div>
             </label>
             <button
@@ -112,13 +109,10 @@ export default function SignIn() {
               <InfoIcon fontSize="small" />
               First Time Acessing RefugeeOne Work Search Portal?
             </div>
-            {/* @tianchi todo: add link to set password page */}
             <div className="flex space-around gap-4 text-sm">
-              {
-                <Link to="/" className="underline text-orange-500">
-                  Click Here To Set Password For First Time
-                </Link>
-              }
+              <Link to="/set_password" className="underline text-orange-500">
+                Click Here To Set Password For First Time
+              </Link>
             </div>
           </div>
           <br />
