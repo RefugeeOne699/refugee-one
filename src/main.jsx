@@ -85,7 +85,7 @@ const router = createBrowserRouter([
                 path: ":tabUrl",
                 element: <Job.Dashboard role="admin" />,
                 children: [
-                  { index: true, element: <Center /> },
+                  { index: true, element: <Job.View /> },
                   {
                     path: ":jobId",
                     element: <Job.View />,
@@ -124,7 +124,7 @@ const router = createBrowserRouter([
                 path: ":tabUrl",
                 element: <Job.Dashboard role="employer" />,
                 children: [
-                  { index: true, element: <Center /> },
+                  { index: true, element: <Job.View /> },
                   {
                     path: ":jobId",
                     element: <Job.View />,
@@ -139,7 +139,7 @@ const router = createBrowserRouter([
         path: "jobs",
         element: <JobRoot />,
         children: [
-          { index: true, element: <Center /> },
+          { index: true, element: <Job.View /> },
           {
             path: ":jobId",
             element: <Job.View />,

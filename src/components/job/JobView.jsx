@@ -1,4 +1,3 @@
-import { ErrorOutline } from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -18,25 +17,18 @@ import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
 
 import Center from "../Center";
+import ErrorInfo from "../Error";
 import Spin from "../Spin";
 import AdminActions from "./jobActions/AdminActions";
 import EmployerActions from "./jobActions/EmployerActions";
 import JobSave from "./JobSave";
-function ErrorInfo() {
-  return (
-    <Center>
-      <div className="text-8xl text-error">
-        <ErrorOutline fontSize="inherit" />
-      </div>
-    </Center>
-  );
-}
+
 export default function JobView() {
   const auth = useAuth();
   const { jobId } = useParams();
   const { getJob } = useJob();
   if (!jobId) {
-    return <ErrorInfo />;
+    return <Center />;
   }
   const { run, data, loading, error } = useRequest(
     async () => {
