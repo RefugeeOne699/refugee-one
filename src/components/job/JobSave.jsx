@@ -50,7 +50,7 @@ export default function JobSave({ jobId, mode }) {
       return (
         <button
           onClick={onClick}
-          className={`btn btn-primary ${loading ? "loading" : ""}`}
+          className={`btn btn-primary ${loading ? "loading" : ""} w-32`}
           disabled={loading}
         >
           {loading ? "Loading" : checkIsJobSaved(jobId) ? "Unsave" : "Save"}

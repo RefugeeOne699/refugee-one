@@ -20,8 +20,8 @@ import Center from "../Center";
 import ErrorInfo from "../Error";
 import Spin from "../Spin";
 import AdminActions from "./jobActions/AdminActions";
+import ClientActions from "./jobActions/ClientActions";
 import EmployerActions from "./jobActions/EmployerActions";
-import JobSave from "./JobSave";
 
 export default function JobView() {
   const auth = useAuth();
@@ -281,7 +281,7 @@ export default function JobView() {
           ) : auth.user.role === ROLES.EMPLOYER ? (
             <EmployerActions job={data} jobId={jobId} />
           ) : (
-            <JobSave jobId={jobId} />
+            <ClientActions jobId={jobId} />
           )}
         </div>
       </div>

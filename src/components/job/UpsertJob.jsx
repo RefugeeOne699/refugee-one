@@ -188,8 +188,20 @@ export default function UpsertJob({ update }) {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center p-4">
       {modal}
+      {update ? (
+        <div className="flex flex-row justify-start w-full">
+          <button
+            className="btn"
+            onClick={() => {
+              history.back();
+            }}
+          >
+            Back
+          </button>
+        </div>
+      ) : null}
       <form onSubmit={handleSubmit(upsertJob)}>
         <div className="flex flex-row mb-4 mt-4 items-center">
           <label className="label flex basis-44" htmlFor="title">
