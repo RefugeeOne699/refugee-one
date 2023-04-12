@@ -16,8 +16,7 @@ const buttonMap = {
     buttons: {
       "Create Account": {
         icon: <AddIcon />,
-        // todo: add path
-        path: "",
+        path: "admin/accounts/create",
       },
       "Post a Job": {
         icon: <AddIcon />,
