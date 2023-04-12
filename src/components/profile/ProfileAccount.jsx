@@ -98,9 +98,9 @@ export default function ProfileAccount() {
             </div>
           </li>
         </ul>
-        <div className="m-2 flex flex-col md:flex-row md:gap-4 justify-center">
+        <div className="mt-4 m-2 flex flex-col md:flex-row md:gap-4 justify-center">
           <button
-            className="btn btn-xs btn-md lg:btn-lg m-2"
+            className="btn btn-primary btn-xs btn-md lg:btn-lg m-2"
             onClick={() => {
               navigate("../set_profile", { replace: true });
             }}
@@ -108,7 +108,7 @@ export default function ProfileAccount() {
             Edit Profile
           </button>
           <button
-            className="btn btn-xs btn-md lg:btn-lg m-2"
+            className="btn btn-outline btn-xs btn-md lg:btn-lg m-2"
             onClick={() => {
               navigate("../", { replace: true });
             }}

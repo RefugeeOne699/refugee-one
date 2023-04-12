@@ -343,7 +343,7 @@ export default function JobList() {
           return (
             <li className="flex flex-row w-full mt-5 px-4" key={job.id}>
               <div
-                className={`card card-compact w-full rounded-xl border-2 flex flex-row justify-between ${
+                className={`card card-compact w-full rounded-3xl border-2 flex flex-row justify-between ${
                   job.id && job.id == jobId
                     ? "border-primary"
                     : "border-base-300 bg-base-100 drop-shadow-lg"

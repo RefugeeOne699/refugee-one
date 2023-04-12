@@ -26,9 +26,9 @@ export default function ProfileHelp() {
         <p className="font-bold mt-4">Office Hours</p>
         <p>8:30 a.m. – 4:30 p.m Monday – Friday</p>
       </div>
-      <div className="m-2 flex flex-col md:flex-row md:gap-4 justify-center">
+      <div className="mt-4 m-2 flex flex-col md:flex-row md:gap-4 justify-center">
         <button
-          className="btn btn-xs btn-md lg:btn-lg m-2"
+          className="btn btn-outline btn-xs btn-md lg:btn-lg m-2"
           onClick={() => {
             navigate("../", { replace: true });
           }}
