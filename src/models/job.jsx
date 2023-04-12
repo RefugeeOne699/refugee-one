@@ -8,9 +8,9 @@ import {
   // eslint-disable-next-line no-unused-vars
   QueryConstraint,
   runTransaction,
-  setDoc,
 } from "firebase/firestore";
 import { createContext, useMemo } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import database from "@/clients/firebase";
 import { JOB_STATUS } from "@/constants";
@@ -64,8 +64,16 @@ const rejectJob = async (jobId, adminMessage) => {
 };
 
 const JobContextProvider = ({ children }) => {
+  // create a job will link its owner with the job id
   const createJob = async (payload) => {
-    await setDoc(doc(collection(database, "Jobs")), payload);
+    await runTransaction(database, async (transaction) => {
+      const uuid = uuidv4();
+      const jobRef = doc(database, "Jobs", uuid);
+      transaction = await transaction.set(jobRef, payload);
+      const userJobsCollection = collection(payload.owner, "JobsCreated");
+      const jobRefByUser = doc(userJobsCollection, uuid);
+      await transaction.set(jobRefByUser, {});
+    });
   };
   /**
    * get the detail of a job by id
@@ -84,6 +92,33 @@ const JobContextProvider = ({ children }) => {
     return job;
   };
 
+  const deleteJob = async (id) => {
+    const jobSavedCollection = collection(database, "Jobs", id, "UsersSavedBy");
+    const usersAffected = (await getDocs(jobSavedCollection)).docs.map((doc) => doc.id);
+    await runTransaction(database, async (transaction) => {
+      const jobDocRef = doc(database, "Jobs", id);
+      const jobDoc = await transaction.get(jobDocRef);
+      if (!jobDoc.exists()) {
+        return;
+      }
+      const owner = jobDoc.data().owner;
+      const jobRefByUser = doc(owner, "JobsCreated", id);
+      const jobDocByUser = await transaction.get(jobRefByUser);
+
+      transaction = await transaction.delete(jobDocRef);
+      // compatibility: some jobs are created without linking with the user account
+      if (jobDocByUser.exists()) {
+        await transaction.delete(jobRefByUser);
+      }
+      // for users that save this job, remove the save record
+      for (let uid of usersAffected) {
+        transaction = await transaction.delete(doc(jobSavedCollection, uid));
+        transaction = await transaction.delete(
+          doc(database, "Users", uid, "JobsSaved", id)
+        );
+      }
+    });
+  };
   /**
    * get a list of JobBase according to the query provided
    * todo: pagination
@@ -144,8 +179,7 @@ const JobContextProvider = ({ children }) => {
       updateJob,
       approveJob,
       rejectJob,
-      // todo
-      deleteJob: () => {},
+      deleteJob,
       getJob,
       listJobs,
       countJobs,
