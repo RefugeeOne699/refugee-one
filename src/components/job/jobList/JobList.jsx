@@ -95,7 +95,7 @@ export default function JobList() {
           {/* Top Bar */}
           <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-base-200">
             <button
-              className="btn btn-md"
+              className="btn bg-transparent btn-sm btn-outline border-0 underline"
               onClick={() => {
                 reset(emptyFilter);
               }}
