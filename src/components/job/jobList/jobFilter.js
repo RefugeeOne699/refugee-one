@@ -5,7 +5,32 @@ import { WAGE_TYPE } from "@/constants";
 export const WAGE_FILTER = [0, 16, 17, 18, 19, 20];
 export const JOB_POSTED_FILTER = ["Anytime", "Past 3 days", "Past week", "Past month"];
 export const OTHER_LANGUAGE_FILTER = ["Spanish", "French", "Arabic", "Hindi", "Others"];
-export const TIME_OF_DAY = ['12am','1am','2am','3am','4am','5am','6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'];
+export const TIME_OF_DAY = [
+  "12am",
+  "1am",
+  "2am",
+  "3am",
+  "4am",
+  "5am",
+  "6am",
+  "7am",
+  "8am",
+  "9am",
+  "10am",
+  "11am",
+  "12pm",
+  "1pm",
+  "2pm",
+  "3pm",
+  "4pm",
+  "5pm",
+  "6pm",
+  "7pm",
+  "8pm",
+  "9pm",
+  "10pm",
+  "11pm",
+];
 
 function searchCheck(job, search) {
   if (!job) return false;
@@ -128,7 +153,7 @@ function extractTimePairs(text) {
   while (timeMatch !== null) {
     const startTime = timeMatch[0];
     timeMatch = timeRegex.exec(text);
-    const endTime = timeMatch ? timeMatch[0] : '';
+    const endTime = timeMatch ? timeMatch[0] : "";
 
     if (endTime) {
       result.push({ startTime, endTime });
@@ -160,9 +185,9 @@ function timeToNumber(timeString) {
   const minutes = parseInt(match[3]) || 0;
   const period = match[4].toLowerCase();
 
-  if (period === 'pm' && hours !== 12) {
+  if (period === "pm" && hours !== 12) {
     hours += 12;
-  } else if (period === 'am' && hours === 12) {
+  } else if (period === "am" && hours === 12) {
     hours = 0;
   }
 
@@ -176,9 +201,9 @@ function shiftTimeCheck(job, anyShiftTime, shiftTime) {
 
   if (!job) return false;
   // the return value from useform is a string for radio input
-  if (anyShiftTime==='true') return true;
+  if (anyShiftTime === "true") return true;
 
-  const jobShiftTimePairs = extractTimePairs(job['shift']);
+  const jobShiftTimePairs = extractTimePairs(job["shift"]);
   // convert every {shift_start_time, shift_end_time} pairs to numeric values from 0 to 24
   const jobShiftNumericTimePairs = jobShiftTimePairs.map((pair) => ({
     startTime: timeToNumber(pair.startTime),
@@ -187,10 +212,10 @@ function shiftTimeCheck(job, anyShiftTime, shiftTime) {
   // add one day (24hr) to end time if end_time < start_time
   const jobShiftNumericTimePairsAdjusted = jobShiftNumericTimePairs.map((pair) => {
     if (pair.endTime < pair.startTime) {
-      return ({
+      return {
         startTime: pair.startTime,
         endTime: pair.endTime + 24,
-      })
+      };
     } else return pair;
   });
 
@@ -201,13 +226,15 @@ function shiftTimeCheck(job, anyShiftTime, shiftTime) {
   if (numericEndBefore < numericStartAfter) numericEndBefore += 24;
   // check if there's matching shift time
   for (let pair of jobShiftNumericTimePairsAdjusted) {
-    if ((numericStartAfter <= pair.startTime && numericEndBefore >= pair.endTime) || 
-    (numericStartAfter <= pair.startTime + 24 && numericEndBefore >= pair.endTime + 24)){
+    if (
+      (numericStartAfter <= pair.startTime && numericEndBefore >= pair.endTime) ||
+      (numericStartAfter <= pair.startTime + 24 && numericEndBefore >= pair.endTime + 24)
+    ) {
       return true;
-    } 
+    }
   }
 
-  return false; 
+  return false;
 }
 
 /**

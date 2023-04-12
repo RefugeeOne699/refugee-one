@@ -63,7 +63,10 @@ export default function ProfileMenu() {
       </ul>
       <ul className="menu bg-base-100 w-full px-12 rounded-box mt-8">
         <li className="w-full">
-          <a onClick={signOut} className="flex bg-red-800 text-white justify-between">
+          <a
+            onClick={signOut}
+            className="flex bg-red-600 bg-transparent text-white justify-between"
+          >
             <div className="flex justify-start gap-4">
               <LogoutIcon />
               Logout

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import AbcIcon from "@mui/icons-material/Abc";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
@@ -7,10 +6,8 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import LanguageIcon from "@mui/icons-material/Language";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import SearchIcon from "@mui/icons-material/Search";
 import WorkIcon from "@mui/icons-material/Work";
-import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
-
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
 import { useRequest } from "ahooks";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -27,8 +24,8 @@ import {
   getSearchAndFilterResult,
   JOB_POSTED_FILTER,
   OTHER_LANGUAGE_FILTER,
-  WAGE_FILTER,
   TIME_OF_DAY,
+  WAGE_FILTER,
 } from "./jobFilter";
 
 export default function JobList() {
@@ -57,7 +54,7 @@ export default function JobList() {
     },
     {
       manual: true,
-      onError: (error) => {
+      onError: () => {
         toast.error("Failed to get job list");
       },
     }
@@ -74,8 +71,8 @@ export default function JobList() {
     anyDistance: true,
     otherLanguage: [],
     shiftTime: {
-      start_after: '9am', 
-      end_before: '6pm',
+      start_after: "9am",
+      end_before: "6pm",
     },
     anyShiftTime: "true", // this is a string because useform requires a string value for radio inputs
   };
@@ -101,21 +98,21 @@ export default function JobList() {
   const filterUI = useMemo(() => {
     if (showFilter) {
       return (
-        <div className="absolute z-10 top-0 left-0 w-full h-screen bg-white overflow-scroll">
+        <div className="absolute z-10 top-0 left-0 w-full h-full bg-white overflow-scroll">
           {/* Top Bar */}
-          <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-slate-200">
+          <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-base-200">
             <button
-              className="btn btn-md"
+              className="btn bg-transparent btn-sm btn-outline border-0 underline"
               onClick={() => {
                 reset(emptyFilter);
               }}
             >
               Reset
             </button>
-            <span className="text-2xl font-bold text-slate-900">Filters</span>
+            <span className="text-2xl font-bold">Filters</span>
             <CloseIcon
               fontSize="large"
-              style={{ color: "black" }}
+              className="bg-base-200 cursor-pointer hover:bg-base-300 rounded-full p-1"
               onClick={() => {
                 reset(filter);
                 setShowFilter(!showFilter);
@@ -133,7 +130,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <AccessTimeIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="jobPosted">
+                  <label className="label text-xl" htmlFor="jobPosted">
                     Job Posted
                   </label>
                 </div>
@@ -158,7 +155,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <WorkIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="jobType">
+                  <label className="label text-xl" htmlFor="jobType">
                     Job Type
                   </label>
                 </div>
@@ -183,7 +180,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <AttachMoneyIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="wage">
+                  <label className="label text-xl" htmlFor="wage">
                     Pay
                   </label>
                 </div>
@@ -210,7 +207,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <AbcIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="english">
+                  <label className="label text-xl" htmlFor="english">
                     English Level
                   </label>
                 </div>
@@ -240,7 +237,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <LanguageIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="otherLanguage">
+                  <label className="label text-xl" htmlFor="otherLanguage">
                     Other Languages
                   </label>
                 </div>
@@ -261,14 +258,11 @@ export default function JobList() {
                 })}
               </div>
 
-
               {/* Shift Time Category */}
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <WorkHistoryIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black">
-                    Shift Time
-                  </label>
+                  <label className="label text-xl text-black">Shift Time</label>
                 </div>
 
                 <label className="label cursor-pointer">
@@ -292,78 +286,93 @@ export default function JobList() {
                     {...register("anyShiftTime")}
                   />
                 </label>
-                
-                <div className={watch("anyShiftTime")==="true"?"hidden":""}>
-                <label className="label ml-6">
-                  <span> Start Time After</span>
-                  <div className="form-control">
-                    <div className="input-group">
-                    <button className="btn" type="button"
-                      onClick={()=>{
-                        const newIndex = ( TIME_OF_DAY.indexOf(watch("shiftTime.start_after"))- 1 + TIME_OF_DAY.length) % TIME_OF_DAY.length;
-                        setValue("shiftTime.start_after", TIME_OF_DAY[newIndex]);
-                      }}>
-                    -
-                    </button>
-                      <select 
-                        className="select"
-                        {...register("shiftTime.start_after")}
-                      >
-                        {TIME_OF_DAY.map((time, key) => <option key={key}>{time}</option>)}
-                      </select>
-                      <button 
-                      className="btn"
-                      type="button"
-                      onClick={()=>{
-                        const newIndex = ( TIME_OF_DAY.indexOf(watch("shiftTime.start_after"))+ 1) % TIME_OF_DAY.length;
-                        setValue("shiftTime.start_after", TIME_OF_DAY[newIndex]);
-                      }}
-                      >+</button>
+
+                <div className={watch("anyShiftTime") === "true" ? "hidden" : ""}>
+                  <label className="label ml-6">
+                    <span> Start Time After</span>
+                    <div className="form-control">
+                      <div className="input-group">
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            const newIndex =
+                              (TIME_OF_DAY.indexOf(watch("shiftTime.start_after")) -
+                                1 +
+                                TIME_OF_DAY.length) %
+                              TIME_OF_DAY.length;
+                            setValue("shiftTime.start_after", TIME_OF_DAY[newIndex]);
+                          }}
+                        >
+                          -
+                        </button>
+                        <select className="select" {...register("shiftTime.start_after")}>
+                          {TIME_OF_DAY.map((time, key) => (
+                            <option key={key}>{time}</option>
+                          ))}
+                        </select>
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            const newIndex =
+                              (TIME_OF_DAY.indexOf(watch("shiftTime.start_after")) + 1) %
+                              TIME_OF_DAY.length;
+                            setValue("shiftTime.start_after", TIME_OF_DAY[newIndex]);
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  </label>
 
-                </label>
-
-                <label className="label ml-6">
-                  <span> End Time Before</span>
-                  <div className="form-control">
-                    <div className="input-group">
-                    <button className="btn" type="button"
-                      onClick={()=>{
-                        const newIndex = ( TIME_OF_DAY.indexOf(watch("shiftTime.end_before"))- 1 + TIME_OF_DAY.length) % TIME_OF_DAY.length;
-                        setValue("shiftTime.end_before", TIME_OF_DAY[newIndex]);
-                      }}>
-                    -
-                    </button>
-                      <select 
-                        className="select"
-                        {...register("shiftTime.end_before")}
-                      >
-                        {TIME_OF_DAY.map((time, key) => <option key={key}>{time}</option>)}
-                      </select>
-                      <button 
-                      className="btn"
-                      type="button"
-                      onClick={()=>{
-                        const newIndex = ( TIME_OF_DAY.indexOf(watch("shiftTime.end_before"))+ 1) % TIME_OF_DAY.length;
-                        setValue("shiftTime.end_before", TIME_OF_DAY[newIndex]);
-                      }}
-                      >+</button>
+                  <label className="label ml-6">
+                    <span> End Time Before</span>
+                    <div className="form-control">
+                      <div className="input-group">
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            const newIndex =
+                              (TIME_OF_DAY.indexOf(watch("shiftTime.end_before")) -
+                                1 +
+                                TIME_OF_DAY.length) %
+                              TIME_OF_DAY.length;
+                            setValue("shiftTime.end_before", TIME_OF_DAY[newIndex]);
+                          }}
+                        >
+                          -
+                        </button>
+                        <select className="select" {...register("shiftTime.end_before")}>
+                          {TIME_OF_DAY.map((time, key) => (
+                            <option key={key}>{time}</option>
+                          ))}
+                        </select>
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            const newIndex =
+                              (TIME_OF_DAY.indexOf(watch("shiftTime.end_before")) + 1) %
+                              TIME_OF_DAY.length;
+                            setValue("shiftTime.end_before", TIME_OF_DAY[newIndex]);
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
-                  </div>
-
-                </label>
+                  </label>
                 </div>
-
               </div>
 
               {/* Distance Category */}
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <LocationOnIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black">
-                    Distance
-                  </label>
+                  <label className="label text-xl text-black">Distance</label>
                 </div>
                 <label className="label cursor-pointer">
                   <span className="label-text text-lg">Any Distance</span>
@@ -393,7 +402,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <LocalHospitalIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="benefit">
+                  <label className="label text-xl" htmlFor="benefit">
                     Benefit
                   </label>
                 </div>
@@ -447,10 +456,12 @@ export default function JobList() {
     return filteredJobs
       ? filteredJobs.map((job) => {
           return (
-            <li className="flex flex-row w-full mt-5 " key={job.id}>
+            <li className="flex flex-row w-full mt-5 px-4" key={job.id}>
               <div
-                className={`card card-compact w-full rounded-xl border-slate-400 border-4 flex flex-row justify-between ${
-                  job.id && job.id == jobId ? "active" : ""
+                className={`card card-compact w-full rounded-3xl border-2 flex flex-row justify-between ${
+                  job.id && job.id == jobId
+                    ? "border-primary"
+                    : "border-base-300 bg-base-100 drop-shadow-lg"
                 }`}
               >
                 <Link to={job.id} className="card-body w-10/12 flex-none">
@@ -481,7 +492,7 @@ export default function JobList() {
   return (
     <div className="relative w-full flex flex-col min-w-0 bg-black-50">
       {/* Search bar and filter icon */}
-      <div className="fixed w-full md:sticky md:top-0 z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-orange-200">
+      <div className="fixed w-full md:sticky md:top-0 z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-base-100">
         <div className="form-control">
           <div className="input-group">
             <input
@@ -494,14 +505,14 @@ export default function JobList() {
               }}
             />
             <button
-              className="btn btn-square"
+              className="btn btn-square bg-primary border-primary"
               onClick={() => {
                 setSearch(searchRef.current.value);
               }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-6 w-6 text-base-100"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
