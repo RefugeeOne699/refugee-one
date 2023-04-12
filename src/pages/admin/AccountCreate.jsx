@@ -43,7 +43,7 @@ export default function AccountCreate() {
         <div className="card-body">
           <p className="mb-5 text-2xl">Create an Account</p>
           <p>
-            <InfoIcon /> <strong>Note:</strong>
+            <InfoIcon /> <text-bold>Note:</text-bold>
             <p>
               Kindly assist newly added clients to update their phone number and address
               on their profile page once logged in. <br /> Updating address will enable

@@ -95,14 +95,7 @@ export default function SignIn() {
             </button>
           </form>
           <div>
-            <hr
-              style={{
-                background: "#666663",
-                height: "2px",
-                border: "none",
-                margin: "1rem 0 1rem 0",
-              }}
-            />
+            <hr className="border-t-2 border-gray-500 my-4" />
           </div>
           <div className="text-sm">
             <div className="flex justify-start gap-4">
@@ -119,7 +112,7 @@ export default function SignIn() {
           <div className="text-sm">
             <div className="flex justify-start gap-4">
               <BadgeIcon fontSize="small" />
-              New Employer to RefugeeOne?{" "}
+              New Employer to RefugeeOne?
             </div>
             <div className="flex space-around gap-4 text-sm">
               {
@@ -140,6 +133,8 @@ export default function SignIn() {
                 <a
                   href="https://www.refugeeone.org/contact.html"
                   className="underline text-orange-500"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   Connect with RefugeeOne team to get started
                 </a>

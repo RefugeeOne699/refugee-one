@@ -98,6 +98,8 @@ export default function SetPassword() {
                 <a
                   href="https://www.refugeeone.org/contact.html"
                   className="underline text-orange-500"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   Connect with RefugeeOne team to get started
                 </a>
