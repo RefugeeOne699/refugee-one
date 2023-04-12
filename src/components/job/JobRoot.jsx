@@ -7,10 +7,12 @@ import JobList from "@/components/job/jobList/JobList";
 import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
 
+import { useDashboard } from "./JobDashboard";
+
 /**
  * if Job has a `data` in the props, it will not fetch the job list, instead it will just use the `data`
  */
-export default function JobRoot({ data }) {
+export default function JobRoot() {
   const auth = useAuth();
   const { listJobs } = useJob();
   const { run, data: pulledJobs } = useRequest(
@@ -41,13 +43,14 @@ export default function JobRoot({ data }) {
       },
     }
   );
+  const dashboard = useDashboard();
   useEffect(() => {
-    if (auth.user && !data) {
+    if (auth.user && !dashboard) {
       (async () => run())();
     }
-  }, [auth.user, data]);
+  }, [auth.user, dashboard]);
 
-  const jobs = data || pulledJobs;
+  const jobs = dashboard ? dashboard.jobs : pulledJobs;
 
   const { jobId } = useParams();
   const sideMenuMobile = jobId ? "hidden" : "w-full";

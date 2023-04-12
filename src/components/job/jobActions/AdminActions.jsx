@@ -1,53 +1,71 @@
 import { useRequest } from "ahooks";
 import { useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import { JOB_STATUS } from "@/constants";
 import { useJob } from "@/models";
 
+import { useDashboard } from "../JobDashboard";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 
 export default function AdminActions({ job, jobId }) {
   const [jobFeedback, setJobFeedback] = useState("");
   const { approveJob, rejectJob } = useJob();
-  const approveJobRequest = useRequest(async () => approveJob(jobId), {
-    manual: true,
-    onSuccess: () => {
-      toast.success("Job has been approved!");
-    },
-    onError: () => {
-      toast.error("Failed to approve job");
-    },
-  });
+  const navigate = useNavigate();
+  const dashboard = useDashboard();
 
-  const rejectJobRequest = useRequest(async () => rejectJob(jobId, jobFeedback), {
-    manual: true,
-    onSuccess: () => {
-      toast.success("Job has been rejected!");
+  const { run, loading } = useRequest(
+    async (willApprove, jobId, feedback) => {
+      if (willApprove) {
+        await approveJob(jobId);
+      } else {
+        await rejectJob(jobId, feedback);
+      }
     },
-    onError: () => {
-      toast.error("Failed to reject job");
-    },
-  });
+    {
+      manual: true,
+      onSuccess: async (_, params) => {
+        if (dashboard === undefined) {
+          return;
+        }
+        toast.success(`Job has been ${params[0] ? "approved" : "rejected"}!`);
+        await dashboard.jobsRefresh();
+        await dashboard.countRefresh();
+        navigate("..", { replace: true });
+      },
+      onError: (error, params) => {
+        toast.error(
+          `Failed to ${params[0] ? "approve" : "rejecte"} job: ${error.message}`
+        );
+      },
+    }
+  );
 
   const reject = async () => {
-    await rejectJobRequest.run(jobId, jobFeedback);
+    await run(false, jobId, jobFeedback);
   };
 
   const approve = async () => {
-    await approveJobRequest.run(jobId);
+    await run(true, jobId);
   };
 
   const buttons = useMemo(() => {
     if (job.status === JOB_STATUS.PENDING) {
       return (
         <>
-          <label htmlFor="feedback-display" className="btn btn-error w-32">
+          <label
+            htmlFor="feedback-display"
+            className={`btn btn-error w-32 ${loading ? "loading btn-disabled" : ""}`}
+          >
             Reject
           </label>
-          <EditButton jobId={jobId} />
-          <button onClick={approve} className="btn btn-success w-32">
+          <EditButton jobId={jobId} disabled={loading} />
+          <button
+            onClick={approve}
+            className={`btn btn-success w-32 ${loading ? "loading btn-disabled" : ""}`}
+          >
             Approve
           </button>
         </>
@@ -67,7 +85,7 @@ export default function AdminActions({ job, jobId }) {
       return <button className="btn btn-error w-32">Delete</button>;
     }
     return null;
-  }, [job.status]);
+  }, [job.status, loading]);
 
   return (
     <>

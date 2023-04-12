@@ -1,6 +1,6 @@
 import { useRequest } from "ahooks";
 import { where } from "firebase/firestore";
-import { useEffect, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { NavLink, useParams } from "react-router-dom";
 
@@ -21,12 +21,23 @@ const constraints = {
   todo: JOB_STATUS.REJECTED,
 };
 
+const DashboardContext = createContext(undefined);
+/**
+ *  if the context value is undefined, it means we are not at the context of an admin/employer dashboard
+ */
+export const useDashboard = () => useContext(DashboardContext);
+
 // This component is for employer and admin job management dashboard
 export default function JobDashboard({ role }) {
   const { tabUrl } = useParams();
   const { listJobs, countJobs } = useJob();
 
-  const { data, run, loading } = useRequest(
+  const {
+    data,
+    run,
+    loading,
+    refresh: jobsRefresh,
+  } = useRequest(
     async (tabUrl) =>
       listJobs(where("status", "==", constraints[tabUrl] || JOB_STATUS.PENDING)),
     {
@@ -41,6 +52,7 @@ export default function JobDashboard({ role }) {
     data: jobCounts,
     run: runCount,
     loading: counting,
+    refresh: countRefresh,
   } = useRequest(
     async () => {
       let data = {};
@@ -85,14 +97,26 @@ export default function JobDashboard({ role }) {
     if (loading) {
       return <Spin className="h-8 w-8" />;
     }
-    //todo: display and filter
-    return <JobRoot data={data} />;
+    return <JobRoot />;
   }, [data, jobCounts, loading, counting, tabUrl]);
 
+  const value = useMemo(
+    () => ({
+      // jobs: all jobs that should be in the active tab (i.e all jobs will be pending jobs if we are in the pending tab)
+      jobs: data,
+      jobsRefresh,
+      countRefresh,
+      jobsLoading: loading,
+    }),
+    [data, loading]
+  );
+
   return (
-    <div className="flex flex-col max-h-screen h-full">
-      {tabs}
-      {content}
-    </div>
+    <DashboardContext.Provider value={value}>
+      <div className="flex flex-col max-h-screen h-full">
+        {tabs}
+        {content}
+      </div>
+    </DashboardContext.Provider>
   );
 }
