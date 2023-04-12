@@ -149,12 +149,12 @@ export default function Navbar() {
           isOpen={open}
           onStateChange={(state) => setOpen(state.isOpen)}
           crossButtonClassName={"mr-4"}
-          crossClassName={"bg-black"}
+          crossClassName={"bg-base-content"}
           overlayClassName={"opacity-25"}
           menuClassName={
             "fixed top-0 left-0 bg-base-100 px-4 pt-16 text-xl font-semibold"
           }
-          burgerBarClassName={"bg-black"}
+          burgerBarClassName={"bg-base-content"}
           burgerButtonClassName={"fixed top-4 left-4 z-50 w-10 h-8"}
           className={"fixed top-0 left-0 w-full h-full"}
         >
