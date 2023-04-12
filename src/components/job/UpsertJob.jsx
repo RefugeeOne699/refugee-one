@@ -65,6 +65,7 @@ export default function UpsertJob({ update }) {
         data.address.state,
         data.address.zipcode
       );
+      data.location = `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`;
       // edit
       if (jobData) {
         Object.entries(data).forEach(([key, value]) => {
@@ -79,7 +80,6 @@ export default function UpsertJob({ update }) {
         owner: auth.userRef,
         status: JOB_STATUS.PENDING,
         datePost: new Date(),
-        location: `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`,
         coordinate: coordinate,
         dateCreated: new Date(),
       });
