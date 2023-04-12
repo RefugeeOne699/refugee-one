@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import AbcIcon from "@mui/icons-material/Abc";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
@@ -7,7 +6,6 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import LanguageIcon from "@mui/icons-material/Language";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import SearchIcon from "@mui/icons-material/Search";
 import WorkIcon from "@mui/icons-material/Work";
 import { useRequest } from "ahooks";
 import _ from "lodash";
@@ -54,7 +52,7 @@ export default function JobList() {
     },
     {
       manual: true,
-      onError: (error) => {
+      onError: () => {
         toast.error("Failed to get job list");
       },
     }

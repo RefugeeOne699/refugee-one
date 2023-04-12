@@ -34,7 +34,8 @@
     "react-hot-toast": "^2.4.0",
     "react-router-dom": "^6.4.3",
     "source-map": "^0.7.4",
-    "tw-elements": "^1.0.0-beta1"
+    "tw-elements": "^1.0.0-beta1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",

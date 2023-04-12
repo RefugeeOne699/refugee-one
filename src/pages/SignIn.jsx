@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import { useRequest } from "ahooks";
@@ -15,9 +14,9 @@ export default function SignIn() {
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
 
-  //   if (auth.isSignedIn) {
-  //     return <Navigate to="/" replace />;
-  //   }
+  if (auth.isSignedIn()) {
+    return <Navigate to="/" replace />;
+  }
 
   // follow this function for a better practice with interactive button
   const { run: signIn, loading: signInLoading } = useRequest(
