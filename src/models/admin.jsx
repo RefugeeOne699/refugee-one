@@ -24,40 +24,6 @@ const AdminContext = createContext({
   countUsers: (_queryConstraints) => Number,
 });
 
-const updateUser = async (userId, payload) => {
-  if (payload.id) {
-    delete payload.id;
-  }
-
-  await runTransaction(database, async (transaction) => {
-    const userDocRef = doc(database, "Users", userId);
-    const userDoc = await transaction.get(userDocRef);
-    if (!userDoc.exists()) {
-      throw `User ${userId} does not exist`;
-    }
-    transaction.update(userDocRef, payload);
-  });
-};
-
-const approveUser = async (userId) => {
-  await updateUser(userId, { status: USER_STATUS.APPROVED });
-};
-
-const deleteUser = async (userId) => {
-  const userSaveCollection = collection(database, "Users", userId, "JobsSaved");
-  const userJobs = await getDocs(userSaveCollection);
-  const awaitIds = userJobs.docs.map(async (doc) => {
-    return doc.id;
-  });
-  const jobsToDelete = await Promise.all(awaitIds);
-  await deleteDoc(doc(database, "Users", userId));
-  const jobDeleted = jobsToDelete.map(async (jobId) => {
-    await deleteDoc(doc(database, "Jobs", jobId));
-    return null;
-  });
-  await Promise.all(jobDeleted);
-};
-
 const AdminContextProvider = ({ children }) => {
   const auth = useAuth();
   const listUsers = async (queryConstraints) => {
@@ -112,6 +78,21 @@ const AdminContextProvider = ({ children }) => {
       await updateUser(userId, { status: USER_STATUS.APPROVED });
       await auth.resetPassWordByEmail(user.email);
     }
+  };
+
+  const deleteUser = async (userId) => {
+    const userSaveCollection = collection(database, "Users", userId, "JobsSaved");
+    const userJobs = await getDocs(userSaveCollection);
+    const awaitIds = userJobs.docs.map(async (doc) => {
+      return doc.id;
+    });
+    const jobsToDelete = await Promise.all(awaitIds);
+    await deleteDoc(doc(database, "Users", userId));
+    const jobDeleted = jobsToDelete.map(async (jobId) => {
+      await deleteDoc(doc(database, "Jobs", jobId));
+      return null;
+    });
+    await Promise.all(jobDeleted);
   };
 
   const value = useMemo(

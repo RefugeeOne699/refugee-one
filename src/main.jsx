@@ -93,11 +93,11 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "accounts",
+            path: "users",
             children: [
               {
                 index: true,
-                element: <Navigate to="clients" />,
+                element: <Navigate to="client" />,
               },
               {
                 path: ":tabUrl",

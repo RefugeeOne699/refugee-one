@@ -33,7 +33,7 @@ export default function JobsAdmin() {
       <div className="tabs tabs-boxed">
         {menu.map((tab) => (
           <NavLink
-            to={`/admin/accounts/${tab.url}`}
+            to={`/admin/users/${tab.url}`}
             className={({ isActive }) => `tab ${isActive ? "tab-active" : null}`}
             key={tab.name}
           >
