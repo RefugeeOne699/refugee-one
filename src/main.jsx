@@ -94,6 +94,15 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: "accounts",
+            children: [
+              {
+                path: "create",
+                element: <Admin.AccountCreate />,
+              },
+            ],
+          },
         ],
       },
       {
@@ -121,15 +130,6 @@ const router = createBrowserRouter([
                     element: <Job.View />,
                   },
                 ],
-              },
-            ],
-          },
-          {
-            path: "accounts",
-            children: [
-              {
-                path: "create",
-                element: <Admin.AccountCreate />,
               },
             ],
           },
