@@ -14,7 +14,7 @@ export default function Job() {
         <JobList />
       </div>
       <div
-        className={`${contentMobile} md:block md:basis-1/2 lg:basis-2/3 flex-none bg-slate-200`}
+        className={`${contentMobile} md:block md:basis-1/2 lg:basis-2/3 flex-none bg-base-200`}
       >
         <Outlet />
       </div>

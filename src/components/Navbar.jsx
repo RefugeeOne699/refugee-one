@@ -144,7 +144,7 @@ export default function Navbar() {
   return (
     <>
       <div className="md:hidden max-md:block h-16">
-        <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-base-300 h-16 bg-base-100"></div>
+        <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-base-300 h-16 bg-base-200"></div>
         <Menu
           isOpen={open}
           onStateChange={(state) => setOpen(state.isOpen)}
@@ -166,7 +166,7 @@ export default function Navbar() {
         <NavbarList setOpen={setOpen} />
       </div>
 
-      <div className="fixed top-0 left-0 w-60 h-screen border-r-4 border-base-300 bg-base-100 max-md:hidden">
+      <div className="fixed top-0 left-0 w-60 h-screen border-r-1 border-base-300 bg-base-200 max-md:hidden">
         <NavbarList setOpen={setOpen} />
       </div>
     </>

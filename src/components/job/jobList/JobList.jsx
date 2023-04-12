@@ -91,9 +91,9 @@ export default function JobList() {
   const filterUI = useMemo(() => {
     if (showFilter) {
       return (
-        <div className="absolute z-10 top-0 left-0 w-full h-full bg-white overflow-scroll">
+        <div className="absolute z-10 top-0 left-0 w-full h-full bg-base-100 overflow-scroll">
           {/* Top Bar */}
-          <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-slate-200">
+          <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-base-200">
             <button
               className="btn btn-md"
               onClick={() => {
@@ -102,10 +102,10 @@ export default function JobList() {
             >
               Reset
             </button>
-            <span className="text-2xl font-bold text-slate-900">Filters</span>
+            <span className="text-2xl font-bold">Filters</span>
             <CloseIcon
               fontSize="large"
-              style={{ color: "black" }}
+              className="bg-base-200 cursor-pointer hover:bg-base-300 rounded-full p-1"
               onClick={() => {
                 reset(filter);
                 setShowFilter(!showFilter);
@@ -123,7 +123,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <AccessTimeIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="jobPosted">
+                  <label className="label text-xl" htmlFor="jobPosted">
                     Job Posted
                   </label>
                 </div>
@@ -148,7 +148,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <WorkIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="jobType">
+                  <label className="label text-xl" htmlFor="jobType">
                     Job Type
                   </label>
                 </div>
@@ -173,7 +173,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <AttachMoneyIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="wage">
+                  <label className="label text-xl" htmlFor="wage">
                     Pay
                   </label>
                 </div>
@@ -200,7 +200,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <AbcIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="english">
+                  <label className="label text-xl" htmlFor="english">
                     English Level
                   </label>
                 </div>
@@ -230,7 +230,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <LanguageIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="otherLanguage">
+                  <label className="label text-xl" htmlFor="otherLanguage">
                     Other Languages
                   </label>
                 </div>
@@ -255,7 +255,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <LocalHospitalIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="benefit">
+                  <label className="label text-xl" htmlFor="benefit">
                     Benefit
                   </label>
                 </div>
@@ -280,7 +280,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <LocationOnIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black" htmlFor="wage">
+                  <label className="label text-xl" htmlFor="wage">
                     Distance
                   </label>
                 </div>
@@ -341,10 +341,12 @@ export default function JobList() {
     return filteredJobs
       ? filteredJobs.map((job) => {
           return (
-            <li className="flex flex-row w-full mt-5 " key={job.id}>
+            <li className="flex flex-row w-full mt-5 px-4" key={job.id}>
               <div
-                className={`card card-compact w-full rounded-xl border-slate-400 border-4 flex flex-row justify-between ${
-                  job.id && job.id == jobId ? "active" : ""
+                className={`card card-compact w-full rounded-xl border-2 flex flex-row justify-between ${
+                  job.id && job.id == jobId
+                    ? "border-primary"
+                    : "border-base-300 bg-base-100 drop-shadow-lg"
                 }`}
               >
                 <Link to={job.id} className="card-body w-10/12 flex-none">
@@ -375,7 +377,7 @@ export default function JobList() {
   return (
     <div className="relative w-full flex flex-col min-w-0 bg-black-50">
       {/* Search bar and filter icon */}
-      <div className="fixed w-full md:sticky md:top-0 z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-orange-200">
+      <div className="fixed w-full md:sticky md:top-0 z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-base-100">
         <div className="form-control">
           <div className="input-group">
             <input
@@ -388,14 +390,14 @@ export default function JobList() {
               }}
             />
             <button
-              className="btn btn-square"
+              className="btn btn-square bg-primary border-primary"
               onClick={() => {
                 setSearch(searchRef.current.value);
               }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-6 w-6 text-base-100"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
