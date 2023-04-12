@@ -155,16 +155,20 @@ export default function ProfileSetProfile() {
               </div>
             </li>
           </ul>
-          <div className="m-2 flex flex-col md:flex-row md:gap-4 justify-center">
+          <div className="mt-4 m-2 flex flex-col md:flex-row md:gap-4 justify-center">
             <button
               type="submit"
-              className={`btn btn-xs btn-md lg:btn-lg m-2 ${loading ? "loading" : ""}`}
+              className={`btn btn-primary btn-xs btn-md lg:btn-lg m-2 ${
+                loading ? "loading" : ""
+              }`}
               disabled={loading}
             >
               {loading ? "loading" : "Save Profile"}
             </button>
             <button
-              className={`btn btn-xs btn-md lg:btn-lg m-2 ${loading ? "loading" : ""}`}
+              className={`btn btn-outline btn-xs btn-md lg:btn-lg m-2 ${
+                loading ? "loading" : ""
+              }`}
               onClick={handleCancel}
               disabled={loading}
             >
