@@ -45,17 +45,17 @@ const approveUser = async (userId) => {
 
 const deleteUser = async (userId) => {
   const userSaveCollection = collection(database, "Users", userId, "JobsSaved");
-  const userJobs = await getDocs(userSaveCollection)
+  const userJobs = await getDocs(userSaveCollection);
   const awaitIds = userJobs.docs.map(async (doc) => {
-    return doc.id
-  })
-  const jobsToDelete = await Promise.all(awaitIds)
-  await deleteDoc(doc(database, "Users", userId))
-  const jobDeleted = jobsToDelete.map(async (jobId) =>{
-    await deleteDoc(doc(database, "Jobs", jobId))
-    return null
-  })
-  await Promise.all(jobDeleted)
+    return doc.id;
+  });
+  const jobsToDelete = await Promise.all(awaitIds);
+  await deleteDoc(doc(database, "Users", userId));
+  const jobDeleted = jobsToDelete.map(async (jobId) => {
+    await deleteDoc(doc(database, "Jobs", jobId));
+    return null;
+  });
+  await Promise.all(jobDeleted);
 };
 
 const AdminContextProvider = ({ children }) => {
