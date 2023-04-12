@@ -38,13 +38,15 @@ export default function ProfileAccount() {
                 Address
               </div>
               <div className="flex justify-end">
-                {auth.user?.address?.street +
-                  ", " +
-                  auth.user?.address?.city +
-                  ", " +
-                  auth.user?.address?.state +
-                  ", " +
-                  auth.user?.address?.zipcode}
+                {auth.user?.address
+                  ? auth.user.address.street +
+                    ", " +
+                    auth.user.address.city +
+                    ", " +
+                    auth.user.address.state +
+                    ", " +
+                    auth.user.address.zipcode
+                  : "No address"}
               </div>
             </div>
           </li>
@@ -86,13 +88,15 @@ export default function ProfileAccount() {
                   <span className="label-text">Address</span>
                 </label>
                 <div className="flex justify-start">
-                  {auth.user?.address?.street +
-                    ", " +
-                    auth.user?.address?.city +
-                    ", " +
-                    auth.user?.address?.state +
-                    ", " +
-                    auth.user?.address?.zipcode}
+                  {auth.user?.address
+                    ? auth.user.address.street +
+                      ", " +
+                      auth.user.address.city +
+                      ", " +
+                      auth.user.address.state +
+                      ", " +
+                      auth.user.address.zipcode
+                    : "No address"}
                 </div>
               </div>
             </div>
