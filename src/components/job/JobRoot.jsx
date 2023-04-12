@@ -61,7 +61,7 @@ export default function JobRoot() {
         <JobList data={jobs} />
       </div>
       <div
-        className={`${contentMobile} md:block md:w-1/2 lg:w-2/3 flex-none bg-base-200 max-h-full`}
+        className={`${contentMobile} md:block md:w-1/2 lg:w-2/3 flex-none bg-base-200 md:max-h-full max-md:h-fit`}
       >
         <Outlet />
       </div>

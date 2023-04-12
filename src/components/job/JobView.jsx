@@ -12,16 +12,13 @@ import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-import { ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
 
 import Center from "../Center";
 import ErrorInfo from "../Error";
 import Spin from "../Spin";
-import AdminActions from "./jobActions/AdminActions";
-import ClientActions from "./jobActions/ClientActions";
-import EmployerActions from "./jobActions/EmployerActions";
+import JobActions from "./jobActions/JobActions";
 
 export default function JobView() {
   const auth = useAuth();
@@ -78,7 +75,7 @@ export default function JobView() {
     return data ? (
       <div className="h-full w-full flex flex-col justify-between">
         <div className="flex flex-col card text-black">
-          <div className="card-body items-center">
+          <div className="card-body items-center ">
             <p className="card-title text-2xl">{data.title}</p>
             <p className="text-bold text-1xl">{data.company}</p>
             <p className="text-bold text-1xl">
@@ -194,6 +191,7 @@ export default function JobView() {
                 <p className="break-all w-4/5">{data.description}</p>
               </div>
             </div>
+            <JobActions />
           </div>
           <div className="flex w-full flex-col lg:flex-row">
             <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
@@ -276,14 +274,8 @@ export default function JobView() {
               <p>{data.description}</p>
             </div>
           </div>
-          {auth.user.role === ROLES.ADMIN ? (
-            <AdminActions job={data} jobId={jobId} />
-          ) : auth.user.role === ROLES.EMPLOYER ? (
-            <EmployerActions job={data} jobId={jobId} />
-          ) : (
-            <ClientActions jobId={jobId} />
-          )}
         </div>
+        <JobActions job={data} jobId={jobId} />
       </div>
     ) : (
       <p>Nothing</p>
