@@ -37,7 +37,7 @@ export default function AdminActions({ job, jobId }) {
       },
       onError: (error, params) => {
         toast.error(
-          `Failed to ${params[0] ? "approve" : "rejecte"} job: ${error.message}`
+          `Failed to ${params[0] ? "approve" : "reject"} job: ${error.message}`
         );
       },
     }
