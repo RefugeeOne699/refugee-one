@@ -7,6 +7,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import WorkIcon from "@mui/icons-material/Work";
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
 import { useRequest } from "ahooks";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -23,6 +24,7 @@ import {
   getSearchAndFilterResult,
   JOB_POSTED_FILTER,
   OTHER_LANGUAGE_FILTER,
+  TIME_OF_DAY,
   WAGE_FILTER,
 } from "./jobFilter";
 
@@ -65,9 +67,14 @@ export default function JobList() {
     wage: "0",
     english: [],
     benefit: [],
-    anyDistance: true,
     distance: "500",
+    anyDistance: true,
     otherLanguage: [],
+    shiftTime: {
+      start_after: "9am",
+      end_before: "6pm",
+    },
+    anyShiftTime: "true", // this is a string because useform requires a string value for radio inputs
   };
 
   // useStates for filter and search
@@ -78,7 +85,7 @@ export default function JobList() {
 
   const searchRef = useRef();
 
-  const { register, reset, watch, getValues, handleSubmit } = useForm({
+  const { register, reset, watch, getValues, handleSubmit, setValue } = useForm({
     defaultValues: emptyFilter,
   });
 
@@ -91,7 +98,7 @@ export default function JobList() {
   const filterUI = useMemo(() => {
     if (showFilter) {
       return (
-        <div className="absolute z-10 top-0 left-0 w-full h-full bg-base-100 overflow-scroll">
+        <div className="absolute z-10 top-0 left-0 w-full h-full bg-white overflow-scroll">
           {/* Top Bar */}
           <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-base-200">
             <button
@@ -251,6 +258,146 @@ export default function JobList() {
                 })}
               </div>
 
+              {/* Shift Time Category */}
+              <div className="form-control pt-2">
+                <div className="flex flex-row items-center">
+                  <WorkHistoryIcon fontSize="large" className="mr-1" />
+                  <label className="label text-xl text-black">Shift Time</label>
+                </div>
+
+                <label className="label cursor-pointer">
+                  <span className="label-text text-lg">Any Shift Time</span>
+                  <input
+                    type="radio"
+                    name="radio-anyShiftTime"
+                    className="radio radio-primary"
+                    value="true"
+                    {...register("anyShiftTime")}
+                  />
+                </label>
+
+                <label className="label cursor-pointer">
+                  <span className="label-text text-lg">Specify Time</span>
+                  <input
+                    type="radio"
+                    name="radio-anyShiftTime"
+                    className="radio radio-primary"
+                    value="false"
+                    {...register("anyShiftTime")}
+                  />
+                </label>
+
+                <div className={watch("anyShiftTime") === "true" ? "hidden" : ""}>
+                  <label className="label ml-6">
+                    <span> Start Time After</span>
+                    <div className="form-control">
+                      <div className="input-group">
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            const newIndex =
+                              (TIME_OF_DAY.indexOf(watch("shiftTime.start_after")) -
+                                1 +
+                                TIME_OF_DAY.length) %
+                              TIME_OF_DAY.length;
+                            setValue("shiftTime.start_after", TIME_OF_DAY[newIndex]);
+                          }}
+                        >
+                          -
+                        </button>
+                        <select className="select" {...register("shiftTime.start_after")}>
+                          {TIME_OF_DAY.map((time, key) => (
+                            <option key={key}>{time}</option>
+                          ))}
+                        </select>
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            const newIndex =
+                              (TIME_OF_DAY.indexOf(watch("shiftTime.start_after")) + 1) %
+                              TIME_OF_DAY.length;
+                            setValue("shiftTime.start_after", TIME_OF_DAY[newIndex]);
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </label>
+
+                  <label className="label ml-6">
+                    <span> End Time Before</span>
+                    <div className="form-control">
+                      <div className="input-group">
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            const newIndex =
+                              (TIME_OF_DAY.indexOf(watch("shiftTime.end_before")) -
+                                1 +
+                                TIME_OF_DAY.length) %
+                              TIME_OF_DAY.length;
+                            setValue("shiftTime.end_before", TIME_OF_DAY[newIndex]);
+                          }}
+                        >
+                          -
+                        </button>
+                        <select className="select" {...register("shiftTime.end_before")}>
+                          {TIME_OF_DAY.map((time, key) => (
+                            <option key={key}>{time}</option>
+                          ))}
+                        </select>
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            const newIndex =
+                              (TIME_OF_DAY.indexOf(watch("shiftTime.end_before")) + 1) %
+                              TIME_OF_DAY.length;
+                            setValue("shiftTime.end_before", TIME_OF_DAY[newIndex]);
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              {/* Distance Category */}
+              <div className="form-control pt-2">
+                <div className="flex flex-row items-center">
+                  <LocationOnIcon fontSize="large" className="mr-1" />
+                  <label className="label text-xl text-black">Distance</label>
+                </div>
+                <label className="label cursor-pointer">
+                  <span className="label-text text-lg">Any Distance</span>
+                  <input
+                    type="checkbox"
+                    name="checkbox-distance"
+                    className="checkbox checkbox-primary"
+                    {...register("anyDistance")}
+                  />
+                </label>
+                <label
+                  className={
+                    "label cursor-pointer" + (watch("anyDistance") ? " hidden" : "")
+                  }
+                >
+                  <input
+                    type="text"
+                    name="distance"
+                    className="input input-bordered w-full"
+                    {...register("distance")}
+                  />
+                  <p className="ml-4">miles</p>
+                </label>
+              </div>
+
               {/* Benefit Category */}
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
@@ -274,38 +421,6 @@ export default function JobList() {
                     </label>
                   );
                 })}
-              </div>
-
-              {/* Distance Category */}
-              <div className="form-control pt-2">
-                <div className="flex flex-row items-center">
-                  <LocationOnIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl" htmlFor="wage">
-                    Distance
-                  </label>
-                </div>
-                <label className="label cursor-pointer">
-                  <span className="label-text">Any Distance</span>
-                  <input
-                    type="checkbox"
-                    name="checkbox-distance"
-                    className="checkbox checkbox-primary"
-                    {...register("anyDistance")}
-                  />
-                </label>
-                <label
-                  className={
-                    "label cursor-pointer" + (watch("anyDistance") ? " hidden" : "")
-                  }
-                >
-                  <input
-                    type="text"
-                    name="distance"
-                    className="input input-bordered w-full"
-                    {...register("distance")}
-                  />
-                  <p className="ml-4">miles</p>
-                </label>
               </div>
 
               {/* bottom submit button */}
@@ -429,7 +544,7 @@ export default function JobList() {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full pt-16 min-w-0 md:pt-0">{jobs}</ul>
+      <ul className="menu w-full pt-16 min-w-0 md:pt-0 ">{jobs}</ul>
     </div>
   );
 }

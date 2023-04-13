@@ -184,7 +184,7 @@ export default function JobView() {
             </div>
             <div className="ml-3">
               <p className="font-bold">Job Timing:</p>
-              <p>{data.shift.detail}</p>
+              <p>{data.shift}</p>
             </div>
           </div>
           <div className="flex flex-row w-full mt-5">
