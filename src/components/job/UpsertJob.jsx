@@ -278,7 +278,7 @@ export default function UpsertJob({ update }) {
             placeholder="Please enter shift details in the following format:
             Monday-Tuesday 8:30 AM to 1 PM
             Thursday - Friday 1 PM to 5 PM"
-            {...register("shift")}
+            {...register("shift", { required: true })}
           ></textarea>
         </div>
 
