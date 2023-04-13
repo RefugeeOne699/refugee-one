@@ -8,7 +8,7 @@ import EmployerActions from "./EmployerActions";
 export default function JobActions({ job, jobId }) {
   const auth = useAuth();
   const className =
-    "items-center w-full flex flex-row justify-center pb-4 pt-4 bg-base-100 border-t-4 border-grey max-w-full";
+    "items-center w-full flex flex-row justify-center pb-4 pt-4 bg-base-100 shadow-lg max-w-full";
   // a placeholder
   if (!job && !jobId) {
     return (

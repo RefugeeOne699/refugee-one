@@ -432,7 +432,9 @@ export default function JobList({ data }) {
                     enableJobSave ? "w-10/12" : "w-full"
                   } card-body flex-none`}
                 >
-                  <div className="card-title text-xl w-full">{job.title}</div>
+                  <div className="card-title w-full">
+                    <p className="truncate">{job.title}</p>
+                  </div>
                   <div className="flex flex-row flex-wrap flex-auto">
                     <p className="truncate w-1/2">{job.company}</p>
                     <p className="truncate w-1/2">{`${job.location}`}</p>

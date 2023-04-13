@@ -188,7 +188,7 @@ export default function JobView() {
               </div>
               <div className="ml-3">
                 <p className="font-bold">Job Description:</p>
-                <p>{data.description}</p>
+                <p className="w-[4/5]">{data.description}</p>
               </div>
             </div>
           </div>
