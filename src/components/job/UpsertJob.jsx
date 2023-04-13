@@ -434,7 +434,7 @@ export default function UpsertJob({ update }) {
           <div className="flex flex-row justify-around w-1/2">
             <button
               type="button"
-              className="btn btn-outline btn-primary w-1/3"
+              className={`btn btn-outline btn-primary w-1/3 ${update ? "invisible" : ""}`}
               onClick={saveDraft}
             >
               Save as draft
