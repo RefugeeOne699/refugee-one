@@ -91,7 +91,11 @@ const AdminContextProvider = ({ children }) => {
     []
   );
 
-  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
+  return (
+    <RequireAdmin>
+      <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
+    </RequireAdmin>
+  );
 };
 
 const RequireAdmin = ({ children }) => {
@@ -104,4 +108,4 @@ const RequireAdmin = ({ children }) => {
   }
 };
 
-export { AdminContext, AdminContextProvider, RequireAdmin };
+export { AdminContext, AdminContextProvider };

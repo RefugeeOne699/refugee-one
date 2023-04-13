@@ -8,16 +8,13 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import WorkIcon from "@mui/icons-material/Work";
 import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
-import { useRequest } from "ahooks";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 
-import { BENEFIT_TYPE, ENGLISH_LEVEL, SHIFT_TYPE } from "@/constants";
-import { useAuth, useJob } from "@/models";
-import { calculateDistance } from "@/utils";
+import { BENEFIT_TYPE, ENGLISH_LEVEL, ROLES, SHIFT_TYPE } from "@/constants";
+import { useAuth } from "@/models";
 
 import JobSave from "../JobSave";
 import {
@@ -28,38 +25,8 @@ import {
   WAGE_FILTER,
 } from "./jobFilter";
 
-export default function JobList() {
-  const { listJobs } = useJob();
+export default function JobList({ data }) {
   const { jobId } = useParams();
-  const { run, data } = useRequest(
-    async () => {
-      return listJobs().then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          if (auth.user.coordinate && data[i].coordinate) {
-            let userCoordinate = auth.user.coordinate;
-            let jobCoordinate = data[i].coordinate;
-            const distance = calculateDistance(
-              userCoordinate.latitude,
-              userCoordinate.longitude,
-              jobCoordinate.latitude,
-              jobCoordinate.longitude
-            );
-            data[i].distance = distance.toString();
-          } else {
-            data[i].distance = null;
-          }
-        }
-        return data;
-      });
-    },
-    {
-      manual: true,
-      onError: () => {
-        toast.error("Failed to get job list");
-      },
-    }
-  );
-  const auth = useAuth();
 
   const emptyFilter = {
     jobPosted: JOB_POSTED_FILTER[0],
@@ -438,19 +405,14 @@ export default function JobList() {
     }
   }, [showFilter, getValues()]);
 
-  useEffect(() => {
-    if (auth.user) {
-      (async () => {
-        await run();
-      })();
-    }
-  }, []);
-
   // useEffect for filter and search
   useEffect(() => {
     const filteredResult = getSearchAndFilterResult(data, search, filter);
     setFilteredJobs(filteredResult);
   }, [filter, search, data]);
+
+  const auth = useAuth();
+  const enableJobSave = auth.user.role === ROLES.CLIENT;
 
   const jobs = useMemo(() => {
     return filteredJobs
@@ -464,8 +426,15 @@ export default function JobList() {
                     : "border-base-300 bg-base-100 drop-shadow-lg"
                 }`}
               >
-                <Link to={job.id} className="card-body w-10/12 flex-none">
-                  <div className="card-title text-xl w-full">{job.title}</div>
+                <Link
+                  to={job.id}
+                  className={`${
+                    enableJobSave ? "w-10/12" : "w-full"
+                  } card-body flex-none`}
+                >
+                  <div className="card-title w-full">
+                    <p className="truncate">{job.title}</p>
+                  </div>
                   <div className="flex flex-row flex-wrap flex-auto">
                     <p className="truncate w-1/2">{job.company}</p>
                     <p className="truncate w-1/2">{`${job.location}`}</p>
@@ -479,7 +448,11 @@ export default function JobList() {
                     </p>
                   </div>
                 </Link>
-                <div className="card-actions w-2/12 items-center justify-center p-3">
+                <div
+                  className={`${
+                    enableJobSave ? "" : "hidden"
+                  } card-actions w-1/12 items-center justify-center `}
+                >
                   <JobSave jobId={job.id} mode="list" />
                 </div>
               </div>
@@ -490,7 +463,7 @@ export default function JobList() {
   }, [filteredJobs, jobId]);
 
   return (
-    <div className="relative w-full flex flex-col min-w-0 bg-black-50">
+    <div className="relative flex flex-col bg-base-100 h-full">
       {/* Search bar and filter icon */}
       <div className="fixed w-full md:sticky md:top-0 z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-base-100">
         <div className="form-control">
@@ -544,7 +517,9 @@ export default function JobList() {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full pt-16 min-w-0 md:pt-0 ">{jobs}</ul>
+      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap max-md:pt-16">
+        {jobs}
+      </ul>
     </div>
   );
 }

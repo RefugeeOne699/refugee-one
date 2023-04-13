@@ -53,8 +53,7 @@ const buttonMap = {
     navs: {
       "Manage Jobs": {
         icon: <SearchIcon />,
-        // todo: add path
-        path: "",
+        path: "employer/jobs",
       },
       Setting: {
         icon: <SettingsIcon />,
