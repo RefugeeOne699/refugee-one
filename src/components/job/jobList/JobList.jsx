@@ -44,7 +44,7 @@ export default function JobList() {
               jobCoordinate.latitude,
               jobCoordinate.longitude
             );
-            data[i].distance = distance.toString();
+            data[i].distance = distance.toFixed(1).toString();
           } else {
             data[i].distance = null;
           }
