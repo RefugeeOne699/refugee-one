@@ -1,3 +1,4 @@
+import InfoIcon from "@mui/icons-material/Info";
 import { useRequest } from "ahooks";
 import { toast } from "react-hot-toast";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -50,6 +51,7 @@ export default function ConfirmSendEmail() {
           <p className="mb-5 text-3xl">Great!</p>
           <p className="mb-1 text-xl">We have sent you an email to set new password! </p>
           <p className="mb-1 text-sm">
+            <InfoIcon />
             Please allow some time for the email to be delivered. Make sure you also check
             your JUNK and SPAM folders! After setting the password, you can go back and
             login using this email and password.

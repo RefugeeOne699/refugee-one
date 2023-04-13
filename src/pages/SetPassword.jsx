@@ -1,4 +1,5 @@
 import EmailIcon from "@mui/icons-material/Email";
+import InfoIcon from "@mui/icons-material/Info";
 import { useRequest } from "ahooks";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -49,7 +50,8 @@ export default function SetPassword() {
           <p className="mb-5 text-3xl">Welcome!</p>
           <p className="mb-1 text-xl">Please enter your email</p>
           <p className="mb-1 text-sm">
-            * Please make sure your email has been registered by the RefugeeOne team. Once
+            <InfoIcon />
+            Please make sure your email has been registered by the RefugeeOne team. Once
             you enter a registed email, we will send you a link to set your account
             password!
           </p>
@@ -91,7 +93,7 @@ export default function SetPassword() {
           <div className="text-sm mt-32">
             <div className="flex justify-start gap-4">
               <EmailIcon fontSize="small" />
-              Don&apos;t have email registered yet with RefugeeOne?{" "}
+              Don&apos;t have email registered yet with RefugeeOne?
             </div>
             <div className="flex space-around gap-4 text-sm">
               {
