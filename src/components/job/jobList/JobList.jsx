@@ -98,7 +98,7 @@ export default function JobList() {
   const filterUI = useMemo(() => {
     if (showFilter) {
       return (
-        <div className="absolute z-10 top-0 left-0 w-full h-full bg-white overflow-scroll">
+        <div className="absolute z-10 top-0 left-0 w-full h-full bg-base-100 overflow-scroll">
           {/* Top Bar */}
           <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-base-200">
             <button
@@ -262,7 +262,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <WorkHistoryIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black">Shift Time</label>
+                  <label className="label text-xl">Shift Time</label>
                 </div>
 
                 <label className="label cursor-pointer">
@@ -372,7 +372,7 @@ export default function JobList() {
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
                   <LocationOnIcon fontSize="large" className="mr-1" />
-                  <label className="label text-xl text-black">Distance</label>
+                  <label className="label text-xl">Distance</label>
                 </div>
                 <label className="label cursor-pointer">
                   <span className="label-text text-lg">Any Distance</span>
