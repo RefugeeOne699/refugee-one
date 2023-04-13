@@ -71,7 +71,7 @@ export default function UpsertJob({ update }) {
         Object.entries(data).forEach(([key, value]) => {
           jobData[key] = value;
         });
-        return job.updateJob(jobId, jobData);
+        return job.updateJob(jobId, jobData, auth.user.status);
       }
       // create
       return job.createJob({

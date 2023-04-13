@@ -37,33 +37,6 @@ const JobContext = createContext({
   countJobs: (_queryConstraints) => Number,
 });
 
-const updateJob = async (jobId, payload) => {
-  // remove the jobId field if existed. No need to put the doc id into the doc data
-  if (payload.id) {
-    delete payload.id;
-  }
-  if (payload.owner) {
-    delete payload.owner;
-  }
-  // why use runTransaction? It may happen when you try to update a doc that may be deleted
-  await runTransaction(database, async (transaction) => {
-    const jobDocRef = doc(database, "Jobs", jobId);
-    const jobDoc = await transaction.get(jobDocRef);
-    if (!jobDoc.exists()) {
-      throw `Job ${jobId} does not exist`;
-    }
-    transaction.update(jobDocRef, payload);
-  });
-};
-
-const approveJob = async (jobId) => {
-  await updateJob(jobId, { status: JOB_STATUS.APPROVED });
-};
-
-const rejectJob = async (jobId, adminMessage) => {
-  await updateJob(jobId, { status: JOB_STATUS.REJECTED, adminMessage });
-};
-
 const JobContextProvider = ({ children }) => {
   // create a job will link its owner with the job id
   const createJob = async (payload) => {
@@ -91,6 +64,38 @@ const JobContextProvider = ({ children }) => {
       name: ownerDoc.data().name,
     };
     return job;
+  };
+
+  const updateJob = async (jobId, payload, role) => {
+    // remove the jobId field if existed. No need to put the doc id into the doc data
+    if (payload.id) {
+      delete payload.id;
+    }
+    if (payload.owner) {
+      delete payload.owner;
+    }
+    // why use runTransaction? It may happen when you try to update a doc that may be deleted
+    await runTransaction(database, async (transaction) => {
+      const jobDocRef = doc(database, "Jobs", jobId);
+      const jobDoc = await transaction.get(jobDocRef);
+      if (!jobDoc.exists()) {
+        throw `Job ${jobId} does not exist`;
+      }
+      // if an employer is editing the job, change the status to pending
+      // excluding conditions when admin approve, reject, edit the job
+      if (role && role !== ROLES.ADMIN) {
+        payload.status = JOB_STATUS.PENDING;
+      }
+      transaction.update(jobDocRef, payload);
+    });
+  };
+
+  const approveJob = async (jobId) => {
+    await updateJob(jobId, { status: JOB_STATUS.APPROVED });
+  };
+
+  const rejectJob = async (jobId, adminMessage) => {
+    await updateJob(jobId, { status: JOB_STATUS.REJECTED, adminMessage });
   };
 
   const deleteJob = async (id) => {
