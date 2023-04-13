@@ -17,7 +17,7 @@ const menu = [
 export default function JobsAdmin() {
   const { tabUrl } = useParams();
   const { listUsers } = useAdmin();
-  const { data, run, loading } = useRequest(async () => listUsers(), {
+  const { data, run, loading, refresh } = useRequest(async () => listUsers(), {
     manual: true,
     onError: () => {
       toast.error("Failed to fetch user list");
@@ -57,9 +57,11 @@ export default function JobsAdmin() {
       <div className="w-full">
         {data ? (
           data
+            /* for sorting: https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value */
             .filter((user) => user.role === tabUrl)
+            .sort((a, b) => -(a.status > b.status ? 1 : a.status === b.status ? 0 : -1))
             .map((user) => {
-              return <UserView key={user.id} user={user} run={run} />;
+              return <UserView key={user.id} user={user} refresh={refresh} />;
             })
         ) : (
           <p>No users to show</p>

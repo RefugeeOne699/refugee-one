@@ -4,14 +4,14 @@ import { toast } from "react-hot-toast";
 import { USER_STATUS } from "@/constants";
 import { useAdmin } from "@/models";
 
-export default function UserView({ user, run }) {
+export default function UserView({ user, refresh }) {
   const { approveUser, deleteUser } = useAdmin();
 
   const approveUserRequest = useRequest(async () => approveUser(user.id), {
     manual: true,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success("Employer has been approved!");
-      run();
+      await refresh();
     },
     onError: () => {
       toast.error("Failed to approve Employer");
@@ -20,9 +20,9 @@ export default function UserView({ user, run }) {
 
   const rejectUserRequest = useRequest(async () => deleteUser(user.id), {
     manual: true,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success("User has been removed!");
-      run();
+      await refresh();
     },
     onError: () => {
       toast.error("Failed to remove user");
