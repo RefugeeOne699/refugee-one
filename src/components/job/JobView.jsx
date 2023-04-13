@@ -24,9 +24,6 @@ export default function JobView() {
   const auth = useAuth();
   const { jobId } = useParams();
   const { getJob } = useJob();
-  if (!jobId) {
-    return <Center />;
-  }
   const { run, data, loading, error } = useRequest(
     async () => {
       // return getJob(jobId);
@@ -68,6 +65,9 @@ export default function JobView() {
           <Spin className="h-8 w-8" />
         </Center>
       );
+    }
+    if (!jobId) {
+      return <Center />;
     }
     if (error) {
       return <ErrorInfo />;
