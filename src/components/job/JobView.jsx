@@ -75,7 +75,7 @@ export default function JobView() {
     return data ? (
       <div className="h-full w-full flex flex-col justify-between">
         <div className="flex flex-col card">
-          <div className="card-body items-center ">
+          <div className="card-body items-center">
             <p className="card-title text-2xl">{data.title}</p>
             <p className="text-bold text-1xl">{data.company}</p>
             <p className="text-bold text-1xl">
@@ -179,7 +179,7 @@ export default function JobView() {
               </div>
               <div className="ml-3">
                 <p className="font-bold">Job Timing:</p>
-                <p>{data.shift.detail}</p>
+                <p>{data.shift}</p>
               </div>
             </div>
             <div className="flex flex-row w-full mt-5">
@@ -188,90 +188,8 @@ export default function JobView() {
               </div>
               <div className="ml-3">
                 <p className="font-bold">Job Description:</p>
-                <p className="break-all w-4/5">{data.description}</p>
+                <p>{data.description}</p>
               </div>
-            </div>
-            <JobActions />
-          </div>
-          <div className="flex w-full flex-col lg:flex-row">
-            <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
-              <div className="text-5xl">
-                <AttachMoneyIcon fontSize="inherit" />
-              </div>
-              <div className="ml-3">
-                <p className="font-bold">Salary Range:</p>
-                <p>{`${data.wage.min} - ${data.wage.max} ${data.wage.type}`}</p>
-              </div>
-            </div>
-            <div className="flex flex-row mt-5 w-full lg:w-1/2">
-              <div className="text-5xl">
-                <LanguageIcon fontSize="inherit" />
-              </div>
-              <div className="ml-3">
-                <p className="font-bold">English Level:</p>
-                <p>{data.langEnglishLevel}</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex w-full flex-col lg:flex-row">
-            <div className="flex flex-row mt-5 w-full lg:w-1/2">
-              <div className="text-5xl">
-                <LocalHospitalIcon fontSize="inherit" />
-              </div>
-              <div className="ml-3">
-                <p className="font-bold">Benefits:</p>
-                <p>Medical: {data.benefit.hasMedical ? "Included" : "None"}</p>
-                <p>Others: {data.benefit.hasOthers ? data.benefit.others : "None"}</p>
-              </div>
-            </div>
-            <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
-              <div className="text-5xl">
-                <TranslateIcon fontSize="inherit" />
-              </div>
-              <div className="ml-3">
-                <p className="font-bold">Language Notes:</p>
-                <p>{data.langNote}</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex w-full mt-5 flex-row">
-            <div className="text-5xl">
-              <LocationOnIcon fontSize="inherit" />
-            </div>
-            <div className="ml-3">
-              <p className="font-bold">Job Location:</p>
-              <p>{data.location}</p>
-              <a
-                className="text-blue-400"
-                href={"https://www.google.com/maps/search/?api=1&query=" + data.location}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View location on Google Map
-              </a>
-              <p>
-                {data.distance
-                  ? data.distance.toFixed(1) + " miles from you"
-                  : "Distance not applied"}
-              </p>
-            </div>
-          </div>
-          <div className="flex w-full mt-5 flex-row">
-            <div className="text-5xl">
-              <AccessTimeIcon fontSize="inherit" />
-            </div>
-            <div className="ml-3">
-              <p className="font-bold">Job Timing:</p>
-              <p>{data.shift}</p>
-            </div>
-          </div>
-          <div className="flex flex-row w-full mt-5">
-            <div className="text-5xl">
-              <DescriptionIcon fontSize="inherit" />
-            </div>
-            <div className="ml-3">
-              <p className="font-bold">Job Description:</p>
-              <p>{data.description}</p>
             </div>
           </div>
         </div>
