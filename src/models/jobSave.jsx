@@ -29,14 +29,25 @@ const JobSaveContextProvider = ({ children }) => {
   const saveJob = useRequest(
     async (jobId, uid) => {
       await runTransaction(database, async (transaction) => {
-        const saveCollection = collection(database, "Users", uid, "JobsSaved");
-        const saveRef = doc(saveCollection, jobId);
-        const saveDoc = await transaction.get(saveRef);
-        if (saveDoc.exists()) {
-          await transaction.delete(saveRef);
+        const userSaveCollection = collection(database, "Users", uid, "JobsSaved");
+        const userSaveRef = doc(userSaveCollection, jobId);
+        const userSaveDoc = await transaction.get(userSaveRef);
+
+        const jobSavedCollection = collection(database, "Jobs", jobId, "UsersSavedBy");
+        const jobSavedRef = doc(jobSavedCollection, uid);
+        const jobSavedDoc = await transaction.get(jobSavedRef);
+
+        if (userSaveDoc.exists() || jobSavedDoc.exists()) {
+          if (userSaveDoc.exists()) {
+            transaction = await transaction.delete(userSaveRef);
+          }
+          if (jobSavedDoc.exists()) {
+            transaction = await transaction.delete(jobSavedRef);
+          }
           jobsSaved.delete(jobId);
         } else {
-          await transaction.set(saveRef, {});
+          transaction = await transaction.set(userSaveRef, {});
+          transaction = await transaction.set(jobSavedRef, {});
           jobsSaved.add(jobId);
         }
         setJobsSaved(jobsSaved);
@@ -49,10 +60,6 @@ const JobSaveContextProvider = ({ children }) => {
   );
 
   const checkIsJobSaved = (jobId) => {
-    // const saveCollection = collection(database, "Users", uid, "JobsSaved");
-    // const saveRef = doc(saveCollection, jobId);
-    // const saveDoc = await getDoc(saveRef);
-    // return saveDoc.exists();
     return jobsSaved.has(jobId);
   };
 

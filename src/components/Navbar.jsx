@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
-import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import GradeIcon from "@mui/icons-material/Grade";
+import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import WorkIcon from "@mui/icons-material/Work";
@@ -25,11 +25,11 @@ const buttonMap = {
     },
     navs: {
       "Find Jobs": {
-        icon: <WorkIcon />,
+        icon: <SearchIcon />,
         path: "jobs",
       },
       "Manage Jobs": {
-        icon: <BusinessCenterIcon />,
+        icon: <WorkIcon />,
         path: "admin/jobs",
       },
       "Manage Accounts": {
@@ -52,9 +52,8 @@ const buttonMap = {
     },
     navs: {
       "Manage Jobs": {
-        icon: <WorkIcon />,
-        // todo: add path
-        path: "",
+        icon: <SearchIcon />,
+        path: "employer/jobs",
       },
       Setting: {
         icon: <SettingsIcon />,
@@ -66,7 +65,7 @@ const buttonMap = {
     buttons: {},
     navs: {
       "Find Jobs": {
-        icon: <WorkIcon />,
+        icon: <SearchIcon />,
         path: "jobs",
       },
       "Saved Jobs": {
@@ -88,12 +87,11 @@ function NavbarList(props) {
   const items = useMemo(() => {
     return (
       <>
-        <div className="w-full p-2 gap-4 text-black flex flex-col">
-          {/* todo: fix dark mode compatibility */}
+        <div className="w-full p-2 gap-4 flex flex-col">
           {Object.keys(buttonMap[auth.user.role].buttons).map((key) => (
             <div
               key={key}
-              className="border-2 border-primary rounded-2xl text-primary flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-white cursor-pointer"
+              className="border-2 border-primary rounded-2xl text-primary flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer"
               onClick={() => {
                 navigate(buttonMap[auth.user.role].buttons[key].path);
                 props.setOpen(false);
@@ -108,12 +106,11 @@ function NavbarList(props) {
             </div>
           ))}
         </div>
-        <div className="w-full p-2 gap-4 text-black flex flex-col">
-          {/* todo: fix dark mode compatibility */}
+        <div className="w-full p-2 gap-4 flex flex-col">
           {Object.keys(buttonMap[auth.user.role].navs).map((key) => (
             <div
               key={key}
-              className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-white cursor-pointer"
+              className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer"
               onClick={() => {
                 navigate(buttonMap[auth.user.role].navs[key].path);
                 props.setOpen(false);
@@ -145,19 +142,17 @@ export default function Navbar() {
   return (
     <>
       <div className="md:hidden max-md:block h-16">
-        <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-grey h-16 bg-white"></div>
-        {/* todo: fix dark mode compatibility */}
+        <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-base-300 h-16 bg-base-200"></div>
         <Menu
           isOpen={open}
           onStateChange={(state) => setOpen(state.isOpen)}
           crossButtonClassName={"mr-4"}
-          crossClassName={"bg-black"}
-          // todo: fix dark mode compatibility
+          crossClassName={"bg-base-content"}
           overlayClassName={"opacity-25"}
-          menuClassName={"fixed top-0 left-0 bg-white px-4 pt-16 text-xl font-semibold"}
-          // todo: fix dark mode compatibility
-          burgerBarClassName={"bg-black"}
-          // todo: fix dark mode compatibility
+          menuClassName={
+            "fixed top-0 left-0 bg-base-100 px-4 pt-16 text-xl font-semibold"
+          }
+          burgerBarClassName={"bg-base-content"}
           burgerButtonClassName={"fixed top-4 left-4 z-50 w-10 h-8"}
           className={"fixed top-0 left-0 w-full h-full"}
         >
@@ -166,12 +161,10 @@ export default function Navbar() {
       </div>
 
       <div className="w-60 h-screen max-md:hidden">
-        {/* todo: fix dark mode compatibility */}
         <NavbarList setOpen={setOpen} />
       </div>
 
-      <div className="fixed top-0 left-0 w-60 h-screen border-r-4 border-grey bg-white max-md:hidden">
-        {/* todo: fix dark mode compatibility */}
+      <div className="fixed top-0 left-0 w-60 h-screen border-r-1 border-base-300 bg-base-200 max-md:hidden">
         <NavbarList setOpen={setOpen} />
       </div>
     </>

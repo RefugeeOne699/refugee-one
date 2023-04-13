@@ -1,3 +1,4 @@
+import InfoIcon from "@mui/icons-material/Info";
 import { useRequest } from "ahooks";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -41,8 +42,14 @@ export default function AccountCreate() {
       <div className="card max-w-md">
         <div className="card-body">
           <p className="mb-5 text-2xl">Create an Account</p>
-          {/* @tianchi @neha todo: may add an explantion for the sign up here */}
-          <p>@tianchi @neha We could add a explanation here</p>
+          <p>
+            <InfoIcon /> <text-bold>Note:</text-bold>
+            <p>
+              Kindly assist newly added clients to update their phone number and address
+              on their profile page once logged in. <br /> Updating address will enable
+              distance functionality when viewing jobs.
+            </p>
+          </p>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div>
               <label className="label" htmlFor="name">

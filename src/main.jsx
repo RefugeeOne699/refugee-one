@@ -4,28 +4,32 @@ import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
 
-import JobRoot from "@/pages/Job";
+import JobRoot from "@/components/job/JobRoot";
 import ProfileRoot from "@/pages/Profile";
 
 import AppRoot from "./App";
+import RequireEmployer from "./components/acess/RequireEmployer";
 import TailWindToaster from "./components/TailwindToaster";
 import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
 import { JobSaveContextProvider } from "./models/jobSave";
 
-const AddJob = lazy(async () => import("@/pages/AddJob"));
 const Admin = {
-  Jobs: lazy(async () => import("@/pages/admin/JobsAdmin")),
   AccountCreate: lazy(async () => import("@/pages/admin/AccountCreate")),
   Users: lazy(async () => import("@/pages/admin/UsersAdmin")),
 };
+const UpsertJob = lazy(async () => import("@/components/job/UpsertJob"));
 
 const SignUp = lazy(async () => import("@/pages/SignUp"));
 const SignIn = lazy(async () => import("@/pages/SignIn"));
+const ForgetPassword = lazy(async () => import("@/pages/ForgetPassword"));
+const ConfirmSendEmail = lazy(async () => import("@/pages/ConfirmSendEmail"));
+const SetPassword = lazy(async () => import("@/pages/SetPassword"));
 const Center = lazy(async () => import("@/components/Center"));
 const Job = {
   View: lazy(async () => import("@/components/job/JobView")),
+  Dashboard: lazy(async () => import("@/components/job/JobDashboard")),
 };
 const Profile = {
   Menu: lazy(async () => import("@/components/profile/ProfileMenu")),
@@ -44,6 +48,18 @@ const router = createBrowserRouter([
     path: "/signUp",
     element: <SignUp />,
   },
+  {
+    path: "/set_password",
+    element: <SetPassword />,
+  },
+  {
+    path: "/forget_password",
+    element: <ForgetPassword />,
+  },
+  {
+    path: "/confirm_send_email",
+    element: <ConfirmSendEmail />,
+  },
   // all the pages below requires signed in
   {
     path: "/",
@@ -58,7 +74,11 @@ const router = createBrowserRouter([
       },
       {
         path: "addJob",
-        element: <AddJob />, //add job listing
+        element: <UpsertJob />, //add job listing
+      },
+      {
+        path: "updateJob/:jobId",
+        element: <UpsertJob update={true} />,
       },
       // example: example for router and nested router
       {
@@ -79,7 +99,14 @@ const router = createBrowserRouter([
               },
               {
                 path: ":tabUrl",
-                element: <Admin.Jobs />,
+                element: <Job.Dashboard role="admin" />,
+                children: [
+                  { index: true, element: <Job.View /> },
+                  {
+                    path: ":jobId",
+                    element: <Job.View />,
+                  },
+                ],
               },
             ],
           },
@@ -108,10 +135,40 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: "employer",
+        element: (
+          <RequireEmployer>
+            <Outlet />
+          </RequireEmployer>
+        ),
+        children: [
+          {
+            path: "jobs",
+            children: [
+              {
+                index: true,
+                element: <Navigate to="pending" />,
+              },
+              {
+                path: ":tabUrl",
+                element: <Job.Dashboard role="employer" />,
+                children: [
+                  { index: true, element: <Job.View /> },
+                  {
+                    path: ":jobId",
+                    element: <Job.View />,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
         path: "jobs",
         element: <JobRoot />,
         children: [
-          { index: true, element: <Center /> },
+          { index: true, element: <Job.View /> },
           {
             path: ":jobId",
             element: <Job.View />,

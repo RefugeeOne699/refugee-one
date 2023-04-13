@@ -38,13 +38,15 @@ export default function ProfileAccount() {
                 Address
               </div>
               <div className="flex justify-end">
-                {auth.user?.address?.street +
-                  ", " +
-                  auth.user?.address?.city +
-                  ", " +
-                  auth.user?.address?.state +
-                  ", " +
-                  auth.user?.address?.zipcode}
+                {auth.user?.address
+                  ? auth.user.address.street +
+                    ", " +
+                    auth.user.address.city +
+                    ", " +
+                    auth.user.address.state +
+                    ", " +
+                    auth.user.address.zipcode
+                  : "No address"}
               </div>
             </div>
           </li>
@@ -86,21 +88,23 @@ export default function ProfileAccount() {
                   <span className="label-text">Address</span>
                 </label>
                 <div className="flex justify-start">
-                  {auth.user?.address?.street +
-                    ", " +
-                    auth.user?.address?.city +
-                    ", " +
-                    auth.user?.address?.state +
-                    ", " +
-                    auth.user?.address?.zipcode}
+                  {auth.user?.address
+                    ? auth.user.address.street +
+                      ", " +
+                      auth.user.address.city +
+                      ", " +
+                      auth.user.address.state +
+                      ", " +
+                      auth.user.address.zipcode
+                    : "No address"}
                 </div>
               </div>
             </div>
           </li>
         </ul>
-        <div className="m-2 flex flex-col md:flex-row md:gap-4 justify-center">
+        <div className="mt-4 m-2 flex flex-col md:flex-row md:gap-4 justify-center">
           <button
-            className="btn btn-xs btn-md lg:btn-lg m-2"
+            className="btn btn-primary btn-xs btn-md lg:btn-lg m-2"
             onClick={() => {
               navigate("../set_profile", { replace: true });
             }}
@@ -108,7 +112,7 @@ export default function ProfileAccount() {
             Edit Profile
           </button>
           <button
-            className="btn btn-xs btn-md lg:btn-lg m-2"
+            className="btn btn-outline btn-xs btn-md lg:btn-lg m-2"
             onClick={() => {
               navigate("../", { replace: true });
             }}

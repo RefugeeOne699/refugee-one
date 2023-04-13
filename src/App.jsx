@@ -34,7 +34,7 @@ export default function App() {
    */
   return (
     <RequireAuth>
-      <div className="flex md:flex-row max-md:flex-col">
+      <div className="flex md:flex-row max-md:flex-col h-screen">
         <div className="flex-none">
           <Navbar />
         </div>
