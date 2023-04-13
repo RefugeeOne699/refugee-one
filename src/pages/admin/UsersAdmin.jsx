@@ -42,7 +42,13 @@ export default function JobsAdmin() {
               {tab.name}
               {"---"}
               {/*  todo: update the count */}
-              {loading ? <Spin /> : data ? data.length : 0}
+              {loading ? (
+                <Spin />
+              ) : data ? (
+                data.filter((users) => users.role === tab.url).length
+              ) : (
+                0
+              )}
             </div>
           </NavLink>
         ))}

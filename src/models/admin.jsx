@@ -1,6 +1,5 @@
 import {
   collection,
-  deleteDoc,
   doc,
   getCountFromServer,
   getDocs,
@@ -25,7 +24,6 @@ const AdminContext = createContext({
 });
 
 const AdminContextProvider = ({ children }) => {
-  const auth = useAuth();
   const listUsers = async (queryConstraints) => {
     const userCollection = collection(database, "Users");
     const userQuery = queryConstraints
@@ -72,27 +70,30 @@ const AdminContextProvider = ({ children }) => {
     });
   };
 
-  const approveUser = async (userId, user) => {
+  const approveUser = async (userId) => {
     // Approve an employer account, send to his email the password reset email as to notify him the approval
-    if (user.role === ROLES.EMPLOYER) {
-      await updateUser(userId, { status: USER_STATUS.APPROVED });
-      await auth.resetPassWordByEmail(user.email);
-    }
+    await runTransaction(database, async (transaction) => {
+      await transaction.update(doc(database, "Users", userId), {
+        status: USER_STATUS.APPROVED,
+      });
+    });
   };
 
   const deleteUser = async (userId) => {
-    const userSaveCollection = collection(database, "Users", userId, "JobsSaved");
-    const userJobs = await getDocs(userSaveCollection);
-    const awaitIds = userJobs.docs.map(async (doc) => {
-      return doc.id;
+    const jobsAffectedCollection = collection(database, "Users", userId, "JobsCreated");
+    const jobsAffected = (await getDocs(jobsAffectedCollection)).docs.map(
+      (doc) => doc.id
+    );
+    const jobIds = await Promise.all(jobsAffected);
+    await runTransaction(database, async (transaction) => {
+      for (let jobId of jobIds) {
+        transaction = await transaction.delete(doc(jobsAffectedCollection, jobId));
+        transaction = await transaction.delete(
+          doc(database, "Users", userId, "JobsCreated", jobId)
+        );
+      }
+      transaction.delete(doc(database, "Users", userId));
     });
-    const jobsToDelete = await Promise.all(awaitIds);
-    await deleteDoc(doc(database, "Users", userId));
-    const jobDeleted = jobsToDelete.map(async (jobId) => {
-      await deleteDoc(doc(database, "Jobs", jobId));
-      return null;
-    });
-    await Promise.all(jobDeleted);
   };
 
   const value = useMemo(
