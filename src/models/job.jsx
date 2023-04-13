@@ -66,7 +66,7 @@ const JobContextProvider = ({ children }) => {
     return job;
   };
 
-  const updateJob = async (jobId, payload, role) => {
+  const updateJob = async (jobId, payload) => {
     // remove the jobId field if existed. No need to put the doc id into the doc data
     if (payload.id) {
       delete payload.id;
@@ -80,11 +80,6 @@ const JobContextProvider = ({ children }) => {
       const jobDoc = await transaction.get(jobDocRef);
       if (!jobDoc.exists()) {
         throw `Job ${jobId} does not exist`;
-      }
-      // if an employer is editing the job, change the status to pending
-      // excluding conditions when admin approve, reject, edit the job
-      if (role && role !== ROLES.ADMIN) {
-        payload.status = JOB_STATUS.PENDING;
       }
       transaction.update(jobDocRef, payload);
     });

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { ENGLISH_LEVEL, JOB_STATUS, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
+import { ENGLISH_LEVEL, JOB_STATUS, ROLES, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
 import { getCoordinate } from "@/utils";
 
@@ -66,19 +66,22 @@ export default function UpsertJob({ update }) {
         data.address.zipcode
       );
       data.location = `${data.address.street}, ${data.address.city}, ${data.address.state} ${data.address.zipcode}`;
+      // if an employer is editing the job, change the status to pending
+      // excluding conditions when admin creates, approves, rejects, edits the job
+      data.status =
+        auth.user.role === ROLES.ADMIN ? JOB_STATUS.APPROVED : JOB_STATUS.PENDING;
       // edit
       if (jobData) {
         Object.entries(data).forEach(([key, value]) => {
           jobData[key] = value;
         });
-        return job.updateJob(jobId, jobData, auth.user.status);
+        return job.updateJob(jobId, jobData);
       }
       // create
       return job.createJob({
         ...data,
         adminMessage: "",
         owner: auth.userRef,
-        status: JOB_STATUS.PENDING,
         datePost: new Date(),
         coordinate: coordinate,
         dateCreated: new Date(),
