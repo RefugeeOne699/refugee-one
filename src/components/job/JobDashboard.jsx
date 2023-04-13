@@ -7,7 +7,7 @@ import { NavLink, useParams } from "react-router-dom";
 import JobRoot from "@/components/job/JobRoot";
 import Spin from "@/components/Spin";
 import { JOB_STATUS } from "@/constants";
-import { useJob } from "@/models";
+import { useAuth, useJob } from "@/models";
 
 const menu = [
   { url: "pending", name: "All Pending Jobs" },
@@ -31,7 +31,7 @@ export const useDashboard = () => useContext(DashboardContext);
 export default function JobDashboard({ role }) {
   const { tabUrl } = useParams();
   const { listJobs, countJobs } = useJob();
-
+  const auth = useAuth();
   const {
     data,
     run,
@@ -39,7 +39,10 @@ export default function JobDashboard({ role }) {
     refresh: jobsRefresh,
   } = useRequest(
     async (tabUrl) =>
-      listJobs(where("status", "==", constraints[tabUrl] || JOB_STATUS.PENDING)),
+      listJobs(
+        auth.user.role,
+        where("status", "==", constraints[tabUrl] || JOB_STATUS.PENDING)
+      ),
     {
       manual: true,
       onError: () => {

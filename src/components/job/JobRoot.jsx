@@ -17,7 +17,7 @@ export default function JobRoot() {
   const { listJobs } = useJob();
   const { run, data: pulledJobs } = useRequest(
     async () => {
-      return listJobs().then((data) => {
+      return listJobs(auth.user.role).then((data) => {
         for (let i = 0; i < data.length; i++) {
           if (auth.user.coordinate && data[i].coordinate) {
             let userCoordinate = auth.user.coordinate;

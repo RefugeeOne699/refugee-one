@@ -8,12 +8,13 @@ import {
   // eslint-disable-next-line no-unused-vars
   QueryConstraint,
   runTransaction,
+  where,
 } from "firebase/firestore";
 import { createContext, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import database from "@/clients/firebase";
-import { JOB_STATUS } from "@/constants";
+import { JOB_STATUS, ROLES } from "@/constants";
 
 const JobContext = createContext({
   createJob: () => {},
@@ -32,7 +33,7 @@ const JobContext = createContext({
    * @param {undefined | QueryConstraint | QueryConstraint[]} _queryConstraints
    * @returns job list
    */
-  listJobs: (_queryConstraints) => [],
+  listJobs: (_userRole, _queryConstraints) => [],
   countJobs: (_queryConstraints) => Number,
 });
 
@@ -134,10 +135,13 @@ const JobContextProvider = ({ children }) => {
    *    stauts: "pending",
    * }
    */
-  const listJobs = async (queryConstraints) => {
+  const listJobs = async (userRole, queryConstraints) => {
     const jobCollection = collection(database, "Jobs");
+    // a temp fix: a temp fix that the client will only see the approved job
     const jobQuery = queryConstraints
       ? query(jobCollection, queryConstraints)
+      : userRole === ROLES.CLIENT
+      ? query(jobCollection, where("status", "==", JOB_STATUS.APPROVED))
       : jobCollection;
     const jobDocs = await getDocs(jobQuery);
     const jobList = jobDocs.docs.map(async (doc) => {
