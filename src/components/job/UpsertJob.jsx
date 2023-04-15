@@ -59,7 +59,7 @@ export default function UpsertJob({ update }) {
   const { run: upsertJob, loading } = useRequest(
     async (data) => {
       data.dateJobStart = new Date(data.dateJobStart);
-      const coordinate = await getCoordinate(
+      data.coordinate = await getCoordinate(
         data.address.street,
         data.address.city,
         data.address.state,
@@ -83,7 +83,6 @@ export default function UpsertJob({ update }) {
         adminMessage: "",
         owner: auth.userRef,
         datePost: new Date(),
-        coordinate: coordinate,
         dateCreated: new Date(),
       });
     },
