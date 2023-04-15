@@ -71,11 +71,16 @@ const AdminContextProvider = ({ children }) => {
   };
 
   const approveUser = async (userId) => {
-    await updateUser(userId, {status: USER_STATUS.APPROVED})
+    await updateUser(userId, { status: USER_STATUS.APPROVED });
   };
 
   const deleteUser = async (employerId) => {
-    const jobsAffectedCollection = collection(database, "Users", employerId, "JobsCreated");
+    const jobsAffectedCollection = collection(
+      database,
+      "Users",
+      employerId,
+      "JobsCreated"
+    );
     const jobsAffected = (await getDocs(jobsAffectedCollection)).docs.map(
       (doc) => doc.id
     );
@@ -84,7 +89,9 @@ const AdminContextProvider = ({ children }) => {
     await runTransaction(database, async (transaction) => {
       for (let jobId of jobIds) {
         const jobSavedCollection = collection(database, "Jobs", jobId, "UsersSavedBy");
-        const usersAffected = (await getDocs(jobSavedCollection)).docs.map((doc) => doc.id);
+        const usersAffected = (await getDocs(jobSavedCollection)).docs.map(
+          (doc) => doc.id
+        );
         const clientIds = await Promise.all(usersAffected);
         for (let clientId of clientIds) {
           transaction = await transaction.delete(
