@@ -38,8 +38,8 @@ export default function JobRoot() {
     },
     {
       manual: true,
-      onError: () => {
-        toast.error("Failed to get job list");
+      onError: (error) => {
+        toast.error(`Failed to get job list: ${error}`);
       },
     }
   );
