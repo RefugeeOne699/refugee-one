@@ -71,28 +71,29 @@ const AdminContextProvider = ({ children }) => {
   };
 
   const approveUser = async (userId) => {
-    // Approve an employer account, send to his email the password reset email as to notify him the approval
-    await runTransaction(database, async (transaction) => {
-      await transaction.update(doc(database, "Users", userId), {
-        status: USER_STATUS.APPROVED,
-      });
-    });
+    await updateUser(userId, {status: USER_STATUS.APPROVED})
   };
 
-  const deleteUser = async (userId) => {
-    const jobsAffectedCollection = collection(database, "Users", userId, "JobsCreated");
+  const deleteUser = async (employerId) => {
+    const jobsAffectedCollection = collection(database, "Users", employerId, "JobsCreated");
     const jobsAffected = (await getDocs(jobsAffectedCollection)).docs.map(
       (doc) => doc.id
     );
     const jobIds = await Promise.all(jobsAffected);
+
     await runTransaction(database, async (transaction) => {
       for (let jobId of jobIds) {
+        const jobSavedCollection = collection(database, "Jobs", jobId, "UsersSavedBy");
+        const usersAffected = (await getDocs(jobSavedCollection)).docs.map((doc) => doc.id);
+        const clientIds = await Promise.all(usersAffected);
+        for (let clientId of clientIds) {
+          transaction = await transaction.delete(
+            doc(database, "Users", clientId, "JobsSaved", jobId)
+          );
+        }
         transaction = await transaction.delete(doc(jobsAffectedCollection, jobId));
-        transaction = await transaction.delete(
-          doc(database, "Users", userId, "JobsCreated", jobId)
-        );
       }
-      transaction.delete(doc(database, "Users", userId));
+      transaction.delete(doc(database, "Users", employerId));
     });
   };
 
