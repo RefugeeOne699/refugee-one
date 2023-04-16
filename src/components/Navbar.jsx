@@ -84,6 +84,7 @@ const buttonMap = {
 function NavbarList(props) {
   const navigate = useNavigate();
   const auth = useAuth();
+  const [selectedNavItem, setSelectedNavItem] = useState("");
   const items = useMemo(() => {
     return (
       <>
@@ -91,10 +92,14 @@ function NavbarList(props) {
           {Object.keys(buttonMap[auth.user.role].buttons).map((key) => (
             <div
               key={key}
-              className="border-2 border-primary rounded-2xl text-primary flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer"
+              className={
+                "border-2 border-primary rounded-2xl text-primary flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer" +
+                (selectedNavItem === key ? " bg-primary text-primary-content" : "")
+              }
               onClick={() => {
                 navigate(buttonMap[auth.user.role].buttons[key].path);
                 props.setOpen(false);
+                setSelectedNavItem(key);
               }}
             >
               <div className="h-full flex flex-col justify-center px-2 text-2xl">
@@ -110,10 +115,14 @@ function NavbarList(props) {
           {Object.keys(buttonMap[auth.user.role].navs).map((key) => (
             <div
               key={key}
-              className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer"
+              className={
+                "border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer" +
+                (selectedNavItem === key ? " bg-primary text-primary-content" : "")
+              }
               onClick={() => {
                 navigate(buttonMap[auth.user.role].navs[key].path);
                 props.setOpen(false);
+                setSelectedNavItem(key);
               }}
             >
               <div className="h-full flex flex-col justify-center px-2 text-2xl">
@@ -127,7 +136,7 @@ function NavbarList(props) {
         </div>
       </>
     );
-  }, [auth.user]);
+  }, [auth.user, selectedNavItem]);
   return <div className="w-full p-2 flex flex-col gap-8">{items}</div>;
 }
 
