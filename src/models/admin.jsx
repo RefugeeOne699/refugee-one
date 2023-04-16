@@ -74,33 +74,43 @@ const AdminContextProvider = ({ children }) => {
     await updateUser(userId, { status: USER_STATUS.APPROVED });
   };
 
-  const deleteUser = async (employerId) => {
-    const jobsAffectedCollection = collection(
-      database,
-      "Users",
-      employerId,
-      "JobsCreated"
-    );
-    const jobsAffected = (await getDocs(jobsAffectedCollection)).docs.map(
-      (doc) => doc.id
-    );
-    const jobIds = await Promise.all(jobsAffected);
+  const deleteUser = async (userId) => {
+    const jobsCreatedCollection = collection(database, "Users", userId, "JobsCreated");
+    const jobsCreated = (await getDocs(jobsCreatedCollection)).docs.map((doc) => doc.id);
+    const jobsCreatedIds = await Promise.all(jobsCreated);
+
+    const jobsSavedCollection = collection(database, "Users", userId, "JobsSaved");
+    const jobsSaved = (await getDocs(jobsSavedCollection)).docs.map((doc) => doc.id);
+    const jobsSavedIds = await Promise.all(jobsSaved);
 
     await runTransaction(database, async (transaction) => {
-      for (let jobId of jobIds) {
-        const jobSavedCollection = collection(database, "Jobs", jobId, "UsersSavedBy");
-        const usersAffected = (await getDocs(jobSavedCollection)).docs.map(
+      for (let jobSavedId of jobsSavedIds) {
+        transaction = await transaction.delete(
+          doc(database, "Jobs", jobSavedId, "UsersSavedBy", userId)
+        );
+      }
+
+      for (let jobCreatedId of jobsCreatedIds) {
+        const usersAffectedCollection = collection(
+          database,
+          "Jobs",
+          jobCreatedId,
+          "UsersSavedBy"
+        );
+        const usersAffected = (await getDocs(usersAffectedCollection)).docs.map(
           (doc) => doc.id
         );
-        const clientIds = await Promise.all(usersAffected);
-        for (let clientId of clientIds) {
+        const usersAffectedIds = await Promise.all(usersAffected);
+
+        for (let userAffectedId of usersAffectedIds) {
           transaction = await transaction.delete(
-            doc(database, "Users", clientId, "JobsSaved", jobId)
+            doc(database, "Users", userAffectedId, "JobsSaved", jobCreatedId)
           );
         }
-        transaction = await transaction.delete(doc(jobsAffectedCollection, jobId));
+
+        transaction = await transaction.delete(doc(database, "Jobs", jobCreatedId));
       }
-      transaction.delete(doc(database, "Users", employerId));
+      transaction.delete(doc(database, "Users", userId));
     });
   };
 
