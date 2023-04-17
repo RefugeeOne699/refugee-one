@@ -80,21 +80,14 @@ export default function JobView() {
           <div className="card-body items-center">
             <p className="card-title text-2xl">{data.title}</p>
             <p className="text-bold text-1xl">{data.company}</p>
-            <p className="text-bold text-1xl">
-              Posted:{" "}
-              {`${new Date(data.datePost.seconds * 1000)}`
-                .split(" ")
-                .slice(0, 4)
-                .join(" ")}
-            </p>
             <div className="flex w-full flex-col lg:flex-row">
               <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
                 <div className="text-5xl">
                   <CalendarMonthIcon fontSize="inherit" />
                 </div>
                 <div className="ml-3">
-                  <p className="font-bold">Starting Date:</p>
-                  {`${new Date(data.dateJobStart.seconds * 1000)}`
+                  <p className="font-bold">Job Posting Date:</p>
+                  {`${new Date(data.datePost.seconds * 1000)}`
                     .split(" ")
                     .slice(0, 4)
                     .join(" ")}
@@ -180,7 +173,7 @@ export default function JobView() {
                 <AccessTimeIcon fontSize="inherit" />
               </div>
               <div className="ml-3">
-                <p className="font-bold">Job Timing:</p>
+                <p className="font-bold">Shift Detail:</p>
                 <p>{data.shift}</p>
               </div>
             </div>
