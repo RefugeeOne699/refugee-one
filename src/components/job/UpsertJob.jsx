@@ -2,7 +2,7 @@ import { useRequest } from "ahooks";
 import { React, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { ENGLISH_LEVEL, JOB_STATUS, ROLES, SHIFT_TYPE, WAGE_TYPE } from "@/constants";
 import { useAuth, useJob } from "@/models";
@@ -12,7 +12,7 @@ import Center from "../Center";
 import Spin from "../Spin";
 const LOCAL_KEY = "REFUGEE_ONE_JOB_DRAFT";
 
-export default function UpsertJob({ update }) {
+function UpsertJobCore({ update }) {
   const auth = useAuth();
   const job = useJob();
   const navigate = useNavigate();
@@ -27,12 +27,16 @@ export default function UpsertJob({ update }) {
   } = useRequest(async (jobId) => job.getJob(jobId), {
     manual: true,
     onSuccess: (data) => {
+      // only admin or who creates the job can update the job
+      if (update && auth.user.role !== ROLES.ADMIN && auth.user.uid != data.owner.uid) {
+        toast.error("Access denied");
+        navigate("/", { replace: true });
+      }
       data.dateJobStart = data.dateJobStart.toDate().toISOString();
       loadData(data);
     },
     onError: (error) => {
-      console.error(error);
-      toast.error("Failed to get job information");
+      toast.error(`Failed to get job information: ${error}`);
     },
   });
 
@@ -455,5 +459,22 @@ export default function UpsertJob({ update }) {
         </div>
       </form>
     </div>
+  );
+}
+
+function RequireAccess({ children }) {
+  const auth = useAuth();
+  if (auth.user.role === ROLES.ADMIN || auth.user.role === ROLES.EMPLOYER) {
+    return children;
+  } else {
+    return <Navigate to="/" replace />;
+  }
+}
+
+export default function UpsertJob({ update }) {
+  return (
+    <RequireAccess>
+      <UpsertJobCore update={update} />
+    </RequireAccess>
   );
 }

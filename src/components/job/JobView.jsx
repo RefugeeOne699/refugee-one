@@ -54,7 +54,9 @@ export default function JobView() {
 
   useEffect(() => {
     (async () => {
-      await run();
+      if (jobId) {
+        await run();
+      }
     })();
   }, [jobId]);
 
