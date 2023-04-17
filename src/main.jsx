@@ -17,6 +17,7 @@ import { JobSaveContextProvider } from "./models/jobSave";
 
 const Admin = {
   AccountCreate: lazy(async () => import("@/pages/admin/AccountCreate")),
+  Users: lazy(async () => import("@/pages/admin/UsersAdmin")),
 };
 const UpsertJob = lazy(async () => import("@/components/job/UpsertJob"));
 
@@ -120,6 +121,19 @@ const router = createBrowserRouter([
               {
                 path: "create",
                 element: <Admin.AccountCreate />,
+              },
+            ],
+          },
+          {
+            path: "users",
+            children: [
+              {
+                index: true,
+                element: <Navigate to="client" />,
+              },
+              {
+                path: ":tabUrl",
+                element: <Admin.Users />,
               },
             ],
           },

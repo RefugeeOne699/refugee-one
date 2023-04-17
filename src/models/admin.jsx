@@ -24,7 +24,6 @@ const AdminContext = createContext({
 });
 
 const AdminContextProvider = ({ children }) => {
-  const auth = useAuth();
   const listUsers = async (queryConstraints) => {
     const userCollection = collection(database, "Users");
     const userQuery = queryConstraints
@@ -41,7 +40,7 @@ const AdminContextProvider = ({ children }) => {
         phone: user.phone,
         role: user.role,
         // to deal with existing accounts who don't have status field
-        status: user.status || USER_STATUS.PENDING,
+        status: user.status || USER_STATUS.APPROVED,
       };
     });
     return await Promise.all(userList);
@@ -71,12 +70,48 @@ const AdminContextProvider = ({ children }) => {
     });
   };
 
-  const approveUser = async (userId, user) => {
-    // Approve an employer account, send to his email the password reset email as to notify him the approval
-    if (user.role === ROLES.EMPLOYER) {
-      await updateUser(userId, { status: USER_STATUS.APPROVED });
-      await auth.resetPassWordByEmail(user.email);
-    }
+  const approveUser = async (userId) => {
+    await updateUser(userId, { status: USER_STATUS.APPROVED });
+  };
+
+  const deleteUser = async (userId) => {
+    const jobsCreatedCollection = collection(database, "Users", userId, "JobsCreated");
+    const jobsCreated = (await getDocs(jobsCreatedCollection)).docs.map((doc) => doc.id);
+    const jobsCreatedIds = await Promise.all(jobsCreated);
+
+    const jobsSavedCollection = collection(database, "Users", userId, "JobsSaved");
+    const jobsSaved = (await getDocs(jobsSavedCollection)).docs.map((doc) => doc.id);
+    const jobsSavedIds = await Promise.all(jobsSaved);
+
+    await runTransaction(database, async (transaction) => {
+      for (let jobSavedId of jobsSavedIds) {
+        transaction = await transaction.delete(
+          doc(database, "Jobs", jobSavedId, "UsersSavedBy", userId)
+        );
+      }
+
+      for (let jobCreatedId of jobsCreatedIds) {
+        const usersAffectedCollection = collection(
+          database,
+          "Jobs",
+          jobCreatedId,
+          "UsersSavedBy"
+        );
+        const usersAffected = (await getDocs(usersAffectedCollection)).docs.map(
+          (doc) => doc.id
+        );
+        const usersAffectedIds = await Promise.all(usersAffected);
+
+        for (let userAffectedId of usersAffectedIds) {
+          transaction = await transaction.delete(
+            doc(database, "Users", userAffectedId, "JobsSaved", jobCreatedId)
+          );
+        }
+
+        transaction = await transaction.delete(doc(database, "Jobs", jobCreatedId));
+      }
+      transaction.delete(doc(database, "Users", userId));
+    });
   };
 
   const value = useMemo(
@@ -84,7 +119,7 @@ const AdminContextProvider = ({ children }) => {
       updateUser,
       approveUser,
       // todo
-      deleteUser: () => {},
+      deleteUser,
       listUsers,
       countUsers,
     }),
