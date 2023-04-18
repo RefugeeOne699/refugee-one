@@ -88,6 +88,9 @@ const AdminContextProvider = ({ children }) => {
         transaction = await transaction.delete(
           doc(database, "Jobs", jobSavedId, "UsersSavedBy", userId)
         );
+        transaction = await transaction.delete(
+          doc(database, "Users", userId, "JobsSaved", jobSavedId)
+        );
       }
 
       for (let jobCreatedId of jobsCreatedIds) {
@@ -107,7 +110,9 @@ const AdminContextProvider = ({ children }) => {
             doc(database, "Users", userAffectedId, "JobsSaved", jobCreatedId)
           );
         }
-
+        transaction = await transaction.delete(
+          doc(database, "Users", userId, "JobsCreated", jobCreatedId)
+        );
         transaction = await transaction.delete(doc(database, "Jobs", jobCreatedId));
       }
       transaction.delete(doc(database, "Users", userId));
