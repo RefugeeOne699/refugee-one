@@ -11,6 +11,7 @@ import { useRequest } from "ahooks";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
+
 import { ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
@@ -78,12 +79,12 @@ export default function JobView() {
       <div className="h-full w-full flex flex-col justify-between">
         <div className="flex flex-col card">
           <div className="card-body items-center">
-            {data.adminMessage && auth.user.role === ROLES.EMPLOYER ? 
-            <span>
-            <p className="font-bold">Administrator Feedback:</p>
-            <p>{data.adminMessage}</p>
-            </span>: null
-          }
+            {data.adminMessage && auth.user.role === ROLES.EMPLOYER ? (
+              <span>
+                <p className="font-bold">Administrator Feedback:</p>
+                <p>{data.adminMessage}</p>
+              </span>
+            ) : null}
             <p className="card-title text-2xl">{data.title}</p>
             <p className="text-bold text-1xl">{data.company}</p>
             <p className="text-bold text-1xl">
