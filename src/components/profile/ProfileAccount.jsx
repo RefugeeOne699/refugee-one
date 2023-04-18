@@ -4,8 +4,8 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import PlaceIcon from "@mui/icons-material/Place";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "@/models";
 import { ROLES } from "@/constants";
+import { useAuth } from "@/models";
 
 export default function ProfileAccount() {
   const auth = useAuth();

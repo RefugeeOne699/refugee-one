@@ -7,9 +7,9 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+import { ROLES } from "@/constants";
 import { useAuth } from "@/models";
 import { getCoordinate } from "@/utils";
-import { ROLES } from "@/constants";
 
 export default function ProfileSetProfile() {
   const auth = useAuth();
