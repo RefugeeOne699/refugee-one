@@ -101,7 +101,7 @@ export default function ProfileSetProfile() {
                   <input
                     {...register("phone", { required: true })}
                     type="text"
-                    placeholder="company name"
+                    placeholder="phone number"
                     defaultValue={auth.user?.phone}
                     className="input w-full input-bordered"
                   />
