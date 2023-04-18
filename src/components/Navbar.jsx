@@ -4,9 +4,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import WorkIcon from "@mui/icons-material/Work";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { slide as Menu } from "react-burger-menu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { AUTH_INITIAL_STATE, ROLES } from "@/constants";
 import { useAuth } from "@/models";
@@ -84,7 +84,21 @@ const buttonMap = {
 function NavbarList(props) {
   const navigate = useNavigate();
   const auth = useAuth();
+  const location = useLocation();
+  console.log(location.pathname)
   const [selectedNavItem, setSelectedNavItem] = useState("");
+
+  useEffect(() => {
+    const path = location.pathname.split("/")[1];
+    const navs = Object.keys(buttonMap[auth.user.role].navs);
+    const buttons = Object.keys(buttonMap[auth.user.role].buttons);
+    const navsAndButtons = [...navs, ...buttons];
+    const selected = navsAndButtons.find((nav) => {
+      return buttonMap[auth.user.role].navs[nav].path === path;
+    });
+    setSelectedNavItem(selected);
+  }, [auth.user, location.pathname]);
+
   const items = useMemo(() => {
     return (
       <>
