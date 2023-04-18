@@ -1,9 +1,11 @@
+import BusinessIcon from "@mui/icons-material/Business";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PlaceIcon from "@mui/icons-material/Place";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/models";
+import { ROLES } from "@/constants";
 
 export default function ProfileAccount() {
   const auth = useAuth();
@@ -22,6 +24,17 @@ export default function ProfileAccount() {
               <div className="flex justify-end">{auth.user?.name}</div>
             </div>
           </li>
+          {auth.user?.role === ROLES.EMPLOYER ? (
+            <li>
+              <div className="flex justify-between">
+                <div className="flex justify-start gap-4">
+                  <BusinessIcon />
+                  Company Name
+                </div>
+                <div className="flex justify-end">{auth.user?.company}</div>
+              </div>
+            </li>
+          ) : null}
           <li>
             <div className="flex justify-between">
               <div className="flex justify-start gap-4">
@@ -65,6 +78,21 @@ export default function ProfileAccount() {
               </div>
             </div>
           </li>
+          {auth.user?.role === ROLES.EMPLOYER ? (
+            <li>
+              <div className="flex justify-between">
+                <div className="flex justify-start gap-4">
+                  <BusinessIcon />
+                </div>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Company Name</span>
+                  </label>
+                  <div className="flex justify-start">{auth.user?.company} </div>
+                </div>
+              </div>
+            </li>
+          ) : null}
           <li>
             <div className="flex justify-between">
               <div className="flex justify-start gap-4">
