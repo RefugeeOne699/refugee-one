@@ -88,21 +88,24 @@ export default function JobView() {
     }
     return data ? (
       <div className="h-full w-full flex flex-col justify-between">
-        <div className="flex flex-col card">
+        <div className="flex flex-col card h-full overflow-scroll max-md:mb-20">
           <div className="card-body items-center">
-            {auth.user.role === ROLES.EMPLOYER ? (
-              <span>
-                <p className="font-bold">Status: {statusBadge[data.status]}</p>
-                {data.adminMessage ? (
-                  <>
-                    <p className="font-bold">Administrator Feedback:</p>
-                    <p>{data.adminMessage}</p>
-                  </>
-                ) : null}
-              </span>
-            ) : null}
-            <p className="card-title text-2xl">{data.title}</p>
-            <p className="text-bold text-1xl">{data.company}</p>
+            <div className="flex w-full flex-col items-center">
+              {auth.user.role === ROLES.EMPLOYER ? (
+                <span>
+                  <p className="font-bold">Status: {statusBadge[data.status]}</p>
+                  {data.adminMessage ? (
+                    <>
+                      <p className="font-bold">Administrator Feedback:</p>
+                      <p>{data.adminMessage}</p>
+                    </>
+                  ) : null}
+                </span>
+              ) : null}
+              <p className="card-title text-2xl">{data.title}</p>
+              <p className="text-bold text-1xl">{data.company}</p>
+            </div>
+
             <div className="flex w-full flex-col lg:flex-row">
               <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
                 <div className="text-5xl">

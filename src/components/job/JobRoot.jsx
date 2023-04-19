@@ -56,7 +56,7 @@ export default function JobRoot() {
   const sideMenuMobile = jobId ? "hidden" : "w-full";
   const contentMobile = jobId ? "w-full" : "hidden";
   return (
-    <div className="flex flex-row h-full max-h-screen">
+    <div className="flex flex-row h-full max-h-screen md:overflow-hidden">
       <div className={`${sideMenuMobile} md:block md:w-1/2 lg:w-1/3 flex-none h-full`}>
         <JobList data={jobs} />
       </div>
