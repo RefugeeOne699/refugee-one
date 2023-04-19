@@ -130,6 +130,7 @@ function UpsertJobCore({ update }) {
     setValue("address.state", draft.address.state);
     setValue("address.zipcode", draft.address.zipcode);
     setValue("description", draft.description);
+    setValue("instruction", draft.instruction);
   };
 
   const loadDraft = () => {
@@ -434,6 +435,18 @@ function UpsertJobCore({ update }) {
             className="textarea textarea-bordered w-full"
             placeholder="Please specify other requirements or/and skills required for job such as driver license, or other certifications needed."
             {...register("description", { required: true })}
+          />
+        </div>
+        <div className="flex flex-row items-center mb-4">
+          <label className="label flex basis-44" htmlFor="instruction">
+            Instructions of applying for the job
+          </label>
+          <textarea
+            type="text"
+            rows="4"
+            className="textarea textarea-bordered w-full"
+            placeholder="Please specify the instructions of how to apply for this job."
+            {...register("instruction", { required: true })}
           />
         </div>
         <div className="flex w-full justify-end mb-4">
