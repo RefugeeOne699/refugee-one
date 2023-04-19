@@ -21,6 +21,13 @@ import ErrorInfo from "../Error";
 import Spin from "../Spin";
 import JobActions from "./jobActions/JobActions";
 
+const statusBadge = {
+  rejected: <div className="badge badge-error gap-2">Rejected</div>,
+  pending: <div className="badge badge-warning gap-2">Pending</div>,
+  approved: <div className="badge badge-success gap-2">Approved</div>,
+  closed: <div className="badge badge-error gap-2">Closed</div>,
+};
+
 export default function JobView() {
   const auth = useAuth();
   const { jobId } = useParams();
@@ -79,10 +86,15 @@ export default function JobView() {
       <div className="h-full w-full flex flex-col justify-between">
         <div className="flex flex-col card">
           <div className="card-body items-center">
-            {data.adminMessage && auth.user.role === ROLES.EMPLOYER ? (
+            {auth.user.role === ROLES.EMPLOYER ? (
               <span>
-                <p className="font-bold">Administrator Feedback:</p>
-                <p>{data.adminMessage}</p>
+                <p className="font-bold">Status: {statusBadge[data.status]}</p>
+                {data.adminMessage ? (
+                  <>
+                    <p className="font-bold">Administrator Feedback:</p>
+                    <p>{data.adminMessage}</p>
+                  </>
+                ) : null}
               </span>
             ) : null}
             <p className="card-title text-2xl">{data.title}</p>
