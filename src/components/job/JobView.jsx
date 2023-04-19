@@ -2,6 +2,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DescriptionIcon from "@mui/icons-material/Description";
+import InfoIcon from "@mui/icons-material/Info";
 import LanguageIcon from "@mui/icons-material/Language";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -12,6 +13,7 @@ import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
+import { ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
 
@@ -191,6 +193,17 @@ export default function JobView() {
               <div className="ml-3">
                 <p className="font-bold">Job Description:</p>
                 <p className="w-[4/5]">{data.description}</p>
+              </div>
+            </div>
+            <div className="flex flex-row w-full mt-5">
+              <div className="text-5xl">
+                <InfoIcon fontSize="inherit" />
+              </div>
+              <div className={`ml-3 ${auth.user.role === ROLES.CLIENT ? "hidden" : ""}`}>
+                <p className="font-bold">Apply instruction:</p>
+                <p className="w-[4/5]">
+                  {data.instruction ? data.instruction : "Not available"}
+                </p>
               </div>
             </div>
           </div>
