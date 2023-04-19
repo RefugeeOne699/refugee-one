@@ -180,7 +180,7 @@ export default function JobList({ data }) {
                 </div>
 
                 {[
-                  ENGLISH_LEVEL.NOT_REQUIRED,
+                  ENGLISH_LEVEL.NONE,
                   ENGLISH_LEVEL.BASIC,
                   ENGLISH_LEVEL.INTERMEDIATE,
                   ENGLISH_LEVEL.ADVANCED,

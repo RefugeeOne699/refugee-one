@@ -10,7 +10,7 @@ export const USER_STATUS = {
 };
 
 export const ENGLISH_LEVEL = {
-  NOT_REQUIRED: "Not required",
+  NONE: "None",
   BASIC: "Basic",
   INTERMEDIATE: "Intermediate",
   ADVANCED: "Advanced",
