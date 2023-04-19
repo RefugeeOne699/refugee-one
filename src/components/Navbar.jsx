@@ -143,8 +143,8 @@ export default function Navbar() {
   return (
     <>
       <div className="md:hidden max-md:block h-16">
-        <div className="fixed top-0 left-0 z-50 w-full border-b-2 border-base-300 h-16 bg-base-100 flex flex-row justify-center">
-          <img src={RefugeeOneLogo} className="pb-3 pt-4" alt="RefugeeOne Logo" />
+        <div className="fixed top-0 left-0 z-50 w-full border-b-2 border-base-300 h-16 bg-base-100 flex flex-row justify-end">
+          <img src={RefugeeOneLogo} className="pb-3 pt-4 pr-4" alt="RefugeeOne Logo" />
         </div>
         <Menu
           isOpen={open}
