@@ -76,7 +76,7 @@ export default function JobView() {
     }
     return data ? (
       <div className="h-full w-full flex flex-col justify-between">
-        <div className="flex flex-col card">
+        <div className="flex flex-col card h-full overflow-scroll max-md:mb-20">
           <div className="card-body items-center">
             <p className="card-title text-2xl">{data.title}</p>
             <p className="text-bold text-1xl">{data.company}</p>
