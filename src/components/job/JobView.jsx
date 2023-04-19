@@ -12,6 +12,7 @@ import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
+import { ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
 
@@ -19,6 +20,13 @@ import Center from "../Center";
 import ErrorInfo from "../Error";
 import Spin from "../Spin";
 import JobActions from "./jobActions/JobActions";
+
+const statusBadge = {
+  rejected: <div className="badge badge-error gap-2">Rejected</div>,
+  pending: <div className="badge badge-warning gap-2">Pending</div>,
+  approved: <div className="badge badge-success gap-2">Approved</div>,
+  closed: <div className="badge badge-error gap-2">Closed</div>,
+};
 
 export default function JobView() {
   const auth = useAuth();
@@ -69,7 +77,11 @@ export default function JobView() {
       );
     }
     if (!jobId) {
-      return <Center />;
+      return (
+        <Center>
+          <p>Select a job from the list on the left to display.</p>
+        </Center>
+      );
     }
     if (error) {
       return <ErrorInfo />;
@@ -79,15 +91,19 @@ export default function JobView() {
         <div className="flex flex-col card h-full overflow-scroll max-md:mb-20">
           <div className="card-body items-center">
             <div className="flex w-full flex-col items-center">
+              {auth.user.role === ROLES.EMPLOYER ? (
+                <span>
+                  <p className="font-bold">Status: {statusBadge[data.status]}</p>
+                  {data.adminMessage ? (
+                    <>
+                      <p className="font-bold">Administrator Feedback:</p>
+                      <p>{data.adminMessage}</p>
+                    </>
+                  ) : null}
+                </span>
+              ) : null}
               <p className="card-title text-2xl">{data.title}</p>
               <p className="text-bold text-1xl">{data.company}</p>
-              <p className="text-bold text-1xl">
-                Posted:{" "}
-                {`${new Date(data.datePost.seconds * 1000)}`
-                  .split(" ")
-                  .slice(0, 4)
-                  .join(" ")}
-              </p>
             </div>
 
             <div className="flex w-full flex-col lg:flex-row">
@@ -96,8 +112,8 @@ export default function JobView() {
                   <CalendarMonthIcon fontSize="inherit" />
                 </div>
                 <div className="ml-3">
-                  <p className="font-bold">Starting Date:</p>
-                  {`${new Date(data.dateJobStart.seconds * 1000)}`
+                  <p className="font-bold">Job Posting Date:</p>
+                  {`${new Date(data.datePost.seconds * 1000)}`
                     .split(" ")
                     .slice(0, 4)
                     .join(" ")}
@@ -183,7 +199,7 @@ export default function JobView() {
                 <AccessTimeIcon fontSize="inherit" />
               </div>
               <div className="ml-3">
-                <p className="font-bold">Job Timing:</p>
+                <p className="font-bold">Shift Detail:</p>
                 <p>{data.shift}</p>
               </div>
             </div>
