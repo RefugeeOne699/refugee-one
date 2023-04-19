@@ -33,7 +33,7 @@ export default function App() {
    * Otherwise, there will be an error
    */
   return (
-    <RequireAuth>
+    <RequireAuth strict={true}>
       <div className="flex md:flex-row max-md:flex-col h-screen">
         <div className="flex-none">
           <Navbar />

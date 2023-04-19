@@ -54,11 +54,15 @@ const AuthContextProvider = ({ children }) => {
       if (authUser) {
         const docRef = doc(database, "Users", authUser.uid);
         const docSnap = await getDoc(docRef);
-        setUserRef(docRef);
-        setUser({
-          ...docSnap.data(),
-          uid: authUser.uid,
-        });
+        if (docSnap.exists()) {
+          setUserRef(docRef);
+          setUser({
+            ...docSnap.data(),
+            uid: authUser.uid,
+          });
+        } else {
+          setUser(undefined);
+        }
       } else {
         setUser(undefined);
       }
@@ -145,7 +149,10 @@ const AuthContextProvider = ({ children }) => {
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
 
-function RequireAuth({ children }) {
+/**
+ * if strict, only approved signed-in users are allowed to acess. Pending users will have no access to the content.
+ */
+function RequireAuth({ children, strict }) {
   let auth = useContext(AuthContext);
   let location = useLocation();
 
@@ -154,7 +161,11 @@ function RequireAuth({ children }) {
       <Spin className="h-10 w-10" />
     </Center>
   );
-  const accessDenied = auth.user && auth.user.status === USER_STATUS.PENDING;
+
+  /**
+   * true if user is signed in but not allowed to access
+   */
+  const accessDenied = auth.user && strict && auth.user.status === USER_STATUS.PENDING;
 
   const { run, loading } = useRequest(
     async () => {
