@@ -38,7 +38,9 @@ export default function App() {
         <div className="flex-none">
           <Navbar />
         </div>
-        <div className="flex-auto flex flex-col">
+
+        {/* add max-h for mobile to avoid the nav-bar scrolling away problem */}
+        <div className="flex-auto flex flex-col max-md:max-h-[calc(100vh_-_4em)]">
           <Outlet />
         </div>
       </div>
