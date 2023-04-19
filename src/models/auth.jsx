@@ -54,11 +54,15 @@ const AuthContextProvider = ({ children }) => {
       if (authUser) {
         const docRef = doc(database, "Users", authUser.uid);
         const docSnap = await getDoc(docRef);
-        setUserRef(docRef);
-        setUser({
-          ...docSnap.data(),
-          uid: authUser.uid,
-        });
+        if (docSnap.exists()) {
+          setUserRef(docRef);
+          setUser({
+            ...docSnap.data(),
+            uid: authUser.uid,
+          });
+        } else {
+          setUser(undefined);
+        }
       } else {
         setUser(undefined);
       }
