@@ -78,15 +78,18 @@ export default function JobView() {
       <div className="h-full w-full flex flex-col justify-between">
         <div className="flex flex-col card h-full overflow-scroll max-md:mb-20">
           <div className="card-body items-center">
-            <p className="card-title text-2xl">{data.title}</p>
-            <p className="text-bold text-1xl">{data.company}</p>
-            <p className="text-bold text-1xl">
-              Posted:{" "}
-              {`${new Date(data.datePost.seconds * 1000)}`
-                .split(" ")
-                .slice(0, 4)
-                .join(" ")}
-            </p>
+            <div className="flex w-full flex-col items-center">
+              <p className="card-title text-2xl">{data.title}</p>
+              <p className="text-bold text-1xl">{data.company}</p>
+              <p className="text-bold text-1xl">
+                Posted:{" "}
+                {`${new Date(data.datePost.seconds * 1000)}`
+                  .split(" ")
+                  .slice(0, 4)
+                  .join(" ")}
+              </p>
+            </div>
+
             <div className="flex w-full flex-col lg:flex-row">
               <div className="flex flex-row mt-5 w-full lg:w-1/2 ">
                 <div className="text-5xl">
