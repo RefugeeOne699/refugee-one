@@ -465,7 +465,7 @@ export default function JobList({ data }) {
   return (
     <div className="relative flex flex-col bg-base-100 h-full">
       {/* Search bar and filter icon */}
-      <div className="sticky top-0 w-full z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-base-100">
+      <div className="fixed top-16 md:sticky md:top-0  w-full z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-base-100">
         <div className="form-control">
           <div className="input-group">
             <input
@@ -517,7 +517,7 @@ export default function JobList({ data }) {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap">
+      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap max-md:mt-16 max-md:mb-10">
         {jobs}
       </ul>
     </div>
