@@ -36,7 +36,7 @@ export default function JobList({ data }) {
     benefit: [],
     distance: "500",
     anyDistance: true,
-    otherLanguage: [],
+    otherLanguage: OTHER_LANGUAGE_FILTER[0],
     shiftTime: {
       start_after: "9am",
       end_before: "6pm",
@@ -209,20 +209,14 @@ export default function JobList({ data }) {
                   </label>
                 </div>
 
-                {OTHER_LANGUAGE_FILTER.map((language, index) => {
-                  return (
-                    <label className="label cursor-pointer" key={index}>
-                      <span className="text-lg">{language}</span>
-                      <input
-                        type="checkbox"
-                        name="checkbox-otherLanguage"
-                        className="checkbox checkbox-primary"
-                        value={language}
-                        {...register("otherLanguage")}
-                      />
-                    </label>
-                  );
-                })}
+                <select
+                  className="select select-bordered w-[80%] max-w-xs my-3"
+                  {...register("otherLanguage")}
+                >
+                  {OTHER_LANGUAGE_FILTER.map((language, key) => (
+                    <option key={key}>{language}</option>
+                  ))}
+                </select>
               </div>
 
               {/* Shift Time Category */}
@@ -273,7 +267,10 @@ export default function JobList({ data }) {
                         >
                           -
                         </button>
-                        <select className="select bg-gray-100" {...register("shiftTime.start_after")}>
+                        <select
+                          className="select select-bordered"
+                          {...register("shiftTime.start_after")}
+                        >
                           {TIME_OF_DAY.map((time, key) => (
                             <option key={key}>{time}</option>
                           ))}
@@ -312,7 +309,10 @@ export default function JobList({ data }) {
                         >
                           -
                         </button>
-                        <select className="select bg-gray-100" {...register("shiftTime.end_before")}>
+                        <select
+                          className="select select-bordered"
+                          {...register("shiftTime.end_before")}
+                        >
                           {TIME_OF_DAY.map((time, key) => (
                             <option key={key}>{time}</option>
                           ))}
