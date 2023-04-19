@@ -69,7 +69,10 @@ export default function JobView() {
       );
     }
     if (!jobId) {
-      return <Center />;
+      
+      return <Center>
+              <p>Select a job from the list on the left to display.</p>
+            </Center>;
     }
     if (error) {
       return <ErrorInfo />;
