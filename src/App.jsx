@@ -35,8 +35,7 @@ export default function App() {
   return (
     <RequireAuth strict={true}>
       <div
-        style={{ maxHeight: "-webkit-fill-available" }}
-        className="flex md:flex-row max-md:flex-col overflow-auto"
+        className="flex md:flex-row max-md:flex-col h-screen overflow-auto"
       >
         <div className="flex-none">
           <Navbar />

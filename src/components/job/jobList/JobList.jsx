@@ -65,7 +65,7 @@ export default function JobList({ data }) {
   const filterUI = useMemo(() => {
     if (showFilter) {
       return (
-        <div className="absolute z-10 top-0 left-0 w-full h-full bg-base-100 overflow-scroll">
+        <div className="absolute z-10 top-0 left-0 w-full max-md:h-[calc(100vh_-_8em)] md:h-screen bg-base-100 overflow-scroll">
           {/* Top Bar */}
           <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-base-200">
             <button
@@ -517,7 +517,7 @@ export default function JobList({ data }) {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap max-md:mt-16 max-md:mb-10">
+      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap max-md:mt-16 max-md:mb-8">
         {jobs}
       </ul>
     </div>
