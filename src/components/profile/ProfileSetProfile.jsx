@@ -1,3 +1,4 @@
+import BusinessIcon from "@mui/icons-material/Business";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -6,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+import { ROLES } from "@/constants";
 import { useAuth } from "@/models";
 import { getCoordinate } from "@/utils";
 
@@ -66,6 +68,27 @@ export default function ProfileSetProfile() {
                 </div>
               </div>
             </li>
+            {auth.user?.role === ROLES.EMPLOYER ? (
+              <li>
+                <div className="flex justify-between">
+                  <div className="flex justify-start gap-4">
+                    <BusinessIcon />
+                  </div>
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text">Company Name</span>
+                    </label>
+                    <input
+                      {...register("companyName", { required: true })}
+                      type="text"
+                      placeholder="company name"
+                      defaultValue={auth.user?.company}
+                      className="input w-full input-bordered"
+                    />
+                  </div>
+                </div>
+              </li>
+            ) : null}
             <li>
               <div className="flex justify-between">
                 <div className="flex justify-start gap-4">
