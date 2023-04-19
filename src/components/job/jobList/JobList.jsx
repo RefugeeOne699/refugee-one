@@ -256,7 +256,7 @@ export default function JobList({ data }) {
 
                 <div className={watch("anyShiftTime") === "true" ? "hidden" : ""}>
                   <label className="label ml-6">
-                    <span> Start Time After</span>
+                    <span> Start Time At/After</span>
                     <div className="form-control">
                       <div className="input-group">
                         <button
@@ -273,7 +273,7 @@ export default function JobList({ data }) {
                         >
                           -
                         </button>
-                        <select className="select" {...register("shiftTime.start_after")}>
+                        <select className="select bg-gray-100" {...register("shiftTime.start_after")}>
                           {TIME_OF_DAY.map((time, key) => (
                             <option key={key}>{time}</option>
                           ))}
@@ -295,7 +295,7 @@ export default function JobList({ data }) {
                   </label>
 
                   <label className="label ml-6">
-                    <span> End Time Before</span>
+                    <span> End Time At/Before</span>
                     <div className="form-control">
                       <div className="input-group">
                         <button
@@ -312,7 +312,7 @@ export default function JobList({ data }) {
                         >
                           -
                         </button>
-                        <select className="select" {...register("shiftTime.end_before")}>
+                        <select className="select bg-gray-100" {...register("shiftTime.end_before")}>
                           {TIME_OF_DAY.map((time, key) => (
                             <option key={key}>{time}</option>
                           ))}
@@ -355,10 +355,11 @@ export default function JobList({ data }) {
                     "label cursor-pointer" + (watch("anyDistance") ? " hidden" : "")
                   }
                 >
+                  <p className="ml-4">Within</p>
                   <input
                     type="text"
                     name="distance"
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-2/5"
                     {...register("distance")}
                   />
                   <p className="ml-4">miles</p>
