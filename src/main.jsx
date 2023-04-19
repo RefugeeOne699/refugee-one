@@ -9,6 +9,7 @@ import ProfileRoot from "@/pages/Profile";
 
 import AppRoot from "./App";
 import RequireEmployer from "./components/acess/RequireEmployer";
+import SavedJobRoot from "./components/job/SavedJobRoot";
 import TailWindToaster from "./components/TailwindToaster";
 import { AdminContextProvider } from "./models/admin";
 import { AuthContextProvider, RequireAuth } from "./models/auth";
@@ -172,6 +173,17 @@ const router = createBrowserRouter([
       {
         path: "jobs",
         element: <JobRoot />,
+        children: [
+          { index: true, element: <Job.View /> },
+          {
+            path: ":jobId",
+            element: <Job.View />,
+          },
+        ],
+      },
+      {
+        path: "jobsSaved",
+        element: <SavedJobRoot />,
         children: [
           { index: true, element: <Job.View /> },
           {

@@ -72,7 +72,7 @@ const buttonMap = {
       "Saved Jobs": {
         icon: <GradeIcon />,
         // todo: add path
-        path: "",
+        path: "jobsSaved",
       },
       Setting: {
         icon: <SettingsIcon />,
