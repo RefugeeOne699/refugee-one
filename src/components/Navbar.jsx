@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import { slide as Menu } from "react-burger-menu";
 import { useNavigate } from "react-router-dom";
 
+import RefugeeOneLogo from "@/assets/refugeeone-logo-transparent.png";
 import { AUTH_INITIAL_STATE, ROLES } from "@/constants";
 import { useAuth } from "@/models";
 
@@ -142,7 +143,9 @@ export default function Navbar() {
   return (
     <>
       <div className="md:hidden max-md:block h-16">
-        <div className="fixed top-0 left-0 z-50 w-full border-b-4 border-base-300 h-16 bg-base-200"></div>
+        <div className="fixed top-0 left-0 z-50 w-full border-b-2 border-base-300 h-16 bg-base-100 flex flex-row justify-end">
+          <img src={RefugeeOneLogo} className="pb-3 pt-4 pr-4" alt="RefugeeOne Logo" />
+        </div>
         <Menu
           isOpen={open}
           onStateChange={(state) => setOpen(state.isOpen)}
@@ -153,18 +156,17 @@ export default function Navbar() {
             "fixed top-0 left-0 bg-base-100 px-4 pt-16 text-xl font-semibold"
           }
           burgerBarClassName={"bg-base-content"}
-          burgerButtonClassName={"fixed top-4 left-4 z-50 w-10 h-8"}
+          burgerButtonClassName={"fixed top-6 left-6 z-50 w-6 h-4"}
           className={"fixed top-0 left-0 w-full h-full"}
         >
           <NavbarList setOpen={setOpen} />
         </Menu>
       </div>
 
-      <div className="w-60 h-screen max-md:hidden">
-        <NavbarList setOpen={setOpen} />
-      </div>
+      <div className="w-60 h-screen max-md:hidden"></div>
 
       <div className="fixed top-0 left-0 w-60 h-screen border-r-1 border-base-300 bg-base-200 max-md:hidden">
+        <img src={RefugeeOneLogo} className="p-8" alt="RefugeeOne Logo" />
         <NavbarList setOpen={setOpen} />
       </div>
     </>
