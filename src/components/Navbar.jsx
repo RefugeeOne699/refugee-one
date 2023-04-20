@@ -147,7 +147,7 @@ export default function Navbar() {
           <div></div>
           <img
             src={RefugeeOneLogo}
-            className="pb-2 pt-3 pr-3 m-1 h-auto max-width-full width-auto object-cover"
+            className="pt-1 m-3 h-auto max-width-full width-auto object-cover"
             alt="RefugeeOne Logo"
           />
         </div>
