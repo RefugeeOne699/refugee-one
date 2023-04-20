@@ -518,7 +518,7 @@ export default function JobList({ data }) {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap max-md:mt-16 max-md:mb-8">
+      <ul className="menu w-full overflow-x-scroll flex flex-col flex-nowrap max-md:mt-16">
         {jobs}
       </ul>
     </div>
