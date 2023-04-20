@@ -93,10 +93,10 @@ export default function JobList({ data }) {
 
           {/* Filter Content */}
           <form
-            className="flex flex-col divide-y gap-2"
+            className="flex flex-col"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="flex flex-col h-full px-3">
+            <div className="flex flex-col h-full px-3 divide-y gap-2">
               {/* Job Posted Category */}
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
@@ -398,9 +398,9 @@ export default function JobList({ data }) {
 
             {/* bottom submit button */}
             <div className="sticky bottom-0 left-0 flex items-center justify-center w-full h-16 bg-base-200">
-                <button className="btn btn-primary w-44" type="submit">
-                  Show Results
-                </button>
+              <button className="btn btn-primary w-44" type="submit">
+                Show Results
+              </button>
             </div>
           </form>
         </div>
