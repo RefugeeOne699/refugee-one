@@ -126,7 +126,7 @@ export default function JobView() {
                 </div>
                 <div className="ml-3">
                   <p className="font-bold">Job Type:</p>
-                  Database TBD
+                  <p>{data.jobType}</p>
                 </div>
               </div>
             </div>
