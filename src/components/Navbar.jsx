@@ -82,6 +82,16 @@ const buttonMap = {
   },
 };
 
+function getFirstNav(role) {
+  const navs = buttonMap[role].navs;
+  const navKeys = Object.keys(navs);
+  if (navKeys.length === 0) {
+    return "/";
+  }
+  const firstNavKey = navKeys[0];
+  return navs[firstNavKey].path;
+}
+
 function NavbarList(props) {
   const navigate = useNavigate();
   const auth = useAuth();
@@ -89,9 +99,20 @@ function NavbarList(props) {
   const [selectedNavItem, setSelectedNavItem] = useState("");
 
   useEffect(() => {
+    if (auth.user) {
+      const path = location.pathname;
+      if (path === "/" && Object.values(ROLES).includes(auth.user.role)) {
+        navigate(getFirstNav(auth.user.role));
+      }
+    }
+  }, [auth.user]);
+
+  useEffect(() => {
     const path = location.pathname;
-    if (path === undefined || path === "/" || auth.user === AUTH_INITIAL_STATE.user)
+    if (path === undefined || path === "/" || auth.user === AUTH_INITIAL_STATE.user) {
+      setSelectedNavItem("");
       return;
+    }
     const selected = Object.keys(buttonMap[auth.user.role].navs).reduce(
       (prev, curr) => {
         const currPath = buttonMap[auth.user.role].navs[curr].path;
