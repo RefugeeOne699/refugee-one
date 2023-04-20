@@ -147,7 +147,7 @@ export default function Navbar() {
           <div></div>
           <img
             src={RefugeeOneLogo}
-            className="pb-3 pt-4 pr-4 m-auto w-full h-full max-w-full object-cover"
+            className="pb-3 pt-4 pr-4 h-full object-cover"
             alt="RefugeeOne Logo"
           />
         </div>
@@ -158,7 +158,7 @@ export default function Navbar() {
           crossClassName={"bg-base-content"}
           overlayClassName={"opacity-25"}
           menuClassName={
-            "fixed top-0 left-0 bg-base-100 px-4 pt-16 text-lg font-semibold w-72"
+            "fixed top-0 left-0 bg-base-100 px-4 pt-16 text-xl font-semibold"
           }
           burgerBarClassName={"bg-base-content"}
           burgerButtonClassName={"fixed top-6 left-6 z-50 w-6 h-4"}
