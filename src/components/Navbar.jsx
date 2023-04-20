@@ -86,18 +86,24 @@ function NavbarList(props) {
   const navigate = useNavigate();
   const auth = useAuth();
   const location = useLocation();
-  console.log(location.pathname)
   const [selectedNavItem, setSelectedNavItem] = useState("");
 
   useEffect(() => {
-    const path = location.pathname.split("/")[1];
-    const navs = Object.keys(buttonMap[auth.user.role].navs);
-    const buttons = Object.keys(buttonMap[auth.user.role].buttons);
-    const navsAndButtons = [...navs, ...buttons];
-    const selected = navsAndButtons.find((nav) => {
-      return buttonMap[auth.user.role].navs[nav].path === path;
-    });
-    setSelectedNavItem(selected);
+    const path = location.pathname;
+    console.log("path", path);
+    if (path === undefined || path === "/" || auth.user === AUTH_INITIAL_STATE.user)
+      return;
+    const selected = Object.keys(buttonMap[auth.user.role].navs).reduce(
+      (prev, curr) => {
+        const currPath = buttonMap[auth.user.role].navs[curr].path;
+        if (path.includes(currPath) && currPath.length > prev.path.length) {
+          return { nav: curr, path: currPath };
+        }
+        return prev;
+      },
+      { nav: null, path: "" }
+    );
+    setSelectedNavItem(selected?.nav);
   }, [auth.user, location.pathname]);
 
   const items = useMemo(() => {
@@ -114,7 +120,6 @@ function NavbarList(props) {
               onClick={() => {
                 navigate(buttonMap[auth.user.role].buttons[key].path);
                 props.setOpen(false);
-                setSelectedNavItem(key);
               }}
             >
               <div className="h-full flex flex-col justify-center px-2 text-2xl">
@@ -137,7 +142,6 @@ function NavbarList(props) {
               onClick={() => {
                 navigate(buttonMap[auth.user.role].navs[key].path);
                 props.setOpen(false);
-                setSelectedNavItem(key);
               }}
             >
               <div className="h-full flex flex-col justify-center px-2 text-2xl">
