@@ -62,7 +62,10 @@ export default function JobDashboard({ role }) {
     async () => {
       let data = {};
       for (let url in constraints) {
-        data[url] = await countJobs(where("status", "==", constraints[url]));
+        data[url] = await countJobs(
+          where("status", "==", constraints[url]),
+          auth.user.role === ROLES.EMPLOYER ? auth.user.uid : undefined
+        );
       }
       return Promise.resolve(data);
     },

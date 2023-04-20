@@ -36,7 +36,7 @@ const JobContext = createContext({
   listJobs: (_userRole, _queryConstraints) => [],
   listEmployerJobs: (_userId, _jobStatus) => [],
   listSavedJobs: () => [],
-  countJobs: (_queryConstraints) => Number,
+  countJobs: (_queryConstraints, _userId) => Number,
 });
 
 const JobContextProvider = ({ children }) => {
@@ -227,8 +227,10 @@ const JobContextProvider = ({ children }) => {
    * Count the number of jobs that meets the certain conditions (pending jobs, jobs that are owned by the user)
    * @param {null | QueryConstraint | QueryConstraint[]} queryConstraints
    */
-  const countJobs = async (queryConstraints) => {
-    const jobCollection = collection(database, "Jobs");
+  const countJobs = async (queryConstraints, userId) => {
+    const jobCollection = userId
+      ? collection(database, "Users", userId, "JobsCreated")
+      : collection(database, "Jobs");
     const jobQuery = queryConstraints
       ? query(jobCollection, queryConstraints)
       : jobCollection;
