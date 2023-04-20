@@ -34,9 +34,7 @@ export default function App() {
    */
   return (
     <RequireAuth strict={true}>
-      <div
-        className="flex md:flex-row max-md:flex-col h-screen overflow-auto"
-      >
+      <div className="flex md:flex-row max-md:flex-col h-screen overflow-auto">
         <div className="flex-none">
           <Navbar />
         </div>
