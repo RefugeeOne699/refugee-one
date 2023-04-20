@@ -152,7 +152,7 @@ const AuthContextProvider = ({ children }) => {
 /**
  * if strict, only approved signed-in users are allowed to acess. Pending users will have no access to the content.
  */
-function RequireAuth({ children, strict }) {
+function RequireAuth({ children }) {
   let auth = useContext(AuthContext);
   let location = useLocation();
 
@@ -162,14 +162,9 @@ function RequireAuth({ children, strict }) {
     </Center>
   );
 
-  /**
-   * true if user is signed in but not allowed to access
-   */
-  const accessDenied = auth.user && strict && auth.user.status === USER_STATUS.PENDING;
-
   const { run, loading } = useRequest(
     async () => {
-      toast.error("Access denied. Your account is not approved yet.");
+      toast.error("An active account is required to access this website.");
       return auth.signOut();
     },
     {
@@ -181,11 +176,11 @@ function RequireAuth({ children, strict }) {
     if (loading) {
       return spinning;
     }
-    return <Navigate to="/signIn" replace />;
+    return <Navigate to="/signIn" state={{ from: location }} replace />;
   }, [loading]);
 
   useEffect(() => {
-    if (accessDenied) {
+    if (!auth.user) {
       (async () => run())();
     }
   }, [auth.user]);
@@ -196,16 +191,11 @@ function RequireAuth({ children, strict }) {
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    return <Navigate to="/signIn" state={{ from: location }} replace />;
+    return accessDeniedTransition;
   }
 
   if (auth.user === AUTH_INITIAL_STATE || auth.pullUserRequest.loading) {
     return spinning;
-  }
-
-  // a pending employer account trying to sign in
-  if (accessDenied) {
-    return accessDeniedTransition;
   }
 
   return children;

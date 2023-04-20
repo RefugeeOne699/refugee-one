@@ -30,7 +30,7 @@ export const useDashboard = () => useContext(DashboardContext);
 // This component is for employer and admin job management dashboard
 export default function JobDashboard({ role }) {
   const { tabUrl } = useParams();
-  const { listJobs, countJobs, listEmployerJobs } = useJob();
+  const { listJobs, countJobs } = useJob();
   const auth = useAuth();
   const {
     data,
@@ -39,16 +39,15 @@ export default function JobDashboard({ role }) {
     refresh: jobsRefresh,
   } = useRequest(
     async (tabUrl) =>
-      auth.user.role === ROLES.EMPLOYER
-        ? listEmployerJobs(auth.user.uid, constraints[tabUrl])
-        : listJobs(
-            auth.user.role,
-            where("status", "==", constraints[tabUrl] || JOB_STATUS.PENDING)
-          ),
+      listJobs(
+        auth.user.role,
+        where("status", "==", constraints[tabUrl] || JOB_STATUS.PENDING),
+        auth.user.role === ROLES.EMPLOYER ? auth.userRef : undefined
+      ),
     {
       manual: true,
-      onError: () => {
-        toast.error("Failed to fetch job list");
+      onError: (error) => {
+        toast.error(`Failed to fetch job list:${error}`);
       },
     }
   );
@@ -62,7 +61,10 @@ export default function JobDashboard({ role }) {
     async () => {
       let data = {};
       for (let url in constraints) {
-        data[url] = await countJobs(where("status", "==", constraints[url]));
+        data[url] = await countJobs(
+          where("status", "==", constraints[url]),
+          auth.user.role === ROLES.EMPLOYER ? auth.userRef : undefined
+        );
       }
       return Promise.resolve(data);
     },

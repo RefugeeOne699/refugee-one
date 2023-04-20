@@ -440,9 +440,7 @@ export default function JobList({ data }) {
                     <p className="truncate w-1/2">{job.company}</p>
                     <p className="truncate w-1/2">{`${job.location}`}</p>
                     <p className="truncate w-1/2">
-                      {job.benefit.hasMedical
-                        ? "Medical ✓"
-                        : "Medical ×"}
+                      {job.benefit.hasMedical ? "Medical ✓" : "Medical ×"}
                     </p>
                     <p className="truncate w-1/2">
                       ${job.wage.min}+ {job.wage.type}
