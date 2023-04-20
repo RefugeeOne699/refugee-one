@@ -9,9 +9,10 @@ import ProfileRoot from "@/pages/Profile";
 
 import AppRoot from "./App";
 import RequireEmployer from "./components/acess/RequireEmployer";
+import SavedJobRoot from "./components/job/SavedJobRoot";
 import TailWindToaster from "./components/TailwindToaster";
 import { AdminContextProvider } from "./models/admin";
-import { AuthContextProvider, RequireAuth } from "./models/auth";
+import { AuthContextProvider } from "./models/auth";
 import { JobContextProvider } from "./models/job";
 import { JobSaveContextProvider } from "./models/jobSave";
 
@@ -60,15 +61,6 @@ const router = createBrowserRouter([
     path: "/confirm_send_email",
     element: <ConfirmSendEmail />,
   },
-  {
-    path: "addJob",
-    // pending employer user can access this
-    element: (
-      <RequireAuth>
-        <UpsertJob />
-      </RequireAuth>
-    ), //add job listing
-  },
   // all the pages below requires signed in
   {
     path: "/",
@@ -80,6 +72,11 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Center />,
+      },
+      {
+        path: "addJob",
+        // pending employer user can access this
+        element: <UpsertJob />, //add job listing
       },
       {
         path: "updateJob/:jobId",
@@ -172,6 +169,17 @@ const router = createBrowserRouter([
       {
         path: "jobs",
         element: <JobRoot />,
+        children: [
+          { index: true, element: <Job.View /> },
+          {
+            path: ":jobId",
+            element: <Job.View />,
+          },
+        ],
+      },
+      {
+        path: "jobsSaved",
+        element: <SavedJobRoot />,
         children: [
           { index: true, element: <Job.View /> },
           {

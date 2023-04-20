@@ -72,7 +72,7 @@ const buttonMap = {
       "Saved Jobs": {
         icon: <GradeIcon />,
         // todo: add path
-        path: "",
+        path: "jobsSaved",
       },
       Setting: {
         icon: <SettingsIcon />,
@@ -191,7 +191,12 @@ export default function Navbar() {
     <>
       <div className="md:hidden max-md:block h-16">
         <div className="fixed top-0 left-0 z-50 w-full border-b-2 border-base-300 h-16 bg-base-100 flex flex-row justify-end">
-          <img src={RefugeeOneLogo} className="pb-3 pt-4 pr-4" alt="RefugeeOne Logo" />
+          <div></div>
+          <img
+            src={RefugeeOneLogo}
+            className="pt-1 m-3 h-auto max-width-full width-auto object-cover"
+            alt="RefugeeOne Logo"
+          />
         </div>
         <Menu
           isOpen={open}
@@ -200,7 +205,7 @@ export default function Navbar() {
           crossClassName={"bg-base-content"}
           overlayClassName={"opacity-25"}
           menuClassName={
-            "fixed top-0 left-0 bg-base-100 px-4 pt-16 text-xl font-semibold"
+            "fixed top-0 left-0 bg-base-100 px-4 pt-16 text-lg font-semibold w-72"
           }
           burgerBarClassName={"bg-base-content"}
           burgerButtonClassName={"fixed top-6 left-6 z-50 w-6 h-4"}

@@ -12,12 +12,12 @@ import { useDashboard } from "./JobDashboard";
 /**
  * if Job has a `data` in the props, it will not fetch the job list, instead it will just use the `data`
  */
-export default function JobRoot() {
+export default function SavedJobRoot() {
   const auth = useAuth();
-  const { listJobs } = useJob();
+  const { listSavedJobs } = useJob();
   const { run, data: pulledJobs } = useRequest(
     async () => {
-      return listJobs(auth.user.role).then((data) => {
+      return listSavedJobs(auth.user.uid).then((data) => {
         for (let i = 0; i < data.length; i++) {
           if (auth.user.coordinate && data[i].coordinate) {
             let userCoordinate = auth.user.coordinate;
@@ -39,7 +39,7 @@ export default function JobRoot() {
     {
       manual: true,
       onError: (error) => {
-        toast.error(`Failed to get job list: ${error}`);
+        toast.error(`Failed to get saved job list: ${error}`);
       },
     }
   );
@@ -56,7 +56,7 @@ export default function JobRoot() {
   const sideMenuMobile = jobId ? "hidden" : "w-full";
   const contentMobile = jobId ? "w-full" : "hidden";
   return (
-    <div className="flex flex-row h-full max-h-screen md:overflow-hidden">
+    <div className="flex flex-row h-full max-h-screen">
       <div className={`${sideMenuMobile} md:block md:w-1/2 lg:w-1/3 flex-none h-full`}>
         <JobList data={jobs} />
       </div>

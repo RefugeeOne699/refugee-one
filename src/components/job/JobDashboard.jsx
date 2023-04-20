@@ -6,7 +6,7 @@ import { NavLink, useParams } from "react-router-dom";
 
 import JobRoot from "@/components/job/JobRoot";
 import Spin from "@/components/Spin";
-import { JOB_STATUS } from "@/constants";
+import { JOB_STATUS, ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
 const menu = [
@@ -41,12 +41,13 @@ export default function JobDashboard({ role }) {
     async (tabUrl) =>
       listJobs(
         auth.user.role,
-        where("status", "==", constraints[tabUrl] || JOB_STATUS.PENDING)
+        where("status", "==", constraints[tabUrl] || JOB_STATUS.PENDING),
+        auth.user.role === ROLES.EMPLOYER ? auth.userRef : undefined
       ),
     {
       manual: true,
-      onError: () => {
-        toast.error("Failed to fetch job list");
+      onError: (error) => {
+        toast.error(`Failed to fetch job list:${error}`);
       },
     }
   );
@@ -60,7 +61,10 @@ export default function JobDashboard({ role }) {
     async () => {
       let data = {};
       for (let url in constraints) {
-        data[url] = await countJobs(where("status", "==", constraints[url]));
+        data[url] = await countJobs(
+          where("status", "==", constraints[url]),
+          auth.user.role === ROLES.EMPLOYER ? auth.userRef : undefined
+        );
       }
       return Promise.resolve(data);
     },
