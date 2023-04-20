@@ -90,7 +90,6 @@ function NavbarList(props) {
 
   useEffect(() => {
     const path = location.pathname;
-    console.log("path", path);
     if (path === undefined || path === "/" || auth.user === AUTH_INITIAL_STATE.user)
       return;
     const selected = Object.keys(buttonMap[auth.user.role].navs).reduce(
