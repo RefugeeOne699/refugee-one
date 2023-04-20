@@ -1,3 +1,4 @@
+import InfoIcon from "@mui/icons-material/Info";
 import { useRequest } from "ahooks";
 import { React, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -130,6 +131,7 @@ function UpsertJobCore({ update }) {
     setValue("address.state", draft.address.state);
     setValue("address.zipcode", draft.address.zipcode);
     setValue("description", draft.description);
+    setValue("instruction", draft.instruction);
   };
 
   const loadDraft = () => {
@@ -274,15 +276,22 @@ function UpsertJobCore({ update }) {
           <label className="label flex basis-44" htmlFor="shift">
             Shift Detail
           </label>
-          <textarea
-            type="text"
-            rows="3"
-            className="textarea textarea-bordered w-full"
-            placeholder="Please enter shift details in the following format:
-            Monday-Tuesday 8:30 AM to 1 PM
-            Thursday - Friday 1 PM to 5 PM"
-            {...register("shift", { required: true })}
-          ></textarea>
+          <div className="flex flex-col w-full">
+            <textarea
+              type="text"
+              rows="3"
+              className="textarea textarea-bordered w-full"
+              {...register("shift", { required: true })}
+            ></textarea>
+            <div className="text-sm text-slate-400 mt-1">
+              <p>
+                <InfoIcon fontSize="inherit" className="mr-1" />
+                Please enter shift details in the following format:
+              </p>
+              <p>Monday-Tuesday 8:30 AM to 1 PM</p>
+              <p>Thursday - Friday 1 PM to 5 PM</p>
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-row justify-between items-center">
@@ -428,13 +437,37 @@ function UpsertJobCore({ update }) {
           <label className="label flex basis-44" htmlFor="description">
             Job Description
           </label>
-          <textarea
-            type="text"
-            rows="10"
-            className="textarea textarea-bordered w-full"
-            placeholder="Please specify other requirements or/and skills required for job such as driver license, or other certifications needed."
-            {...register("description", { required: true })}
-          />
+          <div className="flex flex-col w-full">
+            <textarea
+              type="text"
+              rows="10"
+              className="textarea textarea-bordered w-full"
+              {...register("description", { required: true })}
+            />
+            <div className="text-sm text-slate-400 mt-1">
+              <InfoIcon fontSize="inherit" className="mr-1" />
+              Please specify other requirements or/and skills required for job such as
+              driver license, or other certifications needed.
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-row items-center mb-4">
+          <label className="label flex basis-44" htmlFor="instruction">
+            Job Application Instruction
+          </label>
+          <div className="flex flex-col w-full">
+            <textarea
+              type="text"
+              rows="4"
+              className="textarea textarea-bordered w-full"
+              {...register("instruction", { required: true })}
+            />
+            <div className="text-sm text-slate-400 mt-1">
+              <InfoIcon fontSize="inherit" className="mr-1" />
+              Provide instructions on how to apply for this job - email resume, upload
+              resume to a portal or others
+            </div>
+          </div>
         </div>
         <div className="flex w-full justify-end mb-4">
           <div className="flex flex-row justify-around w-1/2">

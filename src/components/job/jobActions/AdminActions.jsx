@@ -89,7 +89,7 @@ export default function AdminActions({ job, jobId }) {
 
   return (
     <>
-      <div className="items-center text-center w-full flex flex-row justify-center gap-32">
+      <div className="items-center text-center w-full flex flex-row justify-center gap-16">
         {buttons}
       </div>
       {/*https://daisyui.com/components/modal/# */}
