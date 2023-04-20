@@ -34,12 +34,13 @@ export default function App() {
    */
   return (
     <RequireAuth>
-      <div className="flex md:flex-row max-md:flex-col h-full overflow-auto bg-red-400">
+      <div className="flex md:flex-row max-md:flex-col h-full overflow-auto">
         <div className="flex-none">
           <Navbar />
         </div>
 
         {/* add max-h for mobile to avoid the nav-bar scrolling away problem */}
+        {/* avoid using h-screen or 100vh for mobile view */}
         <div className="flex-auto flex flex-col max-md:max-h-[calc(100%_-_4em)]">
           <Outlet />
         </div>
