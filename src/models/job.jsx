@@ -34,7 +34,6 @@ const JobContext = createContext({
    * @returns job list
    */
   listJobs: (_userRole, _queryConstraints) => [],
-  listEmployerJobs: (_userId, _jobStatus) => [],
   listSavedJobs: () => [],
   countJobs: (_queryConstraints, _userId) => Number,
 });
@@ -137,14 +136,19 @@ const JobContextProvider = ({ children }) => {
    *    stauts: "pending",
    * }
    */
-  const listJobs = async (userRole, queryConstraints) => {
+  const listJobs = async (userRole, queryConstraints, userRef) => {
     const jobCollection = collection(database, "Jobs");
     // a temp fix: a temp fix that the client will only see the approved job
-    const jobQuery = queryConstraints
-      ? query(jobCollection, queryConstraints)
-      : userRole === ROLES.CLIENT
-      ? query(jobCollection, where("status", "==", JOB_STATUS.APPROVED))
-      : jobCollection;
+    const jobQuery =
+      userRole === ROLES.CLIENT
+        ? query(jobCollection, where("status", "==", JOB_STATUS.APPROVED))
+        : userRole === ROLES.EMPLOYER
+        ? queryConstraints
+          ? query(jobCollection, where("owner", "==", userRef), queryConstraints)
+          : query(jobCollection, where("owner", "==", userRef))
+        : queryConstraints
+        ? query(jobCollection, queryConstraints)
+        : jobCollection;
     const jobDocs = await getDocs(jobQuery);
     const jobList = jobDocs.docs.map(async (doc) => {
       const job = doc.data();
@@ -195,45 +199,20 @@ const JobContextProvider = ({ children }) => {
     return await Promise.all(jobList);
   };
 
-  const listEmployerJobs = async (userId, jobStatus) => {
-    const jobsToFetch = collection(database, "Users", userId, "JobsCreated");
-    const jobIds = (await getDocs(jobsToFetch)).docs.map((doc) => doc.id);
-    const jobDocs = jobIds.map(async (jobId) => {
-      return await getDoc(doc(database, "Jobs", jobId));
-    });
-    const fetchedJobs = await Promise.all(jobDocs);
-    const jobList = fetchedJobs.map(async (doc) => {
-      const job = doc.data();
-      return {
-        id: doc.id,
-        title: job.title,
-        company: job.company,
-        status: job.status,
-        location: job.location,
-        coordinate: job.coordinate,
-        wage: job.wage,
-        benefit: job.benefit,
-        jobType: job.jobType,
-        langEnglishLevel: job.langEnglishLevel,
-        datePost: job.datePost,
-        langNote: job.langNote,
-        shift: job["shift"],
-      };
-    });
-    const jobsData = await Promise.all(jobList);
-    return jobsData.filter((job) => job.status === jobStatus);
-  };
   /**
    * Count the number of jobs that meets the certain conditions (pending jobs, jobs that are owned by the user)
    * @param {null | QueryConstraint | QueryConstraint[]} queryConstraints
    */
-  const countJobs = async (queryConstraints, userId) => {
-    const jobCollection = userId
-      ? collection(database, "Users", userId, "JobsCreated")
-      : collection(database, "Jobs");
-    const jobQuery = queryConstraints
+  const countJobs = async (queryConstraints, userRef) => {
+    const jobCollection = collection(database, "Jobs");
+    const jobQuery = userRef
+      ? queryConstraints
+        ? query(jobCollection, where("owner", "==", userRef), queryConstraints)
+        : query(jobCollection, where("owner", "==", userRef))
+      : queryConstraints
       ? query(jobCollection, queryConstraints)
       : jobCollection;
+
     const snapshot = await getCountFromServer(jobQuery);
     return snapshot.data().count;
   };
@@ -249,7 +228,6 @@ const JobContextProvider = ({ children }) => {
       listJobs,
       listSavedJobs,
       countJobs,
-      listEmployerJobs,
     }),
     []
   );
