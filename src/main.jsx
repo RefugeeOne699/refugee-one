@@ -61,15 +61,6 @@ const router = createBrowserRouter([
     path: "/confirm_send_email",
     element: <ConfirmSendEmail />,
   },
-  {
-    path: "addJob",
-    // pending employer user can access this
-    element: (
-      <RequireAuth>
-        <UpsertJob />
-      </RequireAuth>
-    ), //add job listing
-  },
   // all the pages below requires signed in
   {
     path: "/",
@@ -83,16 +74,27 @@ const router = createBrowserRouter([
         element: <Center />,
       },
       {
+        path: "addJob",
+        // pending employer user can access this
+        element: <UpsertJob />,
+      },
+      {
         path: "updateJob/:jobId",
-        element: <UpsertJob update={true} />,
+        element: (
+          <RequireAuth strict={true}>
+            <UpsertJob update={true} />
+          </RequireAuth>
+        ),
       },
       // example: example for router and nested router
       {
         path: "admin",
         element: (
-          <AdminContextProvider>
-            <Outlet />
-          </AdminContextProvider>
+          <RequireAuth strict={true}>
+            <AdminContextProvider>
+              <Outlet />
+            </AdminContextProvider>
+          </RequireAuth>
         ),
         // element: <AdminContextProvider />,
         children: [
@@ -143,9 +145,11 @@ const router = createBrowserRouter([
       {
         path: "employer",
         element: (
-          <RequireEmployer>
-            <Outlet />
-          </RequireEmployer>
+          <RequireAuth strict={true}>
+            <RequireEmployer>
+              <Outlet />
+            </RequireEmployer>
+          </RequireAuth>
         ),
         children: [
           {
@@ -172,7 +176,11 @@ const router = createBrowserRouter([
       },
       {
         path: "jobs",
-        element: <JobRoot />,
+        element: (
+          <RequireAuth strict={true}>
+            <JobRoot />
+          </RequireAuth>
+        ),
         children: [
           { index: true, element: <Job.View /> },
           {
@@ -183,7 +191,11 @@ const router = createBrowserRouter([
       },
       {
         path: "jobsSaved",
-        element: <SavedJobRoot />,
+        element: (
+          <RequireAuth strict={true}>
+            <SavedJobRoot />
+          </RequireAuth>
+        ),
         children: [
           { index: true, element: <Job.View /> },
           {

@@ -167,28 +167,16 @@ function RequireAuth({ children, strict }) {
    */
   const accessDenied = auth.user && strict && auth.user.status === USER_STATUS.PENDING;
 
-  const { run, loading } = useRequest(
-    async () => {
-      toast.error("Access denied. Your account is not approved yet.");
-      return auth.signOut();
-    },
-    {
-      manual: true,
-    }
-  );
-
-  const accessDeniedTransition = useMemo(() => {
-    if (loading) {
-      return spinning;
-    }
-    return <Navigate to="/signIn" replace />;
-  }, [loading]);
-
   useEffect(() => {
     if (accessDenied) {
-      (async () => run())();
+      toast.error("Access denied. Your account is not approved yet.", {
+        id: "acessDeniedToast",
+        duration: 1000,
+      });
+    } else {
+      toast.dismiss("acessDeniedToast");
     }
-  }, [auth.user]);
+  }, [accessDenied]);
 
   // https://github.com/remix-run/react-router/blob/6f17a3089a946cb063208877fbf25d6645852bea/examples/auth/src/App.tsx#L130
   if (auth.user === undefined) {
@@ -205,7 +193,7 @@ function RequireAuth({ children, strict }) {
 
   // a pending employer account trying to sign in
   if (accessDenied) {
-    return accessDeniedTransition;
+    return <Navigate to="/" replace />;
   }
 
   return children;
