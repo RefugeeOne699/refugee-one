@@ -441,11 +441,11 @@ export default function JobList({ data }) {
                     <p className="truncate w-1/2">{`${job.location}`}</p>
                     <p className="truncate w-1/2">
                       {job.benefit.hasMedical
-                        ? "Medical Benefits"
-                        : "No Medical Benefits"}
+                        ? "Medical ✓"
+                        : "Medical ×"}
                     </p>
                     <p className="truncate w-1/2">
-                      Minimum Pay: {job.wage.min} {job.wage.type}
+                      ${job.wage.min}+ {job.wage.type}
                     </p>
                   </div>
                 </Link>
