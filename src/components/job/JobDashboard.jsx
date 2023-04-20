@@ -6,7 +6,7 @@ import { NavLink, useParams } from "react-router-dom";
 
 import JobRoot from "@/components/job/JobRoot";
 import Spin from "@/components/Spin";
-import { JOB_STATUS } from "@/constants";
+import { JOB_STATUS, ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
 const menu = [
@@ -30,7 +30,7 @@ export const useDashboard = () => useContext(DashboardContext);
 // This component is for employer and admin job management dashboard
 export default function JobDashboard({ role }) {
   const { tabUrl } = useParams();
-  const { listJobs, countJobs } = useJob();
+  const { listJobs, countJobs, listEmployerJobs } = useJob();
   const auth = useAuth();
   const {
     data,
@@ -39,10 +39,12 @@ export default function JobDashboard({ role }) {
     refresh: jobsRefresh,
   } = useRequest(
     async (tabUrl) =>
-      listJobs(
-        auth.user.role,
-        where("status", "==", constraints[tabUrl] || JOB_STATUS.PENDING)
-      ),
+      auth.user.role === ROLES.EMPLOYER
+        ? listEmployerJobs(auth.user.uid, constraints[tabUrl])
+        : listJobs(
+            auth.user.role,
+            where("status", "==", constraints[tabUrl] || JOB_STATUS.PENDING)
+          ),
     {
       manual: true,
       onError: () => {
