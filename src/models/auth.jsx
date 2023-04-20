@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { toast } from "react-hot-toast";
 import { Navigate, useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
@@ -163,7 +164,7 @@ function RequireAuth({ children }) {
 
   const { run, loading } = useRequest(
     async () => {
-      //   toast.error("Access denied. Your account is not approved yet.");
+      toast.error("An active account is required to access this website.");
       return auth.signOut();
     },
     {
