@@ -6,7 +6,7 @@ import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import WorkIcon from "@mui/icons-material/Work";
 import { useEffect, useMemo, useState } from "react";
 import { slide as Menu } from "react-burger-menu";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import RefugeeOneLogo from "@/assets/refugeeone-logo-transparent.png";
 import { AUTH_INITIAL_STATE, ROLES } from "@/constants";
