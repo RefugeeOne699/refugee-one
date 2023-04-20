@@ -1,10 +1,31 @@
-import ISO6391 from "iso-639-1";
-
 import { WAGE_TYPE } from "@/constants";
 
 export const WAGE_FILTER = [0, 16, 17, 18, 19, 20];
 export const JOB_POSTED_FILTER = ["Anytime", "Past 3 days", "Past week", "Past month"];
-export const OTHER_LANGUAGE_FILTER = ["Spanish", "French", "Arabic", "Hindi", "Others"];
+export const OTHER_LANGUAGE_FILTER = [
+  "Any",
+  "Amharic",
+  "Arabic",
+  "Burmese",
+  "Dari",
+  "French",
+  "Haitian Creole",
+  "Hindi",
+  "Kinyarwanda",
+  "Lingala",
+  "Malay",
+  "Pashto",
+  "Persian/Farsi",
+  "Polish",
+  "Rohingya",
+  "Russian",
+  "Somali",
+  "Spanish",
+  "Swahili",
+  "Tigrinya",
+  "Ukrainian",
+  "Urdu",
+];
 export const TIME_OF_DAY = [
   "12am",
   "1am",
@@ -99,46 +120,17 @@ function distanceCheck(job, anyDistance, distance) {
   return job.distance && parseFloat(job.distance) < parseFloat(distance);
 }
 
-function containOtherLanguage(langNote) {
-  // get a list of all the languages in the world except Spanish, French, Arabic, Hindi, and English
-  const languageList = ISO6391.getAllNames();
-  const otherLanguageList = languageList.filter(
-    (language) => !["Spanish", "French", "Arabic", "Hindi", "English"].includes(language)
-  );
-  for (let language of otherLanguageList) {
-    if (langNote.toLowerCase().includes(language.toLowerCase())) {
+function otherLanguageCheck(job, otherLanguage) {
+  if (!job) return false;
+  if (otherLanguage === OTHER_LANGUAGE_FILTER[0]) return true;
+
+  //split language by both / and whitespace, and remove empty parts from the resulting array
+  const languageParts = otherLanguage.split(/[ /]/).filter((part) => part !== "");
+  for (const part of languageParts) {
+    if (job.langNote.toLowerCase().includes(part.toLowerCase())) {
       return true;
     }
   }
-  return false;
-}
-
-function otherLanguageCheck(job, otherLanguage) {
-  if (!job) return false;
-  if (!otherLanguage.length) return true;
-
-  for (let language of otherLanguage) {
-    switch (language) {
-      case "Spanish":
-        if (job.langNote.toLowerCase().includes("spanish")) return true;
-        break;
-      case "French":
-        if (job.langNote.toLowerCase().includes("french")) return true;
-        break;
-      case "Arabic":
-        if (job.langNote.toLowerCase().includes("arabic")) return true;
-        break;
-      case "Hindi":
-        if (job.langNote.toLowerCase().includes("hindi")) return true;
-        break;
-      case "Others":
-        if (containOtherLanguage(job.langNote)) return true;
-        break;
-      default:
-        return false;
-    }
-  }
-
   return false;
 }
 

@@ -4,7 +4,7 @@ import JobSave from "@/components/job/JobSave";
 
 export default function ClientActions({ jobId }) {
   return (
-    <div className="items-center text-center w-full flex flex-row justify-center gap-32">
+    <div className="items-center text-center w-full flex flex-row justify-center max-md:gap-10 md:gap-32">
       <Link to=".." className="text-xl justify-start">
         <button className="btn btn-outline w-32">Back</button>
       </Link>

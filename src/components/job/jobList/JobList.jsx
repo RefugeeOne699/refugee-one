@@ -36,7 +36,7 @@ export default function JobList({ data }) {
     benefit: [],
     distance: "500",
     anyDistance: true,
-    otherLanguage: [],
+    otherLanguage: OTHER_LANGUAGE_FILTER[0],
     shiftTime: {
       start_after: "9am",
       end_before: "6pm",
@@ -65,7 +65,7 @@ export default function JobList({ data }) {
   const filterUI = useMemo(() => {
     if (showFilter) {
       return (
-        <div className="absolute z-10 top-0 left-0 w-full h-full bg-base-100 overflow-scroll">
+        <div className="absolute z-10 top-0 left-0 w-full max-md:h-[calc(100vh_-_8em)] md:h-screen bg-base-100 overflow-scroll">
           {/* Top Bar */}
           <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-base-200">
             <button
@@ -180,7 +180,7 @@ export default function JobList({ data }) {
                 </div>
 
                 {[
-                  ENGLISH_LEVEL.NOT_REQUIRED,
+                  ENGLISH_LEVEL.NONE,
                   ENGLISH_LEVEL.BASIC,
                   ENGLISH_LEVEL.INTERMEDIATE,
                   ENGLISH_LEVEL.ADVANCED,
@@ -209,20 +209,14 @@ export default function JobList({ data }) {
                   </label>
                 </div>
 
-                {OTHER_LANGUAGE_FILTER.map((language, index) => {
-                  return (
-                    <label className="label cursor-pointer" key={index}>
-                      <span className="text-lg">{language}</span>
-                      <input
-                        type="checkbox"
-                        name="checkbox-otherLanguage"
-                        className="checkbox checkbox-primary"
-                        value={language}
-                        {...register("otherLanguage")}
-                      />
-                    </label>
-                  );
-                })}
+                <select
+                  className="select select-bordered w-[80%] max-w-xs my-3"
+                  {...register("otherLanguage")}
+                >
+                  {OTHER_LANGUAGE_FILTER.map((language, key) => (
+                    <option key={key}>{language}</option>
+                  ))}
+                </select>
               </div>
 
               {/* Shift Time Category */}
@@ -256,7 +250,7 @@ export default function JobList({ data }) {
 
                 <div className={watch("anyShiftTime") === "true" ? "hidden" : ""}>
                   <label className="label ml-6">
-                    <span> Start Time After</span>
+                    <span> Start Time At/After</span>
                     <div className="form-control">
                       <div className="input-group">
                         <button
@@ -273,7 +267,10 @@ export default function JobList({ data }) {
                         >
                           -
                         </button>
-                        <select className="select" {...register("shiftTime.start_after")}>
+                        <select
+                          className="select select-bordered"
+                          {...register("shiftTime.start_after")}
+                        >
                           {TIME_OF_DAY.map((time, key) => (
                             <option key={key}>{time}</option>
                           ))}
@@ -295,7 +292,7 @@ export default function JobList({ data }) {
                   </label>
 
                   <label className="label ml-6">
-                    <span> End Time Before</span>
+                    <span> End Time At/Before</span>
                     <div className="form-control">
                       <div className="input-group">
                         <button
@@ -312,7 +309,10 @@ export default function JobList({ data }) {
                         >
                           -
                         </button>
-                        <select className="select" {...register("shiftTime.end_before")}>
+                        <select
+                          className="select select-bordered"
+                          {...register("shiftTime.end_before")}
+                        >
                           {TIME_OF_DAY.map((time, key) => (
                             <option key={key}>{time}</option>
                           ))}
@@ -355,10 +355,11 @@ export default function JobList({ data }) {
                     "label cursor-pointer" + (watch("anyDistance") ? " hidden" : "")
                   }
                 >
+                  <p className="ml-4">Within</p>
                   <input
                     type="text"
                     name="distance"
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-2/5"
                     {...register("distance")}
                   />
                   <p className="ml-4">miles</p>
@@ -465,7 +466,7 @@ export default function JobList({ data }) {
   return (
     <div className="relative flex flex-col bg-base-100 h-full">
       {/* Search bar and filter icon */}
-      <div className="fixed w-full md:sticky md:top-0 z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-base-100">
+      <div className="fixed top-16 md:sticky md:top-0  w-full z-10 flex flex-row flex-auto items-center justify-between h-16 p-3 bg-base-100">
         <div className="form-control">
           <div className="input-group">
             <input
@@ -517,7 +518,7 @@ export default function JobList({ data }) {
       {filterUI}
 
       {/* Job List UI */}
-      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap max-md:pt-16">
+      <ul className="menu w-full overflow-x-scroll h-full flex flex-col flex-nowrap max-md:mt-16 max-md:mb-8">
         {jobs}
       </ul>
     </div>
