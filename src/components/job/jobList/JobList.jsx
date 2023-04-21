@@ -65,7 +65,11 @@ export default function JobList({ data }) {
   const filterUI = useMemo(() => {
     if (showFilter) {
       return (
-        <div className="absolute z-10 top-0 left-0 w-full max-md:h-[calc(100vh_-_8em)] md:h-screen bg-base-100 overflow-scroll">
+        <div
+          className="md:absolute md:h-screen md:top-0 md:left-0
+         max-md:fixed max-md:left-0 max-md:h-[calc(100%_-_4em)]
+         z-10 w-full bg-base-100 overflow-scroll"
+        >
           {/* Top Bar */}
           <div className="sticky top-0 left-0 flex flex-row justify-between items-center w-full h-16 p-3 bg-base-200">
             <button
@@ -88,11 +92,11 @@ export default function JobList({ data }) {
           </div>
 
           {/* Filter Content */}
-          <div className="flex flex-col h-full px-3">
-            <form
-              className="flex flex-col divide-y gap-2"
-              onSubmit={handleSubmit(onSubmit)}
-            >
+          <form
+            className="flex flex-col"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className="flex flex-col h-full px-3 divide-y gap-2">
               {/* Job Posted Category */}
               <div className="form-control pt-2">
                 <div className="flex flex-row items-center">
@@ -390,15 +394,15 @@ export default function JobList({ data }) {
                   );
                 })}
               </div>
+            </div>
 
-              {/* bottom submit button */}
-              <div className="form-control pt-5 pb-5">
-                <button className="btn btn-primary w-44" type="submit">
-                  Show Results
-                </button>
-              </div>
-            </form>
-          </div>
+            {/* bottom submit button */}
+            <div className="sticky bottom-0 left-0 flex items-center justify-center w-full h-16 bg-base-200">
+              <button className="btn btn-primary w-44" type="submit">
+                Show Results
+              </button>
+            </div>
+          </form>
         </div>
       );
     } else {
