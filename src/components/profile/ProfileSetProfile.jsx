@@ -79,7 +79,7 @@ export default function ProfileSetProfile() {
                       <span className="label-text">Company Name</span>
                     </label>
                     <input
-                      {...register("companyName", { required: true })}
+                      {...register("company", { required: true })}
                       type="text"
                       placeholder="company name"
                       defaultValue={auth.user?.company}

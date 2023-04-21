@@ -118,12 +118,22 @@ const AuthContextProvider = ({ children }) => {
 
   const updateProfile = (newProfile) => {
     const docRef = doc(database, "Users", auth.currentUser.uid);
-    return updateDoc(docRef, {
-      name: newProfile.name,
-      phone: newProfile.phone,
-      address: newProfile.address,
-      coordinate: newProfile.coordinate,
-    });
+    if (newProfile.company) {
+      return updateDoc(docRef, {
+        name: newProfile.name,
+        phone: newProfile.phone,
+        address: newProfile.address,
+        coordinate: newProfile.coordinate,
+        company: newProfile.company,
+      });
+    } else {
+      return updateDoc(docRef, {
+        name: newProfile.name,
+        phone: newProfile.phone,
+        address: newProfile.address,
+        coordinate: newProfile.coordinate,
+      });
+    }
   };
 
   const isSignedIn = () => {
