@@ -43,11 +43,13 @@ const AuthContext = createContext({
    * @param {string} _email
    */
   resetPassWordByEmail: async (_email) => {},
+  toast,
 });
 
 const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(AUTH_INITIAL_STATE);
   const [userRef, setUserRef] = useState();
+  const [toastId, setToastId] = useState(undefined);
 
   const pullUserRequest = useRequest(
     async (authUser) => {
@@ -140,6 +142,30 @@ const AuthContextProvider = ({ children }) => {
     return auth.user && auth.user !== AUTH_INITIAL_STATE;
   };
 
+  /**
+   * When doing auth related operations, several toasts like "access denied", "sign out succeed" may appear in the same time, which is not expected
+   * The function below wraps the toast function, make sure when multiple toasts appear at the same time, only the last toast will be displayed
+   */
+  const wrappedToast = (func) => {
+    return function (message, options) {
+      if (!toastId) {
+        const id = func(message, options);
+        setToastId(id);
+      } else {
+        options = options ? { id: toastId } : { ...options, id: toastId };
+        func(message, options);
+      }
+    };
+  };
+
+  const authToast = useMemo(() => {
+    return {
+      success: (message, options) => wrappedToast(toast.success)(message, options),
+      error: (message, options) => wrappedToast(toast.error)(message, options),
+      dismiss: (toastId) => toast.dismiss(toastId),
+    };
+  }, [toastId]);
+
   const contextValue = useMemo(
     () => ({
       user,
@@ -152,6 +178,7 @@ const AuthContextProvider = ({ children }) => {
       updateProfile,
       isSignedIn,
       resetPassWordByEmail,
+      toast: authToast,
     }),
     [user]
   );
@@ -163,7 +190,8 @@ const AuthContextProvider = ({ children }) => {
  * if strict, only approved signed-in users are allowed to acess. Pending users will have no access to the content.
  */
 function RequireAuth({ children }) {
-  let auth = useContext(AuthContext);
+  const auth = useContext(AuthContext);
+  const { signOut, toast } = auth;
   let location = useLocation();
 
   const spinning = (
@@ -175,7 +203,7 @@ function RequireAuth({ children }) {
   const { run, loading } = useRequest(
     async () => {
       toast.error("An active account is required to access this website.");
-      return auth.signOut();
+      return signOut();
     },
     {
       manual: true,
