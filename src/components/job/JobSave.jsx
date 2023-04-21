@@ -23,8 +23,8 @@ export default function JobSave({ jobId, mode }) {
     onSuccess: () => {
       toast.success("Job is saved!");
     },
-    onError: () => {
-      toast.error("Failed to save the job");
+    onError: (error) => {
+      toast.error("Failed to save the job: " + error.message);
     },
   });
   const onClick = async () => {
