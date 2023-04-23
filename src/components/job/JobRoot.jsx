@@ -7,6 +7,8 @@ import JobList from "@/components/job/jobList/JobList";
 import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
 
+import Center from "../Center";
+import Spin from "../Spin";
 import { useDashboard } from "./JobDashboard";
 
 /**
@@ -15,7 +17,11 @@ import { useDashboard } from "./JobDashboard";
 export default function JobRoot() {
   const auth = useAuth();
   const { listJobs } = useJob();
-  const { run, data: pulledJobs } = useRequest(
+  const {
+    run,
+    data: pulledJobs,
+    loading,
+  } = useRequest(
     async () => {
       return listJobs(auth.user.role).then((data) => {
         for (let i = 0; i < data.length; i++) {
@@ -55,6 +61,15 @@ export default function JobRoot() {
   const { jobId } = useParams();
   const sideMenuMobile = jobId ? "hidden" : "w-full";
   const contentMobile = jobId ? "w-full" : "hidden";
+
+  if (!dashboard && loading) {
+    return (
+      <Center>
+        <Spin className="h-8 w-8" />
+      </Center>
+    );
+  }
+
   return (
     <div className="flex flex-row h-full max-h-full md:max-h-screen md:overflow-hidden">
       <div className={`${sideMenuMobile} md:block md:w-1/2 lg:w-1/3 flex-none h-full`}>

@@ -9,6 +9,8 @@ import Spin from "@/components/Spin";
 import { JOB_STATUS, ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
 
+import Center from "../Center";
+
 const menu = [
   { url: "pending", name: "All Pending Jobs" },
   { url: "approved", name: "All Approved Jobs" },
@@ -102,7 +104,11 @@ export default function JobDashboard({ role }) {
   }, [jobCounts, loading, counting, tabUrl]);
   const content = useMemo(() => {
     if (loading) {
-      return <Spin className="h-8 w-8" />;
+      return (
+        <Center>
+          <Spin className="h-8 w-8" />
+        </Center>
+      );
     }
     return <JobRoot />;
   }, [data, jobCounts, loading, counting, tabUrl]);

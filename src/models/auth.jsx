@@ -168,7 +168,7 @@ function RequireAuth({ children }) {
 
   const spinning = (
     <Center className="w-screen h-screen">
-      <Spin className="h-10 w-10" />
+      <Spin className="h-8 w-8" />
     </Center>
   );
 
