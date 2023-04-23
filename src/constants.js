@@ -23,6 +23,13 @@ export const JOB_STATUS = {
   CLOSED: "closed",
 };
 
+export const JOB_STATUS_DISPLAY = {
+  REJECTED: "Action Required",
+  PENDING: "Pending",
+  APPROVED: "Approved",
+  CLOSED: "Closed",
+};
+
 export const DAYS_OF_WEEK = [
   "Sunday",
   "Monday",
