@@ -92,10 +92,7 @@ export default function JobList({ data }) {
           </div>
 
           {/* Filter Content */}
-          <form
-            className="flex flex-col"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col h-full px-3 divide-y gap-2">
               {/* Job Posted Category */}
               <div className="form-control pt-2">
