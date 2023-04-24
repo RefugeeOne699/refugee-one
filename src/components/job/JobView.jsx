@@ -13,7 +13,7 @@ import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-import { ROLES } from "@/constants";
+import { JOB_STATUS, JOB_STATUS_DISPLAY, ROLES } from "@/constants";
 import { useAuth, useJob } from "@/models";
 import { calculateDistance } from "@/utils";
 
@@ -23,10 +23,18 @@ import Spin from "../Spin";
 import JobActions from "./jobActions/JobActions";
 
 const statusBadge = {
-  rejected: <div className="badge badge-error gap-2">Rejected</div>,
-  pending: <div className="badge badge-warning gap-2">Pending</div>,
-  approved: <div className="badge badge-success gap-2">Approved</div>,
-  closed: <div className="badge badge-error gap-2">Closed</div>,
+  [JOB_STATUS.REJECTED]: (
+    <div className="badge badge-error gap-2">{JOB_STATUS_DISPLAY.REJECTED}</div>
+  ),
+  [JOB_STATUS.PENDING]: (
+    <div className="badge badge-warning gap-2">{JOB_STATUS_DISPLAY.PENDING}</div>
+  ),
+  [JOB_STATUS.APPROVED]: (
+    <div className="badge badge-success gap-2">{JOB_STATUS_DISPLAY.APPROVED}</div>
+  ),
+  [JOB_STATUS.CLOSED]: (
+    <div className="badge badge-error gap-2">{JOB_STATUS_DISPLAY.CLOSED}</div>
+  ),
 };
 
 export default function JobView() {

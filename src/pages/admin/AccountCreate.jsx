@@ -12,7 +12,7 @@ import { useAuth } from "@/models";
  */
 export default function AccountCreate() {
   const auth = useAuth();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const { run: signUp, loading: signUpLoading } = useRequest(
     async (data) => auth.signUp(data),
@@ -22,6 +22,7 @@ export default function AccountCreate() {
         toast.success(
           "The account has been created. The new user should set the password before sign in."
         );
+        reset();
       },
       onError: (error) => {
         toast.error("Create account Failed: " + error.message);
