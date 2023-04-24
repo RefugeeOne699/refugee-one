@@ -190,7 +190,7 @@ function UpsertJobCore({ update }) {
   if (update && preparing) {
     return (
       <Center>
-        <Spin className="w-10 h-10" />
+        <Spin className="h-8 w-8" />
       </Center>
     );
   }

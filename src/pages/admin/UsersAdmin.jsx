@@ -3,6 +3,7 @@ import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { NavLink, useParams } from "react-router-dom";
 
+import Center from "@/components/Center";
 import Spin from "@/components/Spin";
 import UserView from "@/components/user/UserView";
 import { ROLES } from "@/constants";
@@ -57,7 +58,11 @@ export default function JobsAdmin() {
   }, [tabUrl, data, loading]);
   const content = useMemo(() => {
     if (loading) {
-      return <Spin className="h-8 w-8" />;
+      return (
+        <Center>
+          <Spin className="h-8 w-8" />
+        </Center>
+      );
     }
     return (
       <div className="w-full">
@@ -76,7 +81,7 @@ export default function JobsAdmin() {
     );
   }, [data, loading, tabUrl]);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       {tabs}
       {content}
     </div>
