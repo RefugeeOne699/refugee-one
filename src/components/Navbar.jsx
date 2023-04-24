@@ -109,7 +109,7 @@ function NavbarList(props) {
 
   useEffect(() => {
     const path = location.pathname;
-    if (path === undefined || path === "/" || auth.user === AUTH_INITIAL_STATE.user) {
+    if (path === undefined || path === "/" || auth.user === AUTH_INITIAL_STATE) {
       setSelectedNavItem("");
       return;
     }
