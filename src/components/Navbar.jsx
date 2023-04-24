@@ -4,9 +4,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import WorkIcon from "@mui/icons-material/Work";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { slide as Menu } from "react-burger-menu";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import RefugeeOneLogo from "@/assets/refugeeone-logo-transparent.png";
 import { AUTH_INITIAL_STATE, ROLES } from "@/constants";
@@ -82,9 +82,50 @@ const buttonMap = {
   },
 };
 
+function getFirstNav(role) {
+  const navs = buttonMap[role].navs;
+  const navKeys = Object.keys(navs);
+  if (navKeys.length === 0) {
+    return "/";
+  }
+  const firstNavKey = navKeys[0];
+  return navs[firstNavKey].path;
+}
+
 function NavbarList(props) {
   const navigate = useNavigate();
   const auth = useAuth();
+  const location = useLocation();
+  const [selectedNavItem, setSelectedNavItem] = useState("");
+
+  useEffect(() => {
+    if (auth.user) {
+      const path = location.pathname;
+      if (path === "/" && Object.values(ROLES).includes(auth.user.role)) {
+        navigate(getFirstNav(auth.user.role));
+      }
+    }
+  }, [auth.user]);
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === undefined || path === "/" || auth.user === AUTH_INITIAL_STATE) {
+      setSelectedNavItem("");
+      return;
+    }
+    const selected = Object.keys(buttonMap[auth.user.role].navs).reduce(
+      (prev, curr) => {
+        const currPath = buttonMap[auth.user.role].navs[curr].path;
+        if (path.includes(currPath) && currPath.length > prev.path.length) {
+          return { nav: curr, path: currPath };
+        }
+        return prev;
+      },
+      { nav: null, path: "" }
+    );
+    setSelectedNavItem(selected?.nav);
+  }, [auth.user, location.pathname]);
+
   const items = useMemo(() => {
     return (
       <>
@@ -92,7 +133,10 @@ function NavbarList(props) {
           {Object.keys(buttonMap[auth.user.role].buttons).map((key) => (
             <div
               key={key}
-              className="border-2 border-primary rounded-2xl text-primary flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer"
+              className={
+                "border-2 border-primary rounded-2xl text-primary flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer" +
+                (selectedNavItem === key ? " bg-primary text-primary-content" : "")
+              }
               onClick={() => {
                 navigate(buttonMap[auth.user.role].buttons[key].path);
                 props.setOpen(false);
@@ -111,7 +155,10 @@ function NavbarList(props) {
           {Object.keys(buttonMap[auth.user.role].navs).map((key) => (
             <div
               key={key}
-              className="border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer"
+              className={
+                "border-b-2 border-grey flex flex-row w-full h-12 justify-start content-center p-2 hover:bg-primary hover:text-primary-content cursor-pointer" +
+                (selectedNavItem === key ? " bg-primary text-primary-content" : "")
+              }
               onClick={() => {
                 navigate(buttonMap[auth.user.role].navs[key].path);
                 props.setOpen(false);
@@ -128,7 +175,7 @@ function NavbarList(props) {
         </div>
       </>
     );
-  }, [auth.user]);
+  }, [auth.user, selectedNavItem]);
   return <div className="w-full p-2 flex flex-col gap-8">{items}</div>;
 }
 
