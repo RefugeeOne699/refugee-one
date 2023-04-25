@@ -196,6 +196,10 @@ function shiftTimeCheck(job, anyShiftTime, shiftTime) {
   if (anyShiftTime === "true") return true;
 
   const jobShiftTimePairs = extractTimePairs(job["shift"]);
+
+  // return true to cases where algorithm fail to pick up time
+  if (!jobShiftTimePairs.length) return true;
+
   // convert every {shift_start_time, shift_end_time} pairs to numeric values from 0 to 24
   const jobShiftNumericTimePairs = jobShiftTimePairs.map((pair) => ({
     startTime: timeToNumber(pair.startTime),
