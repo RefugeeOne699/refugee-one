@@ -26,38 +26,36 @@ const JobSaveContext = createContext({
 const JobSaveContextProvider = ({ children }) => {
   const [jobsSaved, setJobsSaved] = useState(new Set());
   const auth = useAuth();
-  const saveJob = useRequest(
-    async (jobId, uid) => {
-      await runTransaction(database, async (transaction) => {
-        const userSaveCollection = collection(database, "Users", uid, "JobsSaved");
-        const userSaveRef = doc(userSaveCollection, jobId);
-        const userSaveDoc = await transaction.get(userSaveRef);
+  const saveJob = async (jobId, uid) => {
+    let outcome = true;
+    await runTransaction(database, async (transaction) => {
+      const userSaveCollection = collection(database, "Users", uid, "JobsSaved");
+      const userSaveRef = doc(userSaveCollection, jobId);
+      const userSaveDoc = await transaction.get(userSaveRef);
 
-        const jobSavedCollection = collection(database, "Jobs", jobId, "UsersSavedBy");
-        const jobSavedRef = doc(jobSavedCollection, uid);
-        const jobSavedDoc = await transaction.get(jobSavedRef);
+      const jobSavedCollection = collection(database, "Jobs", jobId, "UsersSavedBy");
+      const jobSavedRef = doc(jobSavedCollection, uid);
+      const jobSavedDoc = await transaction.get(jobSavedRef);
 
-        if (userSaveDoc.exists() || jobSavedDoc.exists()) {
-          if (userSaveDoc.exists()) {
-            transaction = await transaction.delete(userSaveRef);
-          }
-          if (jobSavedDoc.exists()) {
-            transaction = await transaction.delete(jobSavedRef);
-          }
-          jobsSaved.delete(jobId);
-        } else {
-          transaction = await transaction.set(userSaveRef, {});
-          transaction = await transaction.set(jobSavedRef, {});
-          jobsSaved.add(jobId);
+      if (userSaveDoc.exists() || jobSavedDoc.exists()) {
+        if (userSaveDoc.exists()) {
+          transaction = await transaction.delete(userSaveRef);
         }
-        setJobsSaved(jobsSaved);
-      });
-    },
-    {
-      manual: true,
-      debounceWait: 100,
-    }
-  );
+        if (jobSavedDoc.exists()) {
+          transaction = await transaction.delete(jobSavedRef);
+        }
+        jobsSaved.delete(jobId);
+        outcome = false;
+      } else {
+        transaction = await transaction.set(userSaveRef, {});
+        transaction = await transaction.set(jobSavedRef, {});
+        jobsSaved.add(jobId);
+        outcome = true;
+      }
+      setJobsSaved(jobsSaved);
+    });
+    return outcome;
+  };
 
   const checkIsJobSaved = (jobId) => {
     return jobsSaved.has(jobId);
@@ -99,7 +97,7 @@ const JobSaveContextProvider = ({ children }) => {
       saveJob,
       checkIsJobSaved,
     }),
-    [jobsSaved, pullJobsSaved.loading, saveJob.loading]
+    [jobsSaved, pullJobsSaved.loading, saveJob]
   );
   return <JobSaveContext.Provider value={value}>{children}</JobSaveContext.Provider>;
 };

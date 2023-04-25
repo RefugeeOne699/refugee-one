@@ -40,6 +40,8 @@ const Profile = {
   SetPassword: lazy(async () => import("@/components/profile/ProfileSetPassword")),
 };
 
+const SignOut = lazy(async () => import("@/pages/SignOut"));
+
 const router = createBrowserRouter([
   {
     path: "/signIn",
@@ -60,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: "/confirm_send_email",
     element: <ConfirmSendEmail />,
+  },
+  {
+    path: "signOut",
+    element: <SignOut />,
   },
   // all the pages below requires signed in
   {

@@ -63,8 +63,8 @@ export default function JobView() {
     },
     {
       manual: true,
-      onError: () => {
-        toast.error("Failed to get the job information");
+      onError: (error) => {
+        toast.error(`Failed to get the job information: ${error.message}`);
       },
     }
   );

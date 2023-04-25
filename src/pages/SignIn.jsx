@@ -6,7 +6,6 @@ import LockIcon from "@mui/icons-material/Lock";
 import LockResetIcon from "@mui/icons-material/LockReset";
 import { useRequest } from "ahooks";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/models";
@@ -17,10 +16,7 @@ export default function SignIn() {
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
-
-  if (auth.isSignedIn()) {
-    return <Navigate to="/" replace />;
-  }
+  const { toast } = auth;
 
   // follow this function for a better practice with interactive button
   const { run: signIn, loading: signInLoading } = useRequest(
@@ -41,6 +37,10 @@ export default function SignIn() {
       },
     }
   );
+
+  if (auth.isSignedIn()) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center">

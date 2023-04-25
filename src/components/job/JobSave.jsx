@@ -18,20 +18,21 @@ export default function JobSave({ jobId, mode }) {
   } = useJobSave();
   const auth = useAuth();
   const { uid } = auth.user;
-  const saveJobRequest = useRequest(async () => saveJob.run(jobId, uid), {
+  const saveJobRequest = useRequest(async () => saveJob(jobId, uid), {
     manual: true,
-    onSuccess: () => {
-      toast.success("Job is saved!");
+    debounceWait: 100,
+    onSuccess: (outcome) => {
+      toast.success(`Job is ${outcome ? "saved" : "unsaved"}!`);
     },
-    onError: () => {
-      toast.error("Failed to save the job");
+    onError: (error) => {
+      toast.error("Failed to save the job: " + error.message);
     },
   });
   const onClick = async () => {
     await saveJobRequest.run(jobId, uid);
   };
 
-  const loading = saveJob.loading || checking;
+  const loading = saveJobRequest.loading || checking;
   if (mode === "list") {
     const starIcon = useMemo(() => {
       if (loading) {
@@ -42,7 +43,7 @@ export default function JobSave({ jobId, mode }) {
       } else {
         return <StarOutlineIcon fontSize="inherit" onClick={onClick} />;
       }
-    }, [saveJob.loading, checking, jobsSaved]);
+    }, [loading, jobsSaved]);
 
     return <Center className="text-4xl">{starIcon}</Center>;
   } else {
@@ -56,7 +57,7 @@ export default function JobSave({ jobId, mode }) {
           {loading ? "Loading" : checkIsJobSaved(jobId) ? "Unsave" : "Save"}
         </button>
       );
-    }, [saveJob.loading, checking, jobsSaved]);
+    }, [loading, jobsSaved]);
     return button;
   }
 }

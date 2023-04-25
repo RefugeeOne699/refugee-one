@@ -3,27 +3,9 @@ import KeyIcon from "@mui/icons-material/Key";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
-import { useRequest } from "ahooks";
-import { toast } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
-
-import { useAuth } from "@/models";
+import { Link } from "react-router-dom";
 
 export default function ProfileMenu() {
-  const auth = useAuth();
-  const navigate = useNavigate();
-
-  const { run: signOut } = useRequest(async () => auth.signOut(), {
-    manual: true,
-    onSuccess: () => {
-      toast.success("Logout successful");
-      navigate("/", { replace: true });
-    },
-    onError: () => {
-      toast.error("Logout failed");
-    },
-  });
-
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <ul className="menu bg-base-100 w-full px-12 rounded-box">
@@ -63,8 +45,8 @@ export default function ProfileMenu() {
       </ul>
       <ul className="menu bg-base-100 w-full px-12 rounded-box mt-8">
         <li className="w-full">
-          <a
-            onClick={signOut}
+          <Link
+            to="/signOut"
             className="flex bg-red-600 bg-transparent text-white justify-between"
           >
             <div className="flex justify-start gap-4">
@@ -74,7 +56,7 @@ export default function ProfileMenu() {
             <div className="flex justify-end">
               <KeyboardArrowRightIcon />
             </div>
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

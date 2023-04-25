@@ -20,7 +20,7 @@ export default function EmployerSignUp() {
       manual: true,
       onSuccess: async () => {
         toast.success(
-          "Registration Successful. Please wait for approval from the admin team"
+          "Registration Successful. Please reset the password upon your first sign-in."
         );
         navigate("/signIn");
       },
