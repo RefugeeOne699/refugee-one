@@ -45,15 +45,15 @@ export async function getCoordinate(street, city, state, zipcode) {
   const countryRegion = "US";
   const response = await fetch(
     "https://dev.virtualearth.net/REST/v1/Locations/" +
-      countryRegion +
+      encodeURIComponent(countryRegion.replace(/\./g, "")) +
       "/" +
-      state +
+      encodeURIComponent(state.replace(/\./g, "")) +
       "/" +
-      zipcode +
+      encodeURIComponent(zipcode.replace(/\./g, "")) +
       "/" +
-      city +
+      encodeURIComponent(city.replace(/\./g, "")) +
       "/" +
-      street +
+      encodeURIComponent(street.replace(/\./g, "")) +
       "?key=" +
       BingKey
   );
