@@ -72,7 +72,9 @@ export default function JobsAdmin() {
             .filter((user) => user.role === tabUrl)
             .sort((a, b) => -(a.status > b.status ? 1 : a.status === b.status ? 0 : -1))
             .map((user) => {
-              return <UserView key={user.id} user={user} refresh={refresh} />;
+              return (
+                <UserView key={user.id} user={user} refresh={refresh} allUsers={data} />
+              );
             })
         ) : (
           <p>No users to show</p>
