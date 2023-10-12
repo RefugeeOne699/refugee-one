@@ -320,6 +320,7 @@ function UpsertJobCore({ update }) {
                 type="number"
                 className="input input-bordered w-1/3"
                 placeholder="Min $"
+                step="any"
                 {...register("wage.min", { required: true, valueAsNumber: true })}
               />
               <div>
@@ -330,6 +331,7 @@ function UpsertJobCore({ update }) {
                 type="number"
                 className="input input-bordered w-1/3"
                 placeholder="Max $"
+                step="any"
                 {...register("wage.max", {
                   required: true,
                   valueAsNumber: true,
@@ -459,6 +461,7 @@ function UpsertJobCore({ update }) {
             <textarea
               type="text"
               rows="4"
+              placeholder="This section is only visible to RufugeeOne staff and not to the candidates"
               className="textarea textarea-bordered w-full"
               {...register("instruction", { required: true })}
             />
