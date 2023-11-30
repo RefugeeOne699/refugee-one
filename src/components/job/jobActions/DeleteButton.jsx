@@ -14,6 +14,7 @@ export default function DeleteButton({ jobId }) {
     manual: true,
     onSuccess: async () => {
       if (dashboard === undefined) {
+        toast.error("Please use Manage Job option to delete jobs!");
         return;
       }
       toast.success("Job deleted!");

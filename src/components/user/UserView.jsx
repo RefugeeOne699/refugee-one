@@ -1,19 +1,18 @@
 import { useRequest } from "ahooks";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { doc, updateDoc } from "firebase/firestore";
 import { React, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import database from "@/clients/firebase";
-import { USER_STATUS } from "@/constants";
-import { ROLES } from "@/constants";
-import { JOB_STATUS } from "@/constants";
-import { useAdmin } from "@/models";
+import { JOB_STATUS, ROLES, USER_STATUS } from "@/constants";
+import { useAdmin, useJob } from "@/models";
 
 export default function UserView({ user, refresh, allUsers }) {
   const { approveUser, deleteUser } = useAdmin();
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const job = useJob();
+  let selectedUserId = null;
 
   const hideModal = () => {
     setShowModal(false);
@@ -23,51 +22,48 @@ export default function UserView({ user, refresh, allUsers }) {
     setShowModal(true);
   };
 
-  //
-  const transfer = async () => {
+  const fetchData = async () => {
     if (selectedUser) {
       // Extract id of selectedUser from allUsers
-      let selectedUserId = null;
       allUsers.forEach((adminUser) => {
         if (adminUser.role === "admin" && adminUser.name === selectedUser) {
           selectedUserId = adminUser.id;
+          console.log("selectedUserId" + selectedUserId);
+          console.log("selectedUser" + selectedUser);
         }
       });
-
-      try {
-        const jobsCollection = collection(database, "Jobs");
-
-        // Create a query to filter jobs by approved status
-        const q = query(jobsCollection, where("status", "==", JOB_STATUS.APPROVED));
-        // Execute the query and get the matching documents
-        const querySnapshot = await getDocs(q);
-
-        // Iterate through the documents and extract relevant data
-        querySnapshot.forEach((document) => {
-          const jobData = document.data();
-          const jobRef = doc(database, "Jobs", document.id);
-          if (jobData.owner.id) {
-            if (jobData.owner.id && jobData.owner.id == user.id) {
-              //update the job's owner field to the selectedUserId
-              return updateDoc(jobRef, {
-                owner: `/Users/${selectedUserId}`,
-              });
-            }
-          } else if (jobData.owner && jobData.owner.split("/")[2] == user.id) {
-            //update the job's owner field to the selectedUserId
-            return updateDoc(jobRef, {
-              owner: `/Users/${selectedUserId}`,
-            });
-          }
-        });
-        toast.success(`Transfer Successful`);
-        hideModal();
-      } catch (error) {
-        toast.error(`Failed to fetch job listings: ${error}`);
-      }
-    } else {
-      toast.error("Please select a user to transfer jobs to.");
     }
+    const jobCollection = collection(database, "Jobs");
+    const jobQuery = query(jobCollection, where("status", "==", JOB_STATUS.APPROVED));
+
+    try {
+      const querySnapshot = await getDocs(jobQuery);
+
+      querySnapshot.forEach(async (document) => {
+        const jobId = document.id;
+
+        // Call GetJob with the jobId to get the existing owner of the job
+        const data = await job.getJob(jobId);
+        // Check and extract all jobs corresponding to the logged-in user
+        if (data.owner && data.owner.uid && data.owner.uid === user.id) {
+          job
+            .transferJob(jobId, selectedUserId)
+            .then(() => {
+              toast.success(`Transfer Successful`);
+              hideModal();
+            })
+            .catch((error) => {
+              toast.error(`Failed to transfer job: ${error}`);
+            });
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const transfer = () => {
+    fetchData();
   };
 
   const approveUserRequest = useRequest(async () => approveUser(user.id), {

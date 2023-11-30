@@ -23,6 +23,7 @@ const JobContext = createContext({
   rejectJob: () => {},
   // todo
   deleteJob: () => {},
+  transferJob: () => {},
   /**
    * @param {string} _id - id of the job
    * @returns the job detail
@@ -59,12 +60,57 @@ const JobContextProvider = ({ children }) => {
     const jobDocRef = doc(database, "Jobs", id);
     const jobDoc = await getDoc(jobDocRef);
     const job = jobDoc.data();
-    const ownerDoc = await getDoc(job.owner);
-    job.owner = {
-      uid: ownerDoc.id,
-      name: ownerDoc.data().name,
-    };
+    if (!job.owner.uid && !job.owner.name) {
+      const ownerDoc = await getDoc(job.owner);
+      job.owner = {
+        uid: ownerDoc.id,
+        name: ownerDoc.data().name,
+      };
+    }
     return job;
+  };
+
+  const transferJob = async (jobID, newOwnerID) => {
+    await runTransaction(database, async (transaction) => {
+      // Step 1: Get the current job document
+      const currentJob = await getJob(jobID);
+
+      if (!currentJob) {
+        // Handle the case where the job doesn't exist
+        return;
+      }
+      // Extract current owner details
+      const currentOwner = currentJob.owner.uid;
+
+      // Step 2: Update the owner field in the job document
+      const updatedJobData = {
+        ...currentJob,
+        owner: {
+          uid: newOwnerID,
+          // Other owner details, if any
+        },
+      };
+
+      const jobRef = doc(database, "Jobs", jobID);
+      const jobRefByCurrentOwner = doc(
+        database,
+        "Users",
+        currentOwner,
+        "JobsCreated",
+        jobID
+      );
+      // Step 3: Remove the job from the current owner's "JobsCreated" collection
+      const jobDocByCurrentOwner = await transaction.get(jobRefByCurrentOwner);
+
+      transaction = transaction.update(jobRef, updatedJobData);
+      if (jobDocByCurrentOwner.exists()) {
+        transaction = await transaction.delete(jobRefByCurrentOwner);
+      }
+
+      // Step 4: Add the job to the new owner's "JobsCreated" collection
+      const jobRefByNewOwner = doc(database, "Users", newOwnerID, "JobsCreated", jobID);
+      transaction.set(jobRefByNewOwner, updatedJobData);
+    });
   };
 
   const updateJob = async (jobId, payload) => {
@@ -104,13 +150,22 @@ const JobContextProvider = ({ children }) => {
         return;
       }
       const owner = jobDoc.data().owner;
-      const jobRefByUser = doc(owner, "JobsCreated", id);
-      const jobDocByUser = await transaction.get(jobRefByUser);
+      if (owner && owner.uid) {
+        const jobRefByCurrentOwner = doc(database, "Users", owner.uid, "JobsCreated", id);
+        const jobDocByCurrentOwner = await transaction.get(jobRefByCurrentOwner);
+        transaction = await transaction.delete(jobDocRef);
+        if (jobDocByCurrentOwner.exists()) {
+          await transaction.delete(jobRefByCurrentOwner);
+        }
+      } else {
+        const jobRefByUser = doc(owner, "JobsCreated", id);
+        const jobDocByUser = await transaction.get(jobRefByUser);
 
-      transaction = await transaction.delete(jobDocRef);
-      // compatibility: some jobs are created without linking with the user account
-      if (jobDocByUser.exists()) {
-        await transaction.delete(jobRefByUser);
+        transaction = await transaction.delete(jobDocRef);
+        // compatibility: some jobs are created without linking with the user account
+        if (jobDocByUser.exists()) {
+          await transaction.delete(jobRefByUser);
+        }
       }
       // for users that save this job, remove the save record
       for (let uid of usersAffected) {
@@ -224,6 +279,7 @@ const JobContextProvider = ({ children }) => {
       approveJob,
       rejectJob,
       deleteJob,
+      transferJob,
       getJob,
       listJobs,
       listSavedJobs,
